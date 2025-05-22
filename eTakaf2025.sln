@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eTakaf2025", "eTakaf2025\eTakaf2025.csproj", "{D3617340-2196-4F52-B657-4DCF14AEC456}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{DD2AC912-D3B7-4A9A-84D9-7347FC45694C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAL", "SAL\SAL.csproj", "{5570A283-20DC-45E0-A447-0A8F830C330C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3617340-2196-4F52-B657-4DCF14AEC456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3617340-2196-4F52-B657-4DCF14AEC456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3617340-2196-4F52-B657-4DCF14AEC456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3617340-2196-4F52-B657-4DCF14AEC456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD2AC912-D3B7-4A9A-84D9-7347FC45694C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD2AC912-D3B7-4A9A-84D9-7347FC45694C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD2AC912-D3B7-4A9A-84D9-7347FC45694C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD2AC912-D3B7-4A9A-84D9-7347FC45694C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5570A283-20DC-45E0-A447-0A8F830C330C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5570A283-20DC-45E0-A447-0A8F830C330C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5570A283-20DC-45E0-A447-0A8F830C330C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5570A283-20DC-45E0-A447-0A8F830C330C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F8B3D1A-FC39-453D-A81A-B7484DEACAC1}
+	EndGlobalSection
+EndGlobal

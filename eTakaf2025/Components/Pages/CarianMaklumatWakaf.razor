@@ -1,0 +1,226 @@
+﻿@page "/"
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using SAL
+@using eTakaf2025.Components.Layout
+<PageTitle>Carian Maklumat Wakaf</PageTitle>
+
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@layout EmptyLayout
+@inject IServices _service
+@inject SweetAlertService Swal
+
+<EditForm Model="inputModel" FormName="XP" OnValidSubmit="SaveRecords">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header text-center" style="font-weight:bold; color:white; background-color:#067384;">
+                <img src="/images/mains_panjang.png" class="img-fluid mt-2" style="height:65%;" alt="Logo"  />
+                <h3 class="mb-0 mt-2">
+                    <i class="fa-regular fa-circle-info pe-2"></i>
+                    CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center d-flex">
+                    <div class="row mt-1 mb-3">
+                        <div class="col-sm-2 col-md-2">
+                            <label class="label">Tahun</label>
+                            <select style="font-weight:bold;" required class="form-select" @bind="TahunPilihan">
+                                <option style="font-weight:bold;" value=""> -Tahun-</option>
+                                @foreach (var xx in _tahun)
+                                {
+                                    <option value="@xx.Tahun" style="font-weight:bold;">@xx.Tahun</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <label class="label">Kategori</label>
+                            <select style="font-weight:bold;" required class="form-select" @bind="KategoriPilihan">
+                                <option style="font-weight:bold;" value=""> -Kategori-</option>
+                                <option style="font-weight:bold;" value="TWA">TANAH WAKAF AM</option>
+                                <option style="font-weight:bold;" value="TWK">TANAH WAKAF KHAS</option>
+
+                            </select>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <label class="label">Daerah</label>
+                            <select style="font-weight:bold;" required class="form-select" @bind="DaerahPilihan">
+                                <option style="font-weight:bold;" value=""> -Daerah-</option>
+                                @if (adaDaerah)
+                                {
+                                    @foreach (var xx in _lstDaerah)
+                                    {
+                                        <option value="@xx.DaerahDW" style="font-weight:bold;">@xx.DaerahDW</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-4 mt-auto">
+                            <button class="btn btn-success p-2" type="submit" title="Cari Info">
+                                <i class="fa-solid fa-magnifying-glass px-2"> </i>
+                            </button>
+                            <button class="btn btn-danger p-2" type="button" @onclick="Reset" title="Reset">
+                                <i class="fa-solid fa-recycle px-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                @if (adaRekod)
+                {
+                    <hr>
+                    <hr />
+                    <div class="row mt-4">
+                        <div><h5>SENARAI REKOD HASIL CARIAN </h5></div>
+                        <div class="table-responsive-lg">
+                            <table style="font-size:12px;" id="myTable" class="table table-bordered table-hover">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <td>Daerah</td>
+                                        <td>Kategori</td>
+                                        <td>Mukim</td>
+                                        <td>Tahun Wakaf</td>
+                                        <td>Keluasan (Ha)</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var item in _lstMaklumat )
+                                    {
+                                        <tr>
+                                            <td>@item.Daerah</td>
+                                            <td>@item.NoFail</td>
+                                            <td><span style="color:red;font-weight:bold;">@item.MukimPekanBandar</span></td>
+                                            <td>@item.TahunWakaf?.ToString("dd/MM/yyyy")</td>
+                                            <td><span style="color:darkgreen;font-weight:bold;">@item.KeluasanTanahDiWakaf</span></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>                       
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+<style type="text/less">
+    .card-header {
+        background-color: #d4edda !important;
+    }
+</style>
+@code {
+    public string TahunPilihan { get; set; } = string.Empty;
+    public string KategoriPilihan { get; set; } = string.Empty;
+    public string DaerahPilihan { get; set; } = string.Empty;
+    public bool isProcess = false;
+    public bool adaRekod = false;
+    public bool adaDaerah = false;
+
+    List<myYear> _tahun = new List<myYear>(); IEnumerable<InfoDaerah> _lstDaerah = [];
+    IEnumerable<tblLegasiWakaf> _lstMaklumat = new List<tblLegasiWakaf>();
+
+    public class InputModel
+    {
+        public string Tahun { get; set; } = string.Empty;
+        public string Kategori { get; set; } = string.Empty;
+        public string Daerah { get; set; } = string.Empty;
+    }
+
+    public InputModel inputModel = new InputModel()
+    {
+        Tahun = string.Empty,
+        Kategori = string.Empty,
+        Daerah = string.Empty
+    };
+
+    private void Reset()
+    {
+        TahunPilihan = string.Empty;
+        KategoriPilihan = string.Empty;
+        DaerahPilihan = string.Empty;
+        adaRekod = false;
+        StateHasChanged();
+
+    }
+    public class myYear
+    {
+        public int Tahun { get; set; }
+    }
+
+    private async Task LoadFile()
+    {
+        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    protected override void OnInitialized()
+    {
+        int currentYear = DateTime.Now.Year;
+        int startYear = currentYear - 10; // Last 5 years
+        int endYear = currentYear + 3;   // Next 3 years
+
+        for (int i = startYear; i <= endYear; i++)
+        {
+            myYear _tt = new()
+            {
+                Tahun = i,
+            };
+            _tahun.Add(_tt);
+        }
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFile(); _lstDaerah = await _service.GetInfoDaerahOnly();
+            adaDaerah = (_lstDaerah.Any());
+            StateHasChanged();
+        }
+
+    }
+
+    private async Task SaveRecords()
+    {
+        try
+        {       
+            _lstMaklumat = await _service.GetMaklumatLegasiRekod(TahunPilihan, KategoriPilihan, DaerahPilihan);
+            if (_lstMaklumat.Any())
+            {
+                adaRekod = true;
+                StateHasChanged();
+
+                if (adaRekod)
+                {
+                    await Task.Delay(100); // Optional: allow DOM to settle
+                    await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                    await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); StateHasChanged();
+                }
+            }
+            else
+            {
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Maaf tiada rekod dijumpai ...",
+                    Text = "Info",
+                    Icon = SweetAlertIcon.Error,
+                    ShowCancelButton = false,
+                    ConfirmButtonText = "Ok",
+                });
+                Reset();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
+
+}
