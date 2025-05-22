@@ -18,7 +18,7 @@
                 <img src="/images/mains_panjang.png" class="img-fluid mt-2" style="height:65%;" alt="Logo"  />
                 <h3 class="mb-0 mt-2">
                     <i class="fa-regular fa-circle-info pe-2"></i>
-                    CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN
+                    CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN (e-TAKAF)
                 </h3>
             </div>
             <div class="card-body">
@@ -47,13 +47,22 @@
                             <label class="label">Daerah</label>
                             <select style="font-weight:bold;" required class="form-select" @bind="DaerahPilihan">
                                 <option style="font-weight:bold;" value=""> -Daerah-</option>
-                                @if (adaDaerah)
+                                <option style="font-weight:bold;" value="JELEBU"> JELEBU</option>
+                                <option style="font-weight:bold;" value="JEMPOL"> JEMPOL</option>
+                                <option style="font-weight:bold;" value="KUALA PILAH"> KUALA PILAH</option>                               
+                                <option style="font-weight:bold;" value="PORT DICKSON"> PORT DICKSON</option>
+                                <option style="font-weight:bold;" value="REMBAU"> REMBAU</option>
+                                <option style="font-weight:bold;" value="SEREMBAN"> SEREMBAN</option>
+                                <option style="font-weight:bold;" value="TAMPIN"> TAMPIN</option>
+                               
+                               
+                               @*  @if (adaDaerah)
                                 {
                                     @foreach (var xx in _lstDaerah)
                                     {
                                         <option value="@xx.DaerahDW" style="font-weight:bold;">@xx.DaerahDW</option>
                                     }
-                                }
+                                } *@
                             </select>
                         </div>
                         <div class="col-4 mt-auto">
@@ -72,16 +81,17 @@
                     <hr>
                     <hr />
                     <div class="row mt-4">
-                        <div><h5>SENARAI REKOD HASIL CARIAN </h5></div>
+                        <div><h5 style="font-weight:bold'">SENARAI REKOD HASIL CARIAN </h5></div>
                         <div class="table-responsive-lg">
                             <table style="font-size:12px;" id="myTable" class="table table-bordered table-hover">
-                                <thead class="table-secondary">
+                                <thead class="table-success">
                                     <tr>
-                                        <td>Daerah</td>
-                                        <td>Kategori</td>
-                                        <td>Mukim</td>
-                                        <td>Tahun Wakaf</td>
-                                        <td>Keluasan (Ha)</td>
+                                        <td style="font-weight:bold;"> Daerah</td>
+                                        <td style="font-weight:bold;">Kategori</td>
+                                        <td style="font-weight:bold;">Mukim</td>
+                                        <td style="font-weight:bold;">Tahun Wakaf</td>
+                                        <td class="text-center">Keluasan (Ha)</td>
+                                        <td class="text-center">Info</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,7 +102,14 @@
                                             <td>@item.NoFail</td>
                                             <td><span style="color:red;font-weight:bold;">@item.MukimPekanBandar</span></td>
                                             <td>@item.TahunWakaf?.ToString("dd/MM/yyyy")</td>
-                                            <td><span style="color:darkgreen;font-weight:bold;">@item.KeluasanTanahDiWakaf</span></td>
+                                            <td class="text-center"><span style="color:darkgreen;font-weight:bold;">@item.KeluasanTanahDiWakaf</span></td>
+                                            <td class="text-center">
+                                                <button class="btn btn-outline-success" @onclick="() =>GetValue(item)"
+                                                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                                        aria-controls="offcanvasRight">
+                                                    <i class="fa-solid fa-circle-info pe-2"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -104,6 +121,50 @@
             </div>
         </div>
     </div>
+
+
+   @*  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+            </div>
+            <div class="dropdown mt-3">
+              <p>@data1</p>
+              <p>@data2</p>
+            </div>
+        </div>
+    </div> *@
+
+
+    <div class="offcanvas offcanvas-end bg-light shadow-lg" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header border-bottom bg-success text-white">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">🗂 Tutuo Canvas</h5>
+            <button type="button" class="btn-close text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="col-sm-12">
+                <label class="form-label fw-bold text-primary">Fail</label>
+                <input type="text" value="@NoFail" readonly class="form-control mb-3 rounded-3 shadow-sm">
+
+                <label class="form-label fw-bold text-primary">Daerah</label>
+                <input type="text" value="@Daerah" readonly class="form-control mb-3 rounded-3 shadow-sm">
+
+                <label class="form-label fw-bold text-primary">Mukim</label>
+                <input type="text" value="@Mukim" readonly class="form-control mb-3 rounded-3 shadow-sm">
+
+                <label class="form-label fw-bold text-primary">No Hak Milik</label>
+                <input type="text" value="@NoHakMilik" readonly class="form-control mb-3 rounded-3 shadow-sm">
+
+                <label class="form-label fw-bold text-primary">No Lot</label>
+                <input type="text" value="@NoLot" readonly class="form-control mb-3 rounded-3 shadow-sm">
+            </div>
+        </div>
+    </div>
+
 </EditForm>
 
 
@@ -119,6 +180,15 @@
     public bool isProcess = false;
     public bool adaRekod = false;
     public bool adaDaerah = false;
+
+
+    public string NoHakMilik { get; set; } = string.Empty;
+    public string NoLot { get; set; } = string.Empty;
+    public string KategoriPermohon { get; set; } = string.Empty;
+    public string Mukim { get; set; } = string.Empty;
+    public string KegunaanTanah { get; set; } = string.Empty;
+    public string Daerah { get; set; } = string.Empty;
+    public string NoFail { get; set; } = string.Empty;
 
     List<myYear> _tahun = new List<myYear>(); IEnumerable<InfoDaerah> _lstDaerah = [];
     IEnumerable<tblLegasiWakaf> _lstMaklumat = new List<tblLegasiWakaf>();
@@ -145,6 +215,18 @@
         adaRekod = false;
         StateHasChanged();
 
+    }
+
+    private void GetValue(tblLegasiWakaf data)
+    {
+        NoHakMilik = data.JenisNoHakMilik;
+        NoLot = data.NoLot;
+        Mukim = data.MukimPekanBandar;
+        KegunaanTanah = data.KegunaanKategori;
+        NoFail = data.NoFail;
+        Daerah = data.Daerah;
+        // Replace with actual value from the selected record
+        StateHasChanged();
     }
     public class myYear
     {
