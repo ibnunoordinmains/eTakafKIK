@@ -22,127 +22,176 @@
                 </h3>
             </div>
             <div class="card-body">
-                <div class="row justify-content-center d-flex">
-                    <div class="row mt-1 mb-3">
-                        <div class="col-sm-2 col-md-2">
-                            <label class="label">Tahun</label>
-                            <select style="font-weight:bold;" required class="form-select" @bind="TahunPilihan">
-                                <option style="font-weight:bold;" value=""> -Tahun-</option>
-                                @foreach (var xx in _tahun)
-                                {
-                                    <option value="@xx.Tahun" style="font-weight:bold;">@xx.Tahun</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <label class="label">Kategori</label>
-                            <select style="font-weight:bold;" required class="form-select" @bind="KategoriPilihan">
-                                <option style="font-weight:bold;" value=""> -Kategori-</option>
-                                <option style="font-weight:bold;" value="TWA">TANAH WAKAF AM</option>
-                                <option style="font-weight:bold;" value="TWK">TANAH WAKAF KHAS</option>
 
-                            </select>
-                        </div>
-                        <div class="col-sm-4 col-md-4">
-                            <label class="label">Daerah</label>
-                            <select style="font-weight:bold;" required class="form-select" @bind="DaerahPilihan">
-                                <option style="font-weight:bold;" value=""> -Daerah-</option>
-                                <option style="font-weight:bold;" value="JELEBU"> JELEBU</option>
-                                <option style="font-weight:bold;" value="JEMPOL"> JEMPOL</option>
-                                <option style="font-weight:bold;" value="KUALA PILAH"> KUALA PILAH</option>                               
-                                <option style="font-weight:bold;" value="PORT DICKSON"> PORT DICKSON</option>
-                                <option style="font-weight:bold;" value="REMBAU"> REMBAU</option>
-                                <option style="font-weight:bold;" value="SEREMBAN"> SEREMBAN</option>
-                                <option style="font-weight:bold;" value="TAMPIN"> TAMPIN</option>
-                               
-                               
-                               @*  @if (adaDaerah)
+                <div class="row mt-2 mb-5">
+                    <div class="col-sm-6 col-md-6">
+                        <label class="label">Jenis Carian</label>
+                        <select style="font-weight:bold;" required class="form-select" @onchange="ShowMenu">
+                            <option style="font-weight:bold;" value=""> -Carian-</option>
+                            <option style="font-weight:bold;" value="C1">Carian Melalui Gabungan Tahun/Kategori/Daerah</option>
+                            <option style="font-weight:bold;" value="C2">Carian Melalui Daerah</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                @if (Carian1)
+                {
+                    <div class="row justify-content-center px-4 d-flex">
+                        <p class="fw-bold">Carian Melalui Gabungan Tahun, Kategori dan Daerah</p>
+                        <div class="card border-danger pe-2 mb-2">
+                            <div class="row mt-1 mb-3">
+                                <div class="col-sm-2 col-md-2">
+                                    <label class="label">Tahun</label>
+                                    <select style="font-weight:bold;" required class="form-select" @bind="TahunPilihan">
+                                        <option style="font-weight:bold;" value=""> -Tahun-</option>
+                                        @foreach (var xx in _tahun)
+                                        {
+                                            <option value="@xx.Tahun" style="font-weight:bold;">@xx.Tahun</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 col-md-2">
+                                    <label class="label">Kategori</label>
+                                    <select style="font-weight:bold;" required class="form-select" @bind="KategoriPilihan">
+                                        <option style="font-weight:bold;" value=""> -Kategori-</option>
+                                        <option style="font-weight:bold;" value="TWA">TANAH WAKAF AM</option>
+                                        <option style="font-weight:bold;" value="TWK">TANAH WAKAF KHAS</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-sm-4 col-md-4">
+                                    <label class="label">Daerah</label>
+                                    <select style="font-weight:bold;" required class="form-select" @bind="DaerahPilihan">
+                                        <option style="font-weight:bold;" value=""> -Daerah-</option>
+                                        <option style="font-weight:bold;" value="JELEBU"> JELEBU</option>
+                                        <option style="font-weight:bold;" value="JEMPOL"> JEMPOL</option>
+                                        <option style="font-weight:bold;" value="KUALA PILAH"> KUALA PILAH</option>
+                                        <option style="font-weight:bold;" value="PORT DICKSON"> PORT DICKSON</option>
+                                        <option style="font-weight:bold;" value="REMBAU"> REMBAU</option>
+                                        <option style="font-weight:bold;" value="SEREMBAN"> SEREMBAN</option>
+                                        <option style="font-weight:bold;" value="TAMPIN"> TAMPIN</option>
+
+
+                                        @*  @if (adaDaerah)
                                 {
                                     @foreach (var xx in _lstDaerah)
                                     {
                                         <option value="@xx.DaerahDW" style="font-weight:bold;">@xx.DaerahDW</option>
                                     }
                                 } *@
-                            </select>
+                                    </select>
+                                </div>
+                                <div class="col-4 mt-auto">
+                                    <button class="btn btn-success p-2" type="submit" title="Cari Info">
+                                        <i class="fa-solid fa-magnifying-glass px-2"> </i>
+                                    </button>
+                                    <button class="btn btn-danger p-2" type="button" @onclick="Reset" title="Reset">
+                                        <i class="fa-solid fa-recycle px-2"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-4 mt-auto">
-                            <button class="btn btn-success p-2" type="submit" title="Cari Info">
-                                <i class="fa-solid fa-magnifying-glass px-2"> </i>
-                            </button>
-                            <button class="btn btn-danger p-2" type="button" @onclick="Reset" title="Reset">
-                                <i class="fa-solid fa-recycle px-2"></i>
-                            </button>
+                       
+                    </div>
+                   
+                }
+                else if (Carian2)
+                {
+                      <div class="row justify-content-center px-4 d-flex">
+                           <p class="fw-bold">Carian Melalui Gabungan Tahun, Kategori dan Daerah</p>
+                            <div class="card border-danger pe-2 mb-2">
+                                 <div class="row mt-1 mb-3">
+                                    <div class="col-sm-4 col-md-4">
+                                        <label class="label">Daerah</label>
+                                        <select style="font-weight:bold;" required class="form-select" @bind="DaerahPilihan">
+                                            <option style="font-weight:bold;" value=""> -Sila Pilih Daerah-</option>
+                                            <option style="font-weight:bold;" value="JELEBU"> JELEBU</option>
+                                            <option style="font-weight:bold;" value="JEMPOL"> JEMPOL</option>
+                                            <option style="font-weight:bold;" value="KUALA PILAH"> KUALA PILAH</option>
+                                            <option style="font-weight:bold;" value="PORT DICKSON"> PORT DICKSON</option>
+                                            <option style="font-weight:bold;" value="REMBAU"> REMBAU</option>
+                                            <option style="font-weight:bold;" value="SEREMBAN"> SEREMBAN</option>
+                                            <option style="font-weight:bold;" value="TAMPIN"> TAMPIN</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4 mt-auto">
+                                        <button class="btn btn-success p-2" type="submit" title="Cari Info">
+                                            <i class="fa-solid fa-magnifying-glass px-2"> </i>
+                                        </button>
+                                        <button class="btn btn-danger p-2" type="button" @onclick="Reset" title="Reset">
+                                            <i class="fa-solid fa-recycle px-2"></i>
+                                        </button>
+                                    </div>
+                                 </div>
+                            </div>
+                      </div>
+                }
+
+                @if (adaRekod)
+                    {
+             
+                        <div class="row mt-4">
+                            <div><h5 style="font-weight:bold">Output Carian : <span style="color:red;">@OutputCarian</span></h5></div>
+                            <div class="table-responsive-lg">
+                                <table style="font-size:12px;" id="myTable" class="table table-bordered table-hover">
+                                    <thead class="table-success">
+                                        <tr>
+                                            <td class="text-center" style="font-weight:bold;">#</td>
+                                            <td style="font-weight:bold;"> Daerah</td>
+                                            <td style="font-weight:bold;">Kategori</td>
+                                            <td style="font-weight:bold;">Mukim</td>
+                                            <td style="font-weight:bold;">Tahun Wakaf</td>
+                                            <td class="text-center">Keluasan (Ha)</td>
+                                            <td class="text-center">Info</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in _lstMaklumat)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@item.Id</td>
+                                                <td>@item.Daerah</td>
+                                               <td style="color:@(item.NoFail == "TWA" ? "darkblue" : "darkgreen")">
+                                                    @(item.NoFail == "TWA" ? "Tanah Wakaf Am" : "Tanah Wakaf Khas")
+                                                </td>
+                                                <td><span style="color:red;font-weight:bold;">@item.MukimPekanBandar</span></td>
+                                                <td>@item.TahunWakaf?.ToString("dd/MM/yyyy")</td>
+                                                <td class="text-center"><span style="color:darkgreen;font-weight:bold;">@item.KeluasanTanahDiWakaf</span></td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-outline-success" @onclick="() => GetValue(item)"
+                                                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight">
+                                                        <i class="fa-solid fa-circle-info pe-2"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                
+                <hr>
+                <div>
+                    <div class="row mt-2 text-center">
+                        <div class="col-sm-6 col-md-6">
+                            <label><i><small>Jumlah Capaian Carian Gabungan : <span style="color:red;">@JumlahCarian1</span> kali</small></i></label>
+                        </div>
+                         <div class="col-sm-6 col-md-6">
+                              <label><i><small>Jumlah Capaian Carian Daerah : <span style="color:red;">@JumlahCarian2</span> kali</small></i></label>
                         </div>
                     </div>
                 </div>
-
-                @if (adaRekod)
-                {
-                    <hr>
-                    <hr />
-                    <div class="row mt-4">
-                        <div><h5 style="font-weight:bold'">SENARAI REKOD HASIL CARIAN </h5></div>
-                        <div class="table-responsive-lg">
-                            <table style="font-size:12px;" id="myTable" class="table table-bordered table-hover">
-                                <thead class="table-success">
-                                    <tr>
-                                        <td style="font-weight:bold;"> Daerah</td>
-                                        <td style="font-weight:bold;">Kategori</td>
-                                        <td style="font-weight:bold;">Mukim</td>
-                                        <td style="font-weight:bold;">Tahun Wakaf</td>
-                                        <td class="text-center">Keluasan (Ha)</td>
-                                        <td class="text-center">Info</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach(var item in _lstMaklumat )
-                                    {
-                                        <tr>
-                                            <td>@item.Daerah</td>
-                                            <td>@item.NoFail</td>
-                                            <td><span style="color:red;font-weight:bold;">@item.MukimPekanBandar</span></td>
-                                            <td>@item.TahunWakaf?.ToString("dd/MM/yyyy")</td>
-                                            <td class="text-center"><span style="color:darkgreen;font-weight:bold;">@item.KeluasanTanahDiWakaf</span></td>
-                                            <td class="text-center">
-                                                <button class="btn btn-outline-success" @onclick="() =>GetValue(item)"
-                                                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                                                        aria-controls="offcanvasRight">
-                                                    <i class="fa-solid fa-circle-info pe-2"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>                       
-                    </div>
-                }
-                
             </div>
         </div>
     </div>
 
 
-   @*  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div>
-                Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-            </div>
-            <div class="dropdown mt-3">
-              <p>@data1</p>
-              <p>@data2</p>
-            </div>
-        </div>
-    </div> *@
-
-
     <div class="offcanvas offcanvas-end bg-light shadow-lg" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header border-bottom bg-success text-white">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">🗂 Tutuo Canvas</h5>
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">🗂 Tutup Tetingkap</h5>
             <button type="button" class="btn-close text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -161,6 +210,9 @@
 
                 <label class="form-label fw-bold text-primary">No Lot</label>
                 <input type="text" value="@NoLot" readonly class="form-control mb-3 rounded-3 shadow-sm">
+
+                 <label class="form-label fw-bold text-primary">Kegunaan Tanah</label>
+                <input type="text" value="@KegunaanTanah" readonly class="form-control mb-3 rounded-3 shadow-sm">
             </div>
         </div>
     </div>
@@ -177,10 +229,18 @@
     public string TahunPilihan { get; set; } = string.Empty;
     public string KategoriPilihan { get; set; } = string.Empty;
     public string DaerahPilihan { get; set; } = string.Empty;
+    public string Carian { get; set; } = string.Empty;
+    public int JumlahCarian1 { get; set; } = 0;
+    public int JumlahCarian2 { get; set; } = 0;
+
     public bool isProcess = false;
     public bool adaRekod = false;
     public bool adaDaerah = false;
 
+    public bool Carian1 = false;
+    public bool Carian2 = false;
+
+    public int OutputCarian { get; set; } = 0;
 
     public string NoHakMilik { get; set; } = string.Empty;
     public string NoLot { get; set; } = string.Empty;
@@ -207,6 +267,16 @@
         Daerah = string.Empty
     };
 
+    private void ShowMenu(ChangeEventArgs e)
+    {
+        Carian = e.Value.ToString() ?? string.Empty;
+        Carian1 = Carian == "C1";
+        Carian2 = Carian == "C2";
+        adaRekod = false;
+        StateHasChanged();
+    }
+
+
     private void Reset()
     {
         TahunPilihan = string.Empty;
@@ -214,7 +284,6 @@
         DaerahPilihan = string.Empty;
         adaRekod = false;
         StateHasChanged();
-
     }
 
     private void GetValue(tblLegasiWakaf data)
@@ -241,7 +310,7 @@
     protected override void OnInitialized()
     {
         int currentYear = DateTime.Now.Year;
-        int startYear = currentYear - 10; // Last 5 years
+        int startYear = currentYear - 20; // Last 5 years
         int endYear = currentYear + 3;   // Next 3 years
 
         for (int i = startYear; i <= endYear; i++)
@@ -261,6 +330,9 @@
         {
             await LoadFile(); _lstDaerah = await _service.GetInfoDaerahOnly();
             adaDaerah = (_lstDaerah.Any());
+
+            JumlahCarian1 = await _service.GetCounterNumberTakaf("Carian1");
+            JumlahCarian2 = await _service.GetCounterNumberTakaf("Carian2");
             StateHasChanged();
         }
 
@@ -269,33 +341,60 @@
     private async Task SaveRecords()
     {
         try
-        {       
-            _lstMaklumat = await _service.GetMaklumatLegasiRekod(TahunPilihan, KategoriPilihan, DaerahPilihan);
-            if (_lstMaklumat.Any())
+        {   adaRekod = false;
+            _lstMaklumat = Enumerable.Empty<tblLegasiWakaf>();
+            if (Carian1)
             {
-                adaRekod = true;
-                StateHasChanged();
+                int counter = 1; 
+                _lstMaklumat = (await _service.GetMaklumatLegasiRekod(TahunPilihan, KategoriPilihan, DaerahPilihan))
+               .Select(item => { item.Id = counter++; return item; }).ToList();
 
-                if (adaRekod)
+                //  _lstMaklumat = await _service.GetMaklumatLegasiRekod(TahunPilihan, KategoriPilihan, DaerahPilihan);
+                if (_lstMaklumat.Any())
                 {
-                    await Task.Delay(100); // Optional: allow DOM to settle
-                    await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                    await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); StateHasChanged();
+                    JumlahCarian1 = await _service.UpdateRunningNumber("Carian1");
+                    adaRekod = true; OutputCarian = _lstMaklumat.Count();
+                    StateHasChanged();
+
+                    if (adaRekod)
+                    {
+                        await Task.Delay(100); // Optional: allow DOM to settle
+                        await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                        await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); StateHasChanged();
+                    }
+                }
+                else
+                {
+                    await _service.ShowSweetAlertAsync("Maaf tiada rekod dijumpai.", "Makluman", SweetAlertIcon.Error, false, "Ok");
+                    Reset();
                 }
             }
-            else
+            else if (Carian2)
             {
-                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
-                {
-                    Title = "Maaf tiada rekod dijumpai ...",
-                    Text = "Info",
-                    Icon = SweetAlertIcon.Error,
-                    ShowCancelButton = false,
-                    ConfirmButtonText = "Ok",
-                });
-                Reset();
-            }
+                int counter = 1;
+                _lstMaklumat = (await _service.GetMaklumatLegasiByDaerah( DaerahPilihan))
+               .Select(item => { item.Id = counter++; return item; }).ToList();
 
+                // _lstMaklumat = await _service.GetMaklumatLegasiByDaerah(DaerahPilihan);
+                if (_lstMaklumat.Any())
+                {
+                    JumlahCarian2 = await _service.UpdateRunningNumber("Carian2");
+                    adaRekod = true;OutputCarian = _lstMaklumat.Count();
+                    StateHasChanged();
+
+                    if (adaRekod)
+                    {
+                        await Task.Delay(100); // Optional: allow DOM to settle
+                        await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                        await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); StateHasChanged();
+                    }
+                }
+                else
+                {
+                     await _service.ShowSweetAlertAsync("Maaf tiada rekod dijumpai.", "Makluman", SweetAlertIcon.Error, false, "Ok");
+                    Reset();
+                }
+            }
         }
         catch (Exception ex)
         {

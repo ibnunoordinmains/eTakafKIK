@@ -46,4 +46,14 @@ namespace DAL.Entiti
         public decimal Luas { get; set; }
     }
 
+    public class tblNoTakaf
+    {
+        public int Id { get; set; } // Auto-incremented Identity column
+
+        public string JenisCarian { get; set; } = string.Empty;
+
+        public int? Nombor { get; set; } // Nullable integer, aligns with table definition
+    }
+
+
 }

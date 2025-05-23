@@ -14,6 +14,9 @@ namespace DAL.Repo
     {
         Task<IEnumerable<InfoDaerah>> GetInfoDaerahOnly();
         Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiRekod(string tahun, string kategori, string daerah);
+        Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerah(string daerah);
+        Task<int> GetCounterNumberTakaf(string jenisCarian);
+        Task<bool> UpdateCounterNumber(string jenisCarian, int bil);
     }
     public class MasterRepo(ServerProd serverProd ) : IMasterRepo
     {
@@ -45,5 +48,48 @@ namespace DAL.Repo
                 throw new Exception(err.Message);
             }
         }
+
+        public async Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerah(string daerah)
+        {
+            try
+            {
+                string sql = @"select * from tblLegasiWakaf where Daerah=@Daerah";
+                return await _serverProd.Connections.QueryAsync<tblLegasiWakaf>(sql, new { Daerah = daerah });
+            }
+            catch (SqlException err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+        public async Task<int> GetCounterNumberTakaf(string jenisCarian)
+        {
+            try
+            {
+                string sql = @"select nombor from tblNoTakaf where JenisCarian=@JenisCarian";
+                return await _serverProd.Connections.QuerySingleAsync<int>(sql, new { JenisCarian = jenisCarian });
+            }
+            catch (SqlException err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+        public async Task<bool> UpdateCounterNumber(string jenisCarian, int bil)
+        {
+            try
+            {
+                string sql = @"update tblNoTakaf set Nombor=@Nombor where JenisCarian=@JenisCarian";
+                var result = await _serverProd.Connections.ExecuteAsync(sql, new { Nombor = bil, JenisCarian = jenisCarian });
+                return result > 0;
+            }
+            catch (SqlException err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+
+
     }
 }
