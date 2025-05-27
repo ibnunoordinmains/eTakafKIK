@@ -22,32 +22,36 @@
                 </h3>
             </div>
             <div class="card-body">
-
-                <div class="row mt-2 mb-5">
+                <div class="card border-danger mt-2 mb-5 px-3">
+                      <div class="row mt-2 mb-5">
                     <div class="col-sm-6 col-md-6">
                         <label class="label">Jenis Carian</label>
-                       @*  <select style="font-weight:bold;" required class="form-select" @bind="Carian"  @onblur="ShowMenu">
+                        <select style="font-weight:bold;" required class="form-select" @bind="Carian">
                             <option style="font-weight:bold;" value=""> Pilih Carian</option>
                             <option style="font-weight:bold;" value="C1">1. Carian Melalui Gabungan Tahun/Kategori/Daerah</option>
                             <option style="font-weight:bold;" value="C2">2. Carian Melalui Daerah</option>
-                        </select> *@
-                        <select style="font-weight:bold;" required class="form-select" 
-                                Value="@Carian" @onchange="OnCarianChanged" ValueExpression="() => Carian"
-                        >
-                            <option style="font-weight:bold;" value="">Pilih Carian</option>
-                            <option style="font-weight:bold;" value="C1">1. Carian Melalui Gabungan Tahun/Kategori/Daerah</option>
-                            <option style="font-weight:bold;" value="C2">2. Carian Melalui Daerah</option>
-                        </select>
+                        </select>                       
 
                     </div>
+                    <div class="col-4 mt-auto">
+                        <button class="btn btn-primary p-2" type="button" @onclick="ShowMenu" title="Pilih Carian">
+                           <i class="fa-duotone fa-solid fa-check"></i>
+                        </button>    
+                         <button class="btn btn-danger p-2" type="button" @onclick="ResetMula" title="Reset">
+                            <i class="fa-regular fa-xmark-large"></i>
+                        </button>
+                    </div>
                 </div>
+                </div>
+
+              
 
 
                 @if (Carian1)
                 {
                     <div class="row justify-content-center px-4 d-flex">
                         <p class="fw-bold">Carian Melalui Gabungan Tahun, Kategori dan Daerah</p>
-                        <div class="card border-danger pe-2 mb-2">
+                        <div class="card border-success pe-2 mb-2">
                             <div class="row mt-1 mb-3">
                                 <div class="col-sm-2 col-md-2">
                                     <label class="label">Tahun</label>
@@ -283,18 +287,18 @@
             Carian = e.Value?.ToString() ?? string.Empty;
             if (!string.IsNullOrEmpty(Carian))
             {
-                    //Carian = e.Value.ToString() ?? string.Empty;
-                    Carian1 = Carian == "C1";
-                    Carian2 = Carian == "C2";
-                    adaRekod = false;
-                    StateHasChanged();
+                //Carian = e.Value.ToString() ?? string.Empty;
+                Carian1 = Carian == "C1";
+                Carian2 = Carian == "C2";
+                adaRekod = false;
+                StateHasChanged();
             }
-             else
+            else
             {
                 await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
             }
 
-            
+
         }
         catch(System.Exception ex)
         {
@@ -303,25 +307,23 @@
             await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
         }
     }
-    private async Task ShowMenu(ChangeEventArgs e)
+    private async Task ShowMenu()
     {
         try
         {
-            Carian = e.Value?.ToString() ?? string.Empty;
             if (!string.IsNullOrEmpty(Carian))
             {
-                    //Carian = e.Value.ToString() ?? string.Empty;
-                    Carian1 = Carian == "C1";
-                    Carian2 = Carian == "C2";
-                    adaRekod = false;
-                    StateHasChanged();
+                Carian1 = Carian == "C1";
+                Carian2 = Carian == "C2";
+                adaRekod = false;
+                StateHasChanged();
             }
-             else
-                {
-                    await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
-                }
-
-            
+            else
+            {
+                await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Info", SweetAlertIcon.Warning, false, "Ok");
+                Carian = "";
+                Carian1 = false;Carian2 = false;adaRekod = false;StateHasChanged();
+            }
         }
         catch(System.Exception ex)
         {
@@ -330,6 +332,12 @@
         }
     }
 
+    private void ResetMula()
+    {
+        Carian = "";Carian1 = false;Carian2 = false;
+        adaRekod = false;
+        StateHasChanged();
+    }
 
     private void Reset()
     {
