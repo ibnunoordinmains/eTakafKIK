@@ -15,7 +15,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header text-center" style="font-weight:bold; color:white; background-color:#067384;">
-                <img src="/images/mains_panjang.png" class="img-fluid mt-2" style="height:65%;" alt="Logo"  />
+                <img src="images/mains_panjang.png" class="img-fluid mt-2" style="height:65%;" alt="Logo"  />
                 <h3 class="mb-0 mt-2">
                     <i class="fa-regular fa-circle-info pe-2"></i>
                     CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN (e-TAKAF)
@@ -26,11 +26,19 @@
                 <div class="row mt-2 mb-5">
                     <div class="col-sm-6 col-md-6">
                         <label class="label">Jenis Carian</label>
-                        <select style="font-weight:bold;" required class="form-select" @onchange="ShowMenu">
-                            <option style="font-weight:bold;" value=""> -Carian-</option>
-                            <option style="font-weight:bold;" value="C1">Carian Melalui Gabungan Tahun/Kategori/Daerah</option>
-                            <option style="font-weight:bold;" value="C2">Carian Melalui Daerah</option>
+                       @*  <select style="font-weight:bold;" required class="form-select" @bind="Carian"  @onblur="ShowMenu">
+                            <option style="font-weight:bold;" value=""> Pilih Carian</option>
+                            <option style="font-weight:bold;" value="C1">1. Carian Melalui Gabungan Tahun/Kategori/Daerah</option>
+                            <option style="font-weight:bold;" value="C2">2. Carian Melalui Daerah</option>
+                        </select> *@
+                        <select style="font-weight:bold;" required class="form-select" 
+                                Value="@Carian" @onchange="OnCarianChanged" ValueExpression="() => Carian"
+                        >
+                            <option style="font-weight:bold;" value="">Pilih Carian</option>
+                            <option style="font-weight:bold;" value="C1">1. Carian Melalui Gabungan Tahun/Kategori/Daerah</option>
+                            <option style="font-weight:bold;" value="C2">2. Carian Melalui Daerah</option>
                         </select>
+
                     </div>
                 </div>
 
@@ -105,7 +113,7 @@
                                     <div class="col-sm-4 col-md-4">
                                         <label class="label">Daerah</label>
                                         <select style="font-weight:bold;" required class="form-select" @bind="DaerahPilihan">
-                                            <option style="font-weight:bold;" value=""> -Sila Pilih Daerah-</option>
+                                            <option style="font-weight:bold;" value=""> Sila Pilih Daerah</option>
                                             <option style="font-weight:bold;" value="JELEBU"> JELEBU</option>
                                             <option style="font-weight:bold;" value="JEMPOL"> JEMPOL</option>
                                             <option style="font-weight:bold;" value="KUALA PILAH"> KUALA PILAH</option>
@@ -157,7 +165,7 @@
                                                 </td>
                                                 <td><span style="color:red;font-weight:bold;">@item.MukimPekanBandar</span></td>
                                                 <td>@item.TahunWakaf?.ToString("dd/MM/yyyy")</td>
-                                                <td class="text-center"><span style="color:darkgreen;font-weight:bold;">@item.KeluasanTanahDiWakaf</span></td>
+                                                <td class="text-center"><span style="color:darkgreen;font-weight:bold;">@Convert.ToDecimal(item.KeluasanTanahDiWakaf).ToString("F3")</span></td>
                                                 <td class="text-center">
                                                     <button class="btn btn-outline-success" @onclick="() => GetValue(item)"
                                                             type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -177,10 +185,10 @@
                 <div>
                     <div class="row mt-2 text-center">
                         <div class="col-sm-6 col-md-6">
-                            <label><i><small>Jumlah Capaian Carian Gabungan : <span style="color:red;">@JumlahCarian1</span> kali</small></i></label>
+                            <label><i><small>Jumlah Capaian Carian Gabungan : <span style="color:red;"> @JumlahCarian1</span> kali</small></i></label>
                         </div>
                          <div class="col-sm-6 col-md-6">
-                              <label><i><small>Jumlah Capaian Carian Daerah : <span style="color:red;">@JumlahCarian2</span> kali</small></i></label>
+                              <label><i><small>Jumlah Capaian Carian Daerah : <span style="color:red;"> @JumlahCarian2</span> kali</small></i></label>
                         </div>
                     </div>
                 </div>
@@ -197,7 +205,7 @@
         <div class="offcanvas-body">
             <div class="col-sm-12">
                 <label class="form-label fw-bold text-primary">Fail</label>
-                <input type="text" value="@NoFail" readonly class="form-control mb-3 rounded-3 shadow-sm">
+                <input type="text" value="@(NoFail == "TWA" ? "TANAH WAKAF AM" : "TANAH WAKAF KHAS")" readonly class="form-control mb-3 rounded-3 shadow-sm">
 
                 <label class="form-label fw-bold text-primary">Daerah</label>
                 <input type="text" value="@Daerah" readonly class="form-control mb-3 rounded-3 shadow-sm">
@@ -211,8 +219,7 @@
                 <label class="form-label fw-bold text-primary">No Lot</label>
                 <input type="text" value="@NoLot" readonly class="form-control mb-3 rounded-3 shadow-sm">
 
-                 <label class="form-label fw-bold text-primary">Kegunaan Tanah</label>
-                <input type="text" value="@KegunaanTanah" readonly class="form-control mb-3 rounded-3 shadow-sm">
+
             </div>
         </div>
     </div>
@@ -267,13 +274,60 @@
         Daerah = string.Empty
     };
 
-    private void ShowMenu(ChangeEventArgs e)
+
+    private async Task OnCarianChanged(ChangeEventArgs e)
     {
-        Carian = e.Value.ToString() ?? string.Empty;
-        Carian1 = Carian == "C1";
-        Carian2 = Carian == "C2";
-        adaRekod = false;
-        StateHasChanged();
+        Carian = e.Value.ToString() ?? "";
+        try
+        {
+            Carian = e.Value?.ToString() ?? string.Empty;
+            if (!string.IsNullOrEmpty(Carian))
+            {
+                    //Carian = e.Value.ToString() ?? string.Empty;
+                    Carian1 = Carian == "C1";
+                    Carian2 = Carian == "C2";
+                    adaRekod = false;
+                    StateHasChanged();
+            }
+             else
+            {
+                await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
+            }
+
+            
+        }
+        catch(System.Exception ex)
+        {
+            // Console.WriteLine(ex.Message);
+            // throw new Exception(ex.Message);
+            await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
+        }
+    }
+    private async Task ShowMenu(ChangeEventArgs e)
+    {
+        try
+        {
+            Carian = e.Value?.ToString() ?? string.Empty;
+            if (!string.IsNullOrEmpty(Carian))
+            {
+                    //Carian = e.Value.ToString() ?? string.Empty;
+                    Carian1 = Carian == "C1";
+                    Carian2 = Carian == "C2";
+                    adaRekod = false;
+                    StateHasChanged();
+            }
+             else
+                {
+                    await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
+                }
+
+            
+        }
+        catch(System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw new Exception(ex.Message);
+        }
     }
 
 
@@ -328,7 +382,8 @@
     {
         if (firstRender)
         {
-            await LoadFile(); _lstDaerah = await _service.GetInfoDaerahOnly();
+            await LoadFile();
+            _lstDaerah = await _service.GetInfoDaerahOnly();
             adaDaerah = (_lstDaerah.Any());
 
             JumlahCarian1 = await _service.GetCounterNumberTakaf("Carian1");
