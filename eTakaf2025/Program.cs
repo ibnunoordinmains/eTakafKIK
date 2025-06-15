@@ -24,7 +24,7 @@ builder.Services.AddSweetAlert2(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opt =>
     {
-        opt.Cookie.Name = "eTakaf";
+        opt.Cookie.Name = "e-takaf";
         opt.LoginPath = "/SessiTamat";
         opt.LogoutPath = "/logout";
         opt.AccessDeniedPath = "/AccessDenied";
@@ -43,7 +43,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
-app.UsePathBase("/e-Takaf/");
+app.UsePathBase("/e-takaf/");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -52,6 +52,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+app.UseRouting();
 app.MapStaticAssets();
 app.UseStaticFiles();
 app.UseAntiforgery();

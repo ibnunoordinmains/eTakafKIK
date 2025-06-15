@@ -171,10 +171,10 @@
                                                 <td>@item.TahunWakaf?.ToString("dd/MM/yyyy")</td>
                                                 <td class="text-center"><span style="color:darkgreen;font-weight:bold;">@Convert.ToDecimal(item.KeluasanTanahDiWakaf).ToString("F3")</span></td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-outline-success" @onclick="() => GetValue(item)"
-                                                            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                                    <button class="btn btn-outline-danger" @onclick="() => GetValue(item)"
+                                                            type="button" data-bs-toggle="modal" data-bs-target="#myModal"
                                                             aria-controls="offcanvasRight">
-                                                        <i class="fa-solid fa-circle-info pe-2"></i>
+                                                        <i class="fa-solid fa-circle-info px-2"></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -223,10 +223,60 @@
                 <label class="form-label fw-bold text-primary">No Lot</label>
                 <input type="text" value="@NoLot" readonly class="form-control mb-3 rounded-3 shadow-sm">
 
-
+                @if (!string.IsNullOrEmpty(Catatan))
+                {
+                    <label class="form-label fw-bold text-primary">Catatan</label>
+                    <input type="text" value="@Catatan" readonly class="form-control mb-3 rounded-3 shadow-sm">
+                }
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="myModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg rounded-4 border-0" style="backdrop-filter: blur(12px);">
+            <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, #4CAF50, #2E7D32);">
+                <h5 class="modal-title fw-bold" id="myModalLabel">🗂 Maklumat Tanah</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-primary">FAIL</label>
+                        <input type="text" value="@(NoFail == "TWA" ? "TANAH WAKAF AM" : "TANAH WAKAF KHAS")" readonly class="form-control rounded-3 border-0 shadow-sm bg-dark text-white">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-primary">DAERAH</label>
+                        <input type="text" value="@Daerah" readonly class="form-control rounded-3 border-0 shadow-sm bg-dark text-white">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-primary">MUKIM</label>
+                        <input type="text" value="@Mukim" readonly class="form-control rounded-3 border-0 shadow-sm bg-dark text-white">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-primary">NO HAK MILIK</label>
+                        <input type="text" value="@NoHakMilik" readonly class="form-control rounded-3 border-0 shadow-sm bg-dark text-white">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-primary">NO LOT</label>
+                        <input type="text" value="@NoLot" readonly class="form-control rounded-3 border-0 shadow-sm bg-dark text-white">
+                    </div>
+                    @if (!string.IsNullOrEmpty(Catatan))
+                    {
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-primary">CATATAN</label>
+                            <input type="text" value="@Catatan" readonly class="form-control rounded-3 border-0 shadow-sm bg-dark text-white">
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer border-0 d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-success fw-bold shadow-sm px-4" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </EditForm>
 
@@ -260,6 +310,8 @@
     public string KegunaanTanah { get; set; } = string.Empty;
     public string Daerah { get; set; } = string.Empty;
     public string NoFail { get; set; } = string.Empty;
+    public string Catatan { get; set; } = string.Empty;
+
 
     List<myYear> _tahun = new List<myYear>(); IEnumerable<InfoDaerah> _lstDaerah = [];
     IEnumerable<tblLegasiWakaf> _lstMaklumat = new List<tblLegasiWakaf>();
@@ -356,6 +408,7 @@
         KegunaanTanah = data.KegunaanKategori;
         NoFail = data.NoFail;
         Daerah = data.Daerah;
+        Catatan = data.Catatan;
         // Replace with actual value from the selected record
         StateHasChanged();
     }
