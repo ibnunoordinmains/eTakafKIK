@@ -22,176 +22,214 @@
 <div class="container-fluid">
     @if (adaRekod)
     {
-        <div class="dashboard-header py-4 mb-4">
+       @*  <div class="dashboard-header py-4 mb-4">
             <div class="container">
                 <h1 class="display-5 fw-bold"><i class="bi bi-geo-alt me-2"></i>Maklumat Tanah Wakaf Negeri Sembilan</h1>
                 <p class="lead">Tanah Wakaf Am,Khas</p>
             </div>
-        </div>
+        </div> *@
         <div class="container mb-5">
         <!-- Summary Card -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card stat-card total-card">
-                    <div class="card-body d-flex align-items-center justify-content-between">
-                        <div>
-                            <h5 class="card-title mb-0">Jumlah Tanah Wakaf</h5>
-                            <div class="stat-value mt-2">217</div>
-                            <div class="stat-label">Across all districts</div>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="bi bi-map"></i>
+            <div class="row mb-3">
+                <div class="col-3">
+                    <div class="card stat-card total-card">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="card-title mb-0">JUMLAH TANAH WAKAF</h5>
+                                <div class="stat-value mt-2">@TotalJumlahTW</div>
+                                <div class="stat-label">Keseluruhan</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-map"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- District Cards -->
+            <div class="row g-4">
+                <!-- Seremban Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>SEREMBAN</span>
+                                <i class="bi bi-building"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">@SerembanJumlah</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>42.4% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kuala Pilah Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Kuala Pilah</span>
+                                <i class="bi bi-house"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">35</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 38%;" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>16.1% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tampin Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Tampin</span>
+                                <i class="bi bi-tree"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">28</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>12.9% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jelebu Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Jelebu</span>
+                                <i class="bi bi-geo"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">19</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>8.8% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Port Dickson Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Port Dickson</span>
+                                <i class="bi bi-water"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">16</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>7.4% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rembau Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Rembau</span>
+                                <i class="bi bi-pin-map"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 16%;" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>6.9% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jempol Card -->
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Jempol</span>
+                                <i class="bi bi-signpost-2"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Land Parcels</div>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar" style="background-color: #7209b7; width: 13%;" role="progressbar" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="text-end mt-1"><small>5.5% of total</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="row mt-5">
+                <div class="col-6">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Jumlah Tanah Wakaf PerDaerah</span>
+                                <i class="bi bi-bar-chart"></i>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="landChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Jenis Tanah Wakaf</span>
+                                <i class="bi bi-bar-chart"></i>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="landChart2"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+
         </div>
 
-        <!-- District Cards -->
-        <div class="row g-4">
-            <!-- Seremban Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>SEREMBAN</span>
-                            <i class="bi bi-building"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">@SerembanJumlah</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>42.4% of total</small></div>
-                    </div>
-                </div>
-            </div>
+        
 
-            <!-- Kuala Pilah Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Kuala Pilah</span>
-                            <i class="bi bi-house"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">35</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 38%;" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>16.1% of total</small></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tampin Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Tampin</span>
-                            <i class="bi bi-tree"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">28</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>12.9% of total</small></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Jelebu Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Jelebu</span>
-                            <i class="bi bi-geo"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">19</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>8.8% of total</small></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Port Dickson Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Port Dickson</span>
-                            <i class="bi bi-water"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">16</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>7.4% of total</small></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rembau Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Rembau</span>
-                            <i class="bi bi-pin-map"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">15</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar bg-secondary" role="progressbar" style="width: 16%;" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>6.9% of total</small></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Jempol Card -->
-            <div class="col-md-4">
-                <div class="card stat-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Jempol</span>
-                            <i class="bi bi-signpost-2"></i>
-                        </div>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="stat-value">12</div>
-                        <div class="stat-label">Land Parcels</div>
-                        <div class="progress mt-3" style="height: 10px;">
-                            <div class="progress-bar" style="background-color: #7209b7; width: 13%;" role="progressbar" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div class="text-end mt-1"><small>5.5% of total</small></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
     }
 </div>
+
 
 <style type="text/css">
     :root {
@@ -285,12 +323,15 @@
 </style>
 
 @code {
-    IEnumerable<DashboardInfo> _data = [];
+    IEnumerable<DashboardInfo> _data = []; IEnumerable<DashboardInfo> _data2 = [];
 
     public string Mode = string.Empty;
     public bool adaRekod = false;
 
-    public int SerembanJumlah = 0;
+    public int SerembanJumlah = 0; public int RembauJumlah = 0; public int JelebuJumlah = 0;
+    public int KualaPilahJumlah = 0; public int PortDicksonJumlah = 0; public int TampinJumlah = 0;
+    public int JempolJumlah = 0;
+    public int TotalJumlahTW = 0;
 
     private async Task LoadFile()
     {
@@ -303,12 +344,31 @@
         {
             await LoadFile();
             adaRekod = (_data = await _service.GetDashboardInfo()).Any();
+            _data2 = await _service.GetKegunaanTanah();
+            TotalJumlahTW = _data.Sum(x => x.JumlahTanah);
             if (adaRekod)
             {
                 foreach(var xx in _data)
                 {
                     if (xx.Daerah == "Seremban") SerembanJumlah = xx.JumlahTanah;
+                    if (xx.Daerah == "Kuala Pilah") KualaPilahJumlah = xx.JumlahTanah;
+                    if (xx.Daerah == "Port Dickson") PortDicksonJumlah = xx.JumlahTanah;
+                    if (xx.Daerah == "Tampin") TampinJumlah = xx.JumlahTanah;
+                    if (xx.Daerah == "Jelebu") JelebuJumlah = xx.JumlahTanah;
+                    if (xx.Daerah == "Rembau") RembauJumlah = xx.JumlahTanah;
+                    if (xx.Daerah == "Jempol") JempolJumlah = xx.JumlahTanah;
                 }
+
+
+                await JSRuntime.InvokeVoidAsync("updateChart", 
+                    _data.Select(d => d.Daerah).ToArray(),
+                    _data.Select(d => d.JumlahTanah).ToArray());
+
+                await JSRuntime.InvokeVoidAsync("updateChart2",
+                   _data2.Select(d => d.JenisHartanah).ToArray(),
+                   _data2.Select(d => d.JumlahTanah).ToArray());
+
+                    StateHasChanged();
             }
 
             StateHasChanged();

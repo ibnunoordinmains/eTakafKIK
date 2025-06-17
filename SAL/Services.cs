@@ -21,7 +21,7 @@ namespace SAL
         Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email);
         Task<string> HandleUserRegistration(tblInfoUsereTakaf info);
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
-        Task<IEnumerable<DashboardInfo>> GetDashboardInfo();
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -135,6 +135,10 @@ namespace SAL
             return await _master.GetDashboardInfo();
         }
 
+        public async Task<IEnumerable<DashboardInfo>> GetKegunaanTanah()
+        {
+            return await _master.GetKegunaanTanah();
+        }
 
 
 

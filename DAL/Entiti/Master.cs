@@ -94,6 +94,7 @@ namespace DAL.Entiti
     public class DashboardInfo
     {
         public string Daerah { get; set; } = string.Empty;
+        public string JenisHartanah { get; set; } = string.Empty;
         public int JumlahTanah { get; set; }
     }
 }

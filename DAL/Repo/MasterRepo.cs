@@ -23,7 +23,7 @@ namespace DAL.Repo
         Task<bool> InsertNewRecordForRegistration(tblInfoUsereTakaf tblInfoUsereTakaf);
         Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email);
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
-        Task<IEnumerable<DashboardInfo>> GetDashboardInfo();
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
     }
     public class MasterRepo(ServerProd serverProd ) : IMasterRepo
     {
@@ -192,7 +192,11 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
         }
 
-
+        public async Task<IEnumerable<DashboardInfo>> GetKegunaanTanah()
+        {
+            string sql = @"SELECT jenishartanah, count(JenisHartanah) as jumlahtanah FROM tblLegasiWakafMAINS group by JenisHartanah order by JenisHartanah";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
+        }
 
 
     }
