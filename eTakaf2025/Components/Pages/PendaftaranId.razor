@@ -1,0 +1,202 @@
+﻿@page "/PendaftaranId"
+
+<PageTitle>Dashboard Carian Maklumat Wakaf</PageTitle>
+
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using SAL
+@using eTakaf2025.Components.Layout
+
+
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@layout EmptyLayout
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+
+<div class="container-fluid">   
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card p-4 shadow-lg" style="width: 35rem; max-width: 100%;">
+           <div class="text-center">
+                <img class="img-fluid" src="images/mains_panjang.png" alt="Logo" style="max-width: 100%; height: auto;" />
+                <div class="text-center">
+                    <button type="button" class="btn btn-outline-warning" @onclick="GoHome"><i class="fa-light fa-floppy-disk pe-2"></i>Home</button>
+                </div>
+            </div>
+            <hr />
+            <h6 class="card-title text-center mb-3 fw-bold">DAFTAR PENGGUNA BARU</h6>
+            <EditForm Model="@info" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+              
+                <label class="form-label">Nama Pemohon <span style="color: red;">*</span></label>
+                <div class="input-group mb-3">                    
+                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                    <input type="text" class="form-control" required @bind="info.NamaPemohon" />
+                </div>
+
+                <label class="form-label">No Kad Pengenalan <span style="color: red;">*</span></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-regular fa-id-card-clip"></i></span>
+                    <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,14)" maxlength="14" required @bind="info.NoKP" />
+                </div>
+
+                <label class="form-label">No Tel Bimbit <span style="color: red;">*</span></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-mobile-notch"></i></span>
+                    <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,20)" maxlength="15" required @bind="info.NoHP" />
+                </div>
+
+                <label class="form-label">Katalaluan 1<span style="color: red;">*</span></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-key-skeleton"></i></span>
+                    <input type="password" class="form-control" required @bind="info.Katalaluan" />
+                </div>
+
+                <label class="form-label">Katalaluan 2 <span style="color: red;">*</span></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-solid fa-key-skeleton"></i></span>
+                    <input type="password" class="form-control" required @bind="info.Katalaluan1" @onblur="CheckPassword" />
+                </div>
+
+                <label class="form-label">Emel <span style="color: red;">*</span></label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fa-light fa-envelope"></i></span>
+                    <input type="email" class="form-control" required @bind="info.Email" />
+                </div>
+
+
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success"><i class="fa-light fa-floppy-disk pe-2"></i>Daftar Pengguna</button>
+                </div>
+
+                @if (message is not null)
+                {
+                    <div class="alert alert-info mt-3 text-center">@message</div>
+                }
+            </EditForm>
+
+          
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    body {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        min-height: 100vh;
+        align-items: center;
+        /*  display: flex; */
+        /*justify-content: center; */
+    }
+</style>
+@code {
+    public string Mode = string.Empty;
+
+    private async Task LoadFile()
+    {
+        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        Mode = _conf["Mode"] ?? string.Empty;
+        return base.OnInitializedAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFile();
+
+            StateHasChanged();
+        }
+    }
+
+    private void GoHome()
+    {
+        string baseUrl = (Mode == "Dev") ? "/" : "/e-takaf/";
+        NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    }
+
+    private tblInfoUsereTakaf info = new()
+    {
+        CreatedDate = DateTime.Now,
+        Status=1,
+        IsActive = true
+    };
+
+    private string? message;
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            string resultMessage = await _service.HandleUserRegistration(info);
+
+            SweetAlertResult sswal = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = resultMessage,
+                Text = "Info",
+                Icon = resultMessage.Contains("Berjaya") ? SweetAlertIcon.Success : SweetAlertIcon.Error,
+                ConfirmButtonText = "Ok"
+            });
+
+            if (resultMessage.Contains("Berjaya"))
+            {
+                ClearData();
+                StateHasChanged();
+                string baseUrl = (Mode == "Dev") ? "/Login" : "/e-takaf/Login";
+                NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+            }
+            else
+            {
+                ClearData();
+                StateHasChanged();
+            }
+        }
+        catch(System.Exception er)
+        {
+            throw new Exception(er.Message);
+        }
+    }
+
+    private async Task CheckPassword()
+    {
+        if (info.Katalaluan != info.Katalaluan1)
+        {
+            SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Pastikan katalaluan Memenuhi Spesifikasi Ditetapkan",
+                Text = "Info",
+                Icon = SweetAlertIcon.Error,
+                ConfirmButtonText = "Ok"
+            });
+        }
+        else
+        {
+            string newP = BCrypt.Net.BCrypt.EnhancedHashPassword("N$r75**" + info.Katalaluan1);
+            info.Katalaluan = newP;info.Katalaluan1 = newP;
+            StateHasChanged();
+        }
+    }
+
+    void ClearData()
+    {
+        info.NamaPemohon = string.Empty;
+        info.NoKP = string.Empty;
+        info.NoHP = string.Empty;
+        info.Email = string.Empty;
+        info.Katalaluan = string.Empty;
+        info.Katalaluan1 = string.Empty;
+    }
+
+
+
+
+
+
+}

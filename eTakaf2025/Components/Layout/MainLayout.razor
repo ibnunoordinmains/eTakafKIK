@@ -1,23 +1,73 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="layout-container">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important;">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand">e-Takaf</a>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <!-- Toggle Button for Smaller Screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="Dashboard">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Carian
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item wakalah-link" href="CarianMaklumatWakaf">Carian Maklumat Tanah Wakaf</a></li>
+                        </ul>
+                    </li>
+                  
+                </ul>
+
+                <!-- Right-Aligned Menu Item -->
+                <ul class="navbar-nav ms-auto">
+                    @*  <li class="nav-item">
+                        <a class="nav-link" href="BWLogKeluar">Log Keluar</a>
+                    </li>   *@  
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-sharp fa-regular fa-door-open"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
+                            @*  <li><a class="dropdown-item wakalah-link" href="ProfilSaya">Profil Saya</a></li>
+                            <hr class="dropdown-divider"> *@
+                            <li><a class="dropdown-item wakalah-link" href="BWLogKeluar">Log Keluar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    <!-- Main Content Area -->
+    <div class="content mt-4">
+        @Body
+    </div>
 </div>
+<style type="text/css">
+    .wakalah-link:hover {
+        background-color: red !important;
+        color: white !important;
+    }
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1030; /* Ensures it stays above other elements */
+    }
+
+    .layout-container {
+        padding-top: 60px; /* Adjust for the fixed navbar height */
+    }
+</style>

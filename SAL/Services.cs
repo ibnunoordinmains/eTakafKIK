@@ -15,6 +15,13 @@ namespace SAL
         Task<int> GetCounterNumberTakaf(string jenisCarian);
         Task<bool> UpdateCounterNumber(string jenisCarian, int bil);
         Task<int> UpdateRunningNumber(string carian);
+        Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerahNoLotNoGeran(string daerah, string jenisnohakmilik, string nolot);
+        Task<IEnumerable<myCarian4>> CarianDataTWA(); Task<IEnumerable<myCarian4>> CarianDataTWAByDaerah(string daerah);
+        Task<bool> InsertNewRecordForRegistration(tblInfoUsereTakaf tblInfoUsereTakaf);
+        Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email);
+        Task<string> HandleUserRegistration(tblInfoUsereTakaf info);
+        Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfo();
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -65,6 +72,10 @@ namespace SAL
             return await _master.UpdateCounterNumber(jenisCarian, bil);
         }
 
+        public async Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerahNoLotNoGeran(string daerah, string jenisnohakmilik, string nolot)
+        {
+            return await _master.GetMaklumatLegasiByDaerahNoLotNoGeran(daerah, jenisnohakmilik, nolot);
+        }
 
         public async Task<int> UpdateRunningNumber(string carian)
         {
@@ -75,16 +86,58 @@ namespace SAL
                 await UpdateCounterNumber(carian, bil);
                 return bil;
             }
-            catch(System.Exception err)
+            catch (System.Exception err)
             {
-                throw new Exception(err.Message);   
+                throw new Exception(err.Message);
             }
-           
+
+        }
+
+        public async Task<IEnumerable<myCarian4>> CarianDataTWA()
+        {
+            return await _master.CarianDataTWA();
+        }
+
+        public async Task<IEnumerable<myCarian4>> CarianDataTWAByDaerah(string daerah)
+        {
+            return await _master.CarianDataTWAByDaerah(daerah);
+        }
+
+        public async Task<bool> InsertNewRecordForRegistration(tblInfoUsereTakaf tblInfoUsereTakaf)
+        {
+            return await _master.InsertNewRecordForRegistration(tblInfoUsereTakaf);
+        }
+
+        public async Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email)
+        {
+            return await _master.CheckDuplicateRecordPengguna(noKP, namaPemohon, noHP, email);
+        }
+
+        public async Task<string> HandleUserRegistration(tblInfoUsereTakaf info)
+        {
+            bool isDuplicate = await CheckDuplicateRecordPengguna(info.NoKP, info.NamaPemohon, info.NoHP, info.Email);
+
+            if (isDuplicate)
+                return "Data Pengguna Telah WUJUD.";
+
+            bool isInserted = await InsertNewRecordForRegistration(info);
+
+            return isInserted ? "Maklumat Pengguna Berjaya Disimpan." : "Maklumat Pengguna TIDAK Berjaya Disimpan.";
+        }
+
+        public async Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp)
+        {
+            return await _master.GetLoginInfo(NoKp);
+        }
+
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardInfo()
+        {
+            return await _master.GetDashboardInfo();
         }
 
 
 
 
     }
-    
+
 }

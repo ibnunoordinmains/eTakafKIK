@@ -1,0 +1,82 @@
+﻿@page "/BWLogKeluar"
+
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Microsoft.AspNetCore.Authentication
+@using eTakaf2025.Components.Layout
+@inject NavigationManager ManNav
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@layout EmptyLayout
+@attribute [Authorize]
+@inject IConfiguration _conf
+@inject ProtectedSessionStorage sessionStorage
+
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+    <div class="card px-4 shadow-lg text-center" style="background-color:white; width: 55rem; max-width: 100%; overflow:hidden;">
+        <div class="card-body">
+            <div class="row mb-5 mt-5">
+                <h2 style="color:black;">@MESSAGE</h2><br />
+            </div>
+            <button class="btn btn-outline-success" @onclick="LoginSemula">Login Semula</button>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    body {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        min-height: 100vh;
+        align-items: center;
+    }
+</style>
+@code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+
+    public string? MESSAGE = string.Empty;
+
+    private bool _canNavigateAway = false;
+    public string? Mode, baseUrl = string.Empty;
+
+    private string? _message = "👌 You'r successfully logged out.";
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        Mode = _conf["Mode"];
+        MESSAGE = "👍 Terima Kasih";
+        StateHasChanged();
+
+    }
+
+    protected override void OnInitialized()
+    {
+        Mode = _conf["Mode"];
+        MESSAGE = "👍 Terima Kasih";
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (HttpContext?.User.Identity?.IsAuthenticated != true)
+        {
+            return;
+        }
+        await HttpContext.SignOutAsync();
+
+        Mode = _conf["Mode"];
+        StateHasChanged();
+    }
+
+    private void LoginSemula()
+    {
+        baseUrl = (Mode == "Dev") ? "/" : "/e-Takaf/";
+        ManNav.NavigateTo(ManNav.ToAbsoluteUri(baseUrl).ToString());
+    }
+
+}

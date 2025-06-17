@@ -2,6 +2,7 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using DAL.Conn;
 using DAL.Repo;
 using eTakaf2025.Components;
+using IdentityAuthentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Server;
 using SAL;
@@ -38,6 +39,8 @@ builder.Services.Configure<CircuitOptions>(options => options.DetailedErrors = t
 
 builder.Services.AddScoped<IServices,Services>();
 builder.Services.AddScoped<IMasterRepo, MasterRepo>();
+builder.Services.AddScoped<IIdentityAuthenticationLib, IdentityAuthenticationLib>();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -52,9 +55,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-app.UseRouting();
-app.MapStaticAssets();
 app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapStaticAssets();
 app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

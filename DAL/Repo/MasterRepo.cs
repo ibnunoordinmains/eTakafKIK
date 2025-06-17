@@ -17,6 +17,13 @@ namespace DAL.Repo
         Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerah(string daerah);
         Task<int> GetCounterNumberTakaf(string jenisCarian);
         Task<bool> UpdateCounterNumber(string jenisCarian, int bil);
+        Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerahNoLotNoGeran(string daerah, string jenisnohakmilik, string nolot);
+        Task<IEnumerable<myCarian4>> CarianDataTWA();
+        Task<IEnumerable<myCarian4>> CarianDataTWAByDaerah(string daerah);
+        Task<bool> InsertNewRecordForRegistration(tblInfoUsereTakaf tblInfoUsereTakaf);
+        Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email);
+        Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfo();
     }
     public class MasterRepo(ServerProd serverProd ) : IMasterRepo
     {
@@ -62,12 +69,30 @@ namespace DAL.Repo
             }
         }
 
+
+        public async Task<IEnumerable<tblLegasiWakaf>> GetMaklumatLegasiByDaerahNoLotNoGeran(string daerah, string jenisnohakmilik, string nolot)
+        {
+            try
+            {
+                string sql = @"SELECT * FROM [tblLegasiWakaf] where daerah = @daerah and nolot = @nolot and JENISNOHAKMILIK = @jenisnohakmilik";
+                return await _serverProd.Connections.QueryAsync<tblLegasiWakaf>(sql, new {daerah = daerah, jenisnohakmilik = jenisnohakmilik, nolot = nolot });
+            }
+            catch(SqlException err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+
+
         public async Task<int> GetCounterNumberTakaf(string jenisCarian)
         {
             try
             {
                 string sql = @"select nombor from tblNoTakaf where JenisCarian=@JenisCarian";
-                return await _serverProd.Connections.QuerySingleAsync<int>(sql, new { JenisCarian = jenisCarian });
+                // return await _serverProd.Connections.QuerySingleAsync<int>(sql, new { JenisCarian = jenisCarian });
+                var result = await _serverProd.Connections.QuerySingleOrDefaultAsync<int>(sql, new { JenisCarian = jenisCarian });
+                return result; 
             }
             catch (SqlException err)
             {
@@ -88,6 +113,85 @@ namespace DAL.Repo
                 throw new Exception(err.Message);
             }
         }
+
+        public async Task<IEnumerable<myCarian4>> CarianDataTWA()
+        {
+            try
+            {
+                string sql = @" select daerah,nofail as kategori, count(nofail) as jumlah  from tblLegasiWakaf
+                               where nofail='TWA'
+                               group by nofail,DAERAH order by DAERAH asc";
+                return  await _serverProd.Connections.QueryAsync<myCarian4>(sql);
+            }
+            catch (SqlException err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+        public async Task<IEnumerable<myCarian4>> CarianDataTWAByDaerah(string daerah)
+        {
+            try
+            {
+                string sql = @" select daerah,nofail as kategori, count(nofail) as jumlah  from tblLegasiWakaf
+                               where nofail='TWA' and daerah = @daerah
+                               group by nofail,DAERAH order by DAERAH asc";
+                return await _serverProd.Connections.QueryAsync<myCarian4>(sql, new { daerah = daerah});
+            }
+            catch (SqlException err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+        public async Task<bool> InsertNewRecordForRegistration(tblInfoUsereTakaf tblInfoUsereTakaf)
+        {
+            try
+            {
+                string sql = @"INSERT INTO tblInfoUsereTakaf (CreatedDate, NoKP, Katalaluan, NamaPemohon, NoHP, Email, Status, IsActive) VALUES (@CreatedDate, @NoKP, @Katalaluan, @NamaPemohon, @NoHP, @Email, @Status, @IsActive);";
+                var res = await _serverProd.Connections.ExecuteAsync(sql, tblInfoUsereTakaf);
+                return res > 0;
+
+            }
+            catch (SqlException err)
+            {
+                return false;
+                throw new Exception(err.Message);
+            }
+        }
+
+
+        public async Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email)
+        {
+            try
+            {
+                string sql = @"SELECT COUNT(*) FROM tblInfoUsereTakaf 
+                   WHERE NoKP = @NoKP AND NamaPemohon = @NamaPemohon 
+                   AND NoHP = @NoHP AND Email = @Email";
+
+                int count = await _serverProd.Connections.ExecuteScalarAsync<int>(sql, new { NoKP = noKP, NamaPemohon = namaPemohon, NoHP = noHP, Email = email });
+
+                return count > 0;
+            }
+            catch(System.Exception err)
+            {
+                return false;
+                throw new Exception(err.Message);
+            }
+        }
+
+        public async Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp)
+        {
+            string sql = @"select top 1 * from tblInfoUsereTakaf where nokp = @NoKp and isactive = 1";
+            return await _serverProd.Connections.QueryAsync<tblInfoUsereTakaf>(sql, new { NoKp = NoKp });
+        }
+
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardInfo()
+        {
+            string sql = @"SELECT daerah, count(daerah) as JumlahTanah FROM [tblLegasiWakafMAINS] group by daerah order by daerah";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
+        }
+
 
 
 
