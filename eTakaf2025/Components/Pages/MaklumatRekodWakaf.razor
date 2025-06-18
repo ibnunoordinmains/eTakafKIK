@@ -1,0 +1,376 @@
+﻿@page "/MaklumatRekodWakaf/{Jenis}"
+
+<PageTitle>Maklumat Tanah Wakaf</PageTitle>
+
+@layout MainLayout
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using IdentityAuthentication
+@using Microsoft.AspNetCore.Authorization
+@using SAL
+@using System.Security.Claims
+@using eTakaf2025.Components.Layout
+
+@attribute [Authorize]
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+@inject IIdentityAuthenticationLib myIden
+
+
+ <div class="container-fluid mt-1">
+    <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h5 class="mb-0 fw-semibold"><i class="bi bi-table me-2"></i>@Message</h5>
+        </div>
+
+        <div class="card-body bg-light rounded-bottom-4">
+            @if (adaRekod)
+            {
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
+                        <thead class="table-primary text-center align-middle">
+                            <tr>
+                                <th>#</th>
+                                <th>No Lot</th>
+                                <th>Daerah</th>
+                                <th>Kategori Tanah</th>
+                                <th>Senarai Nyata Tanah</th>
+                                <th>Keluasan Tanah Diwakaf (Ekar)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var xx in _data)
+                            {
+                                <tr>
+                                    <td class="text-center">@xx.Bil</td>
+                                    <td>@xx.NoLot</td>
+                                    <td class="fw-bold text-primary">@xx.Daerah</td>
+                                    <td>@xx.Kategori</td>
+                                    <td>@xx.SyaratNyataTanah</td>
+                                    <td class="text-center fw-bold text-danger">@(xx.Luastanahdiwakafkanekar?.ToString("F2") ?? "0.00")</td>
+                                    <td>
+                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
+                                            <i class="fa-regular fa-circle-info"></i>
+                                         </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+           
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="staticCenteredModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background :linear-gradient(135deg, #3a0ca3, #4361ee) !important;color:white;">
+                <h5 class="modal-title">MAKLUMAT LANJUT TANAH WAKAF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="scrollable-content">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </div>
+                                    <h5 class="mb-0">Lokasi Tanah</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Alamat</div>
+                                    <div class="info-value">@AlamatPremis</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Daerah</div>
+                                    <div class="info-value">@Daerah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Mukim</div>
+                                    <div class="info-value">@Mukim</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-house-door"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Asas</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Hartanah</div>
+                                    <div class="info-value" id="namaHartanah">@NamaHartanah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Jenis Hartanah</div>
+                                    <div class="info-value" id="jenisHartanah">@JenisHartanah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Kategori</div>
+                                    <div class="info-value" id="kategori">@Kategori</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Jenis Wakaf</div>
+                                    <div class="info-value" id="kategoriSumberAmWakaf">@KategoriSumberAmWakaf</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-rulers"></i>
+                                    </div>
+                                    <h5 class="mb-0">Keluasan Tanah Wakaf</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas Tanah (m²)</div>
+                                    <div class="info-value" id="luasTanahM2">@LuasTanahM2</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas Tanah (Acres)</div>
+                                    <div class="info-value" id="luasTanahEkar">@LuasTanahEkar.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas Dalam Geran (Ha)</div>
+                                    <div class="info-value" id="luasTanahDalamGeran">@LuasTanahDalamGeran.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas DiWakaf (Acres)</div>
+                                    <div class="info-value" id="luasTanahDiwakafkanEkar">@LuasTanahDiwakafkanEkar.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas DiWakaf (Ha)</div>
+                                    <div class="info-value" id="luasTanahDiwakafkanHa">@LuasTanahDiwakafkanHa.ToString("N2")</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Harta</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">No. Lot</div>
+                                    <div class="info-value" id="noLot">@NoLot</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">No. Geran</div>
+                                    <div class="info-value" id="noGeran">@NoGeran</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Pegangan Tanah</div>
+                                    <div class="info-value" id="peganganTanah">@PeganganTanah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tempoh Pajakan</div>
+                                    <div class="info-value" id="tempohPajakan">@TempohPajakan</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Syarat Nyata Tanah</div>
+                                    <div class="info-value" id="syaratNyataTanah">@SyaratNyataTanah</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Penyewaan/Pendudukan</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Nama Penyewa/Penghuni</div>
+                                    <div class="info-value" id="namaPenyewaPenghuni">@NamaPenyewaPenghuni</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Status Penghunian</div>
+                                    <div class="info-value" id="statusPenghunian">@StatusPenghunian</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-calendar-check"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Penyewaan</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tempoh Sewa</div>
+                                    <div class="info-value" id="tempoh">@Tempoh</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tarikh Mula</div>
+                                    <div class="info-value" id="tarikhMula">@TarikhMula</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tarikh Akhir</div>
+                                    <div class="info-value" id="tarikhTamat">@TarikhTamat</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Sewaan Bulanan</div>
+                                    <div class="info-value" id="sewaBulanan">@SewaBulanan</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Sewaan Tahunan</div>
+                                    <div class="info-value" id="sewaTahunan">@SewaTahunan</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+         </div>            
+        </div>
+    </div>
+
+
+@code {
+    [Parameter]
+    public string Jenis { get; set; } = string.Empty;
+
+    public string Jeniss = string.Empty;
+    public string Message = string.Empty;
+    public string Mode = string.Empty;
+    public bool adaRekod = false;
+
+    public string AlamatPremis = string.Empty;
+    public string NamaPenyewaPenghuni = string.Empty;
+    public string NamaHartanah = string.Empty;
+    public double LuasTanahM2;
+    public double LuasTanahDalamGeran;
+    public double LuasTanahEkar;
+    public double LuasTanahDiwakafkanHa;
+    public double LuasTanahDiwakafkanEkar;
+    public string JenisHartanah = string.Empty;
+    public string NoLot = string.Empty;
+    public string NoGeran = string.Empty;
+    public string Mukim = string.Empty;
+    public string Daerah = string.Empty;
+    public string PeganganTanah = string.Empty;
+    public string TempohPajakan = string.Empty;
+    public string SyaratNyataTanah = string.Empty;
+    public string KategoriSumberAmWakaf = string.Empty;
+    public string StatusPenghunian = string.Empty;
+    public string Kategori = string.Empty;
+    public string Tempoh = string.Empty;
+    public string TarikhMula = string.Empty;
+    public string TarikhTamat = string.Empty;
+    public string SewaBulanan = string.Empty;
+    public string SewaTahunan = string.Empty;
+
+
+
+
+
+    IEnumerable<tblLegasiWakafMAINS> _data = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Jeniss = Jenis;
+        if (Jeniss == "TWA") Message = "Laporan Tanah Wakaf AM (Tanah Kosong)";
+        if (Jeniss == "TWK") Message = "Laporan Tanah Wakaf KHAS (Tanah Kosong)";
+        StateHasChanged();
+
+        Mode = _conf["Mode"]?.ToString() ?? string.Empty;
+        var authState = await myIden.GetUserAsync();
+        var user = authState.Identity as ClaimsIdentity;
+
+        if (user == null || !user.IsAuthenticated)
+        {
+            await myIden.SignOutUserAsync();
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (Jeniss == "TWA")
+            {
+
+                _data = await _service.GetRekodTWA_Kosong(); 
+                if (_data.Any()) adaRekod = true;
+
+                await Task.Delay(300); // Optional: allow DOM to settle
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); 
+
+                StateHasChanged();
+            } 
+            else if (Jeniss == "TWK")
+            {
+
+                _data = await _service.GetRekodTWK_Kosong();
+                if (_data.Any()) adaRekod = true;
+
+                await Task.Delay(300); // Optional: allow DOM to settle
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+
+                StateHasChanged();
+            }
+
+        }
+    }
+
+    private void getInfoDetails(tblLegasiWakafMAINS xdata)
+    {
+        AlamatPremis = xdata.AlamatPremis;
+        NamaPenyewaPenghuni = xdata.NamaPenyewaPenghuni;
+        NamaHartanah = xdata.NamaHartanah;
+        LuasTanahM2 = xdata.LuasTanahm2 ?? 0;
+        LuasTanahEkar = xdata.LuasTanahekar ?? 0;
+        LuasTanahDalamGeran = xdata.LuasTanahHaDalamGeran ?? 0;
+        LuasTanahDiwakafkanEkar = xdata.Luastanahdiwakafkanekar ?? 0;
+        LuasTanahDiwakafkanHa = xdata.LuastanahdiwakafkanHa ?? 0;
+        JenisHartanah = xdata.JenisHartanah;
+        NoLot = xdata.NoLot;
+        NoGeran = xdata.NoGeran;
+        Mukim = xdata.Mukim;
+        Daerah = xdata.Daerah;
+        PeganganTanah = xdata.PeganganTanah;
+        TempohPajakan = xdata.TempohPajakan;
+        SyaratNyataTanah = xdata.SyaratNyataTanah;
+        KategoriSumberAmWakaf = xdata.KategoriSumberAmWakaf;
+        StatusPenghunian = xdata.StatusPenghunian;
+        Kategori = xdata.Kategori;
+        Tempoh = xdata.Tempoh;
+        TarikhMula = xdata.TarikhMula.ToString() ?? "";
+        TarikhTamat = xdata.TarikhTamat;
+        SewaBulanan = xdata.SewaBulanan.ToString() ?? "";
+        SewaTahunan = xdata.SewaTahunan.ToString() ?? "";
+    }
+
+
+
+}

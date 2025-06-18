@@ -97,4 +97,58 @@ namespace DAL.Entiti
         public string JenisHartanah { get; set; } = string.Empty;
         public int JumlahTanah { get; set; }
     }
+
+    public class tblLegasiWakafMAINS
+    {
+        public int Bil { get; set; } = 0;
+        public string AlamatPremis { get; set; } = string.Empty;
+        public string NamaPenyewaPenghuni { get; set; } = string.Empty;
+        public string LuasRuangLantaisqft { get; set; } = string.Empty;
+        public string NamaHartanah { get; set; } = string.Empty;
+        public double? LuasTanahm2 { get; set; } = null;
+        public double? LuasTanahsqft { get; set; } = null;
+        public double? LuasTanahHaDalamGeran { get; set; } = null;
+        public double? LuasTanahekar { get; set; } = null;
+        public double? LuastanahdiwakafkanHa { get; set; } = null;
+        public double? Luastanahdiwakafkanekar { get; set; } = null;
+        public string JenisHartanah { get; set; } = string.Empty;
+        public string NoLot { get; set; } = string.Empty;
+        public string NoGeran { get; set; } = string.Empty;
+        public string Mukim { get; set; } = string.Empty;
+        public string Daerah { get; set; } = string.Empty;
+        public string PeganganTanah { get; set; } = string.Empty;
+        public string TempohPajakan { get; set; } = string.Empty;
+        public string SyaratNyataTanah { get; set; } = string.Empty;
+        public string KategoriSumberAmWakaf { get; set; } = string.Empty;
+        public string StatusPenghunian { get; set; } = string.Empty;
+        public string Kategori { get; set; } = string.Empty;
+        public string Tempoh { get; set; } = string.Empty;
+        public DateTime? TarikhMula { get; set; } = null;
+        public string TarikhTamat { get; set; } = string.Empty;
+        public double? SewaBulanan { get; set; } = null;
+        public decimal? SewaTahunan { get; set; } = null;
+        public double? Semasa { get; set; } = null;
+        public double? Terkumpul { get; set; } = null;
+        public double? Semasa2 { get; set; } = null;
+        public double? Terkumpul2 { get; set; } = null;
+        public string Catatan { get; set; } = string.Empty;
+        public double? CukaiTanah { get; set; } = null;
+        public double? CukaiPintuSetahun { get; set; } = null;
+        public string Insurans { get; set; } = string.Empty;
+        public string Security { get; set; } = string.Empty;
+        public string Pembersihan { get; set; } = string.Empty;
+        public string Parking { get; set; } = string.Empty;
+        public string Elektrik { get; set; } = string.Empty;
+        public string Air { get; set; } = string.Empty;
+        public string Akuarium { get; set; } = string.Empty;
+        public string ServisCaj { get; set; } = string.Empty;
+        public string SinkingFund { get; set; } = string.Empty;
+        public string PenyelenggaraanBulanan { get; set; } = string.Empty;
+        public string KerjakerjaPembaikan2025 { get; set; } = string.Empty;
+        public string BajetPembaikan2025 { get; set; } = string.Empty;
+        public string StatusSemasaHartanah { get; set; } = string.Empty;
+        public string Nota { get; set; } = string.Empty;
+        public byte? JumlahBelanja { get; set; } = null;
+    }
+
 }

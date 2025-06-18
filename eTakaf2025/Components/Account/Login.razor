@@ -21,13 +21,14 @@
     <div class="col-12 col-md-8 col-lg-5">
                 <div class="login-card p-4 p-md-5">
                     <div class="text-center mb-4">
-                        <h2 class="login-header mb-4 fw-bold">PORTAL CARIAN e-TAKAF</h2>
+                        <h1 class="login-header mb-4 fw-bold">e-TAKAF</h1>
                         <h6>PORTAL CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN</h6>
+                        <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6>
                     </div>
                                       
                     <EditForm Model="@modelDB" FormName="Login" OnValidSubmit="LoginRecord">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" @bind="modelDB.UserId" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,14)" maxlength="14" id="userId" placeholder="No. Kad Pengenalan" required>
                                 <label for="userId"><i class="bi bi-person me-2"></i></label>
@@ -37,7 +38,7 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                    <input type="password" class="form-control" @bind="modelDB.Password" id="password" placeholder="Katalaluan" required minlength="6">
+                         <input type="password" class="form-control" @bind="modelDB.Password" id="password" placeholder="Katalaluan" required minlength="6">
                                 <label for="password"><i class="bi bi-lock me-2"></i></label>
                                 <div class="invalid-feedback">
                                     Katalaluan tidak memenuhi spesifikasi
@@ -59,7 +60,15 @@
        
 <style type="text/css">
     body {
-         background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); 
+         /* background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);  */
+       
+            background-image: url('../Images/tanah_kubur.jpg'); /* Replace with your image path */
+            background-size: cover; /* Ensures the image covers the whole screen */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents repetition */
+            min-height: 100vh; /* Ensures full viewport coverage */
+       
+
         min-height: 100vh;
         align-items: center;
        /*  display: flex; */

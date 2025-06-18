@@ -22,6 +22,9 @@ namespace SAL
         Task<string> HandleUserRegistration(tblInfoUsereTakaf info);
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
+        Task<int> CountJumlahTWAKosongBothKategori(); Task<int> CountJumlahTWKKosongBothKategori();
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori);
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Kosong(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Kosong();
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -140,6 +143,47 @@ namespace SAL
             return await _master.GetKegunaanTanah();
         }
 
+        public async Task<int> CountJumlahTWAKosongBothKategori()
+        {
+            return await _master.CountJumlahTWAKosongBothKategori();
+        }
+
+        public async Task<int> CountJumlahTWKKosongBothKategori()
+        {
+            return await _master.CountJumlahTWKKosongBothKategori();
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori)
+        {
+            return await _master.GetDetailsTanahWakafKosong(kategori);
+        }
+
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Kosong()
+        {
+            var ada = await _master.GetDetailsTanahWakafKosong("Wakaf (am)");
+            if (ada != null)
+            {
+                for (int i = 0; i < ada.Count(); i++)
+                {
+                    ada.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return ada;
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Kosong()
+        {
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)");
+            if (ada1 != null)
+            {
+                for (int i = 0; i < ada1.Count(); i++)
+                {
+                    ada1.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return ada1;
+        }
 
 
     }

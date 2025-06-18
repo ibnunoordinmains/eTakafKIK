@@ -1,0 +1,108 @@
+﻿:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    background-color: white; /*#f0f4f8;*/
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    border-radius: 16px;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    overflow: hidden;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+    }
+
+.card-header {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    color: white;
+    font-weight: 600;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+.total-card {
+    background: linear-gradient(135deg, #3a0ca3, #4361ee);
+    color: white;
+}
+
+    .total-card .stat-value,
+    .total-card .stat-label {
+        color: white;
+    }
+
+.chart-container {
+    height: 300px;
+    margin-top: 20px;
+}
+
+.info-icon {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.info-label {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-bottom: 20px;
+    }
+}

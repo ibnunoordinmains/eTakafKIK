@@ -24,6 +24,8 @@ namespace DAL.Repo
         Task<bool> CheckDuplicateRecordPengguna(string noKP, string namaPemohon, string noHP, string email);
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
+        Task<int> CountJumlahTWAKosongBothKategori(); Task<int> CountJumlahTWKKosongBothKategori();
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori);
     }
     public class MasterRepo(ServerProd serverProd ) : IMasterRepo
     {
@@ -197,6 +199,42 @@ namespace DAL.Repo
             string sql = @"SELECT jenishartanah, count(JenisHartanah) as jumlahtanah FROM tblLegasiWakafMAINS group by JenisHartanah order by JenisHartanah";
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
         }
+
+        public async Task<int> CountJumlahTWAKosongBothKategori()
+        {
+            string sql = @"SELECT count(*) as jumlah FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf='Wakaf (am)' and StatusPenghunian='Kosong'";
+            return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
+        }
+
+        public async Task<int> CountJumlahTWKKosongBothKategori()
+        {
+            string sql = @"SELECT count(*) as jumlah FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf='Wakaf (Khas)' and StatusPenghunian='Kosong'";
+            return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
+        }
+
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori)
+        {
+            try
+            {
+                string sql = @"SELECT *  FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf = @kategori and StatusPenghunian = 'Kosong'";
+                return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { kategori = kategori});
+            }
+            catch(System.Exception err)
+            {
+                throw new Exception(err.Message);
+            }
+
+        }
+
+
+
+
+
+
+
+
+
 
 
     }
