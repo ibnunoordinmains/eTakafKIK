@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Entiti
 {
+    public class ModelSearch
+    {
+        public string NoLotSearch { get; set; } = string.Empty;
+    }
     public class InfoDaerah
     {
         public int Id { get; set; }

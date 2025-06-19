@@ -1,7 +1,24 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Security.Claims
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using IdentityAuthentication
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc
+@using SAL
+@inherits LayoutComponentBase
+
+@inject IIdentityAuthenticationLib myIden
+@inject IJSRuntime JSRuntime
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+
+
 
 <div class="layout-container">
-    <!-- Top Navigation Bar -->
+    <!-- Top Navigation Bar --> 
+
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important;">
         <div class="container-fluid">
             <!-- Logo -->
@@ -31,18 +48,26 @@
 
                
                 <!-- Right-Aligned Menu Item -->
-                <ul class="navbar-nav ms-auto">
-                    <form class="d-flex" role="search" style="margin-left: auto; margin-right: 1rem;">
-                        <input class="form-control me-2" type="search" placeholder="Carian Lot Sahaja..." aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">Cari</button>
-                    </form>
+                <ul class="navbar-nav ms-auto">  
+                  
+                   @*  <li class="nav-item">
+                        <div class="d-flex align-items-center me-3">
+                            <input type="text" class="form-control me-2" placeholder="Carian Lot Sahaja..."
+                                   @bind="_searchText" @bind:event="oninput" />
+
+                            <button class="btn btn-outline-light" @onclick="GoSearch" @onclick:preventDefault="true">
+                                Cari
+                            </button>
+
+
+                        </div>
+                    </li> *@
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-sharp fa-regular fa-door-open"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
-                            @*  <li><a class="dropdown-item wakalah-link" href="ProfilSaya">Profil Saya</a></li>
-                            <hr class="dropdown-divider"> *@
                             <li><a class="dropdown-item wakalah-link" href="BWLogKeluar">Log Keluar</a></li>
                         </ul>
                     </li>
@@ -50,12 +75,15 @@
             </div>
         </div>
     </nav>
-
+    
     <!-- Main Content Area -->
     <div class="content mt-4">
         @Body
     </div>
 </div>
+
+
+
 <style type="text/css">
     .wakalah-link:hover {
         background-color: red !important;
@@ -73,3 +101,42 @@
         padding-top: 60px; /* Adjust for the fixed navbar height */
     }
 </style>
+
+
+@code
+{
+    public string Mode = string.Empty;
+
+    public ModelSearch modelDB = new()
+        {
+            NoLotSearch = ""
+        };
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Mode = _conf["Mode"]?.ToString() ?? string.Empty;
+        var authState = await myIden.GetUserAsync();
+        var user = authState.Identity as ClaimsIdentity;
+
+        if (user == null || !user.IsAuthenticated)
+        {
+            await myIden.SignOutUserAsync();
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+        }
+        StateHasChanged();
+    }
+
+    private string _searchText = string.Empty;
+
+    private void GoSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(_searchText))
+        {
+            var aa = _searchText;
+            // NavMan.NavigateTo($"/carian-lot?lot={Uri.EscapeDataString(_searchText)}");
+        }
+    }
+
+}
