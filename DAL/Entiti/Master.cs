@@ -96,6 +96,7 @@ namespace DAL.Entiti
         public string Daerah { get; set; } = string.Empty;
         public string JenisHartanah { get; set; } = string.Empty;
         public int JumlahTanah { get; set; }
+        public string Keterangan { get; set; } = string.Empty;
     }
 
     public class tblLegasiWakafMAINS
@@ -124,8 +125,8 @@ namespace DAL.Entiti
         public string Kategori { get; set; } = string.Empty;
         public string Tempoh { get; set; } = string.Empty;
         public DateTime? TarikhMula { get; set; } = null;
-        public string TarikhTamat { get; set; } = string.Empty;
-        public double? SewaBulanan { get; set; } = null;
+        public DateTime? TarikhTamat { get; set; } = null;
+        public decimal? SewaBulanan { get; set; } = null;
         public decimal? SewaTahunan { get; set; } = null;
         public double? Semasa { get; set; } = null;
         public double? Terkumpul { get; set; } = null;
@@ -148,7 +149,8 @@ namespace DAL.Entiti
         public string BajetPembaikan2025 { get; set; } = string.Empty;
         public string StatusSemasaHartanah { get; set; } = string.Empty;
         public string Nota { get; set; } = string.Empty;
-        public byte? JumlahBelanja { get; set; } = null;
+        public int? JumlahBelanja { get; set; } = null;
+        public string NoDaftar { get; set; } = string.Empty;
     }
 
 }

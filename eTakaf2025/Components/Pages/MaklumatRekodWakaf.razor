@@ -35,8 +35,10 @@
                         <thead class="table-primary text-center align-middle">
                             <tr>
                                 <th>#</th>
+                                <th>No Fail</th>
                                 <th>No Lot</th>
                                 <th>Daerah</th>
+                                <th>Status Penghunian</th>
                                 <th>Kategori Tanah</th>
                                 <th>Senarai Nyata Tanah</th>
                                 <th>Keluasan Tanah Diwakaf (Ekar)</th>
@@ -48,8 +50,10 @@
                             {
                                 <tr>
                                     <td class="text-center">@xx.Bil</td>
+                                    <td class="text-center text-primary">@xx.NoDaftar</td>
                                     <td>@xx.NoLot</td>
                                     <td class="fw-bold text-primary">@xx.Daerah</td>
+                                    <td class="fw-bold text-danger">@xx.StatusPenghunian</td>
                                     <td>@xx.Kategori</td>
                                     <td>@xx.SyaratNyataTanah</td>
                                     <td class="text-center fw-bold text-danger">@(xx.Luastanahdiwakafkanekar?.ToString("F2") ?? "0.00")</td>
@@ -140,7 +144,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Luas Tanah (m²)</div>
-                                    <div class="info-value" id="luasTanahM2">@LuasTanahM2</div>
+                                    <div class="info-value" id="luasTanahM2">@LuasTanahM2.ToString("N2")</div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Luas Tanah (Acres)</div>
@@ -225,19 +229,19 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Tarikh Mula</div>
-                                    <div class="info-value" id="tarikhMula">@TarikhMula</div>
+                                    <div class="info-value" id="tarikhMula">@TarikhMula.ToString("dd/MM/yyyy")</div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Tarikh Akhir</div>
-                                    <div class="info-value" id="tarikhTamat">@TarikhTamat</div>
+                                    <div class="info-value" id="tarikhTamat">@TarikhTamat.ToString("dd/MM/yyyy")</div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Sewaan Bulanan</div>
-                                    <div class="info-value" id="sewaBulanan">@SewaBulanan</div>
+                                    <div class="info-value" id="sewaBulanan">@SewaBulanan.ToString("N2")</div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Sewaan Tahunan</div>
-                                    <div class="info-value" id="sewaTahunan">@SewaTahunan</div>
+                                    <div class="info-value" id="sewaTahunan">@SewaTahunan.ToString("N2")</div>
                                 </div>
                             </div>
                         </div>
@@ -281,10 +285,10 @@
     public string StatusPenghunian = string.Empty;
     public string Kategori = string.Empty;
     public string Tempoh = string.Empty;
-    public string TarikhMula = string.Empty;
-    public string TarikhTamat = string.Empty;
-    public string SewaBulanan = string.Empty;
-    public string SewaTahunan = string.Empty;
+    public DateTime TarikhMula;
+    public DateTime TarikhTamat;
+    public decimal SewaBulanan;
+    public decimal SewaTahunan;
 
 
 
@@ -297,6 +301,18 @@
         Jeniss = Jenis;
         if (Jeniss == "TWA") Message = "Laporan Tanah Wakaf AM (Tanah Kosong)";
         if (Jeniss == "TWK") Message = "Laporan Tanah Wakaf KHAS (Tanah Kosong)";
+        if (Jeniss == "TWAS") Message = "Laporan Tanah Wakaf AM (Tanah Disewa)";
+        if (Jeniss == "TWKS") Message = "Laporan Tanah Wakaf KHAS (Tanah Disewa)";
+
+        if (Jeniss == "Seremban") Message = "Laporan Tanah Wakaf Daerah Seremban";
+        if (Jeniss == "Kuala Pilah") Message = "Laporan Tanah Wakaf Daerah Kuala Pilah";
+        if (Jeniss == "Rembau") Message = "Laporan Tanah Wakaf Daerah Rembau";
+        if (Jeniss == "Tampin") Message = "Laporan Tanah Wakaf Daerah Tampin";
+        if (Jeniss == "Jelebu") Message = "Laporan Tanah Wakaf Daerah Jelebu";
+        if (Jeniss == "Jempol") Message = "Laporan Tanah Wakaf Daerah Jempol";
+        if (Jeniss == "Port Dickson") Message = "Laporan Tanah Wakaf Daerah Port Dickson";
+
+
         StateHasChanged();
 
         Mode = _conf["Mode"]?.ToString() ?? string.Empty;
@@ -317,28 +333,93 @@
         {
             if (Jeniss == "TWA")
             {
-
                 _data = await _service.GetRekodTWA_Kosong(); 
                 if (_data.Any()) adaRekod = true;
-
-                await Task.Delay(300); // Optional: allow DOM to settle
+                await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); 
-
-                StateHasChanged();
             } 
             else if (Jeniss == "TWK")
             {
-
                 _data = await _service.GetRekodTWK_Kosong();
                 if (_data.Any()) adaRekod = true;
-
-                await Task.Delay(300); // Optional: allow DOM to settle
+                await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-
-                StateHasChanged();
             }
+            else if (Jeniss == "TWKS")
+            {
+                _data = await _service.GetRekodTWK_Sewa();
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "TWAS")
+            {
+                _data = await _service.GetRekodTWA_Sewa();
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Seremban")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Seremban");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Kuala Pilah")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Kuala Pilah");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Rembau")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Rembau");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Jelebu")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Jelebu");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Jempol")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Jempol");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Port Dickson")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Port Dickson");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "Tampin")
+            {
+                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Tampin");
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300); 
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            StateHasChanged();
 
         }
     }
@@ -365,10 +446,10 @@
         StatusPenghunian = xdata.StatusPenghunian;
         Kategori = xdata.Kategori;
         Tempoh = xdata.Tempoh;
-        TarikhMula = xdata.TarikhMula.ToString() ?? "";
-        TarikhTamat = xdata.TarikhTamat;
-        SewaBulanan = xdata.SewaBulanan.ToString() ?? "";
-        SewaTahunan = xdata.SewaTahunan.ToString() ?? "";
+        TarikhMula = xdata.TarikhMula ?? DateTime.MinValue;
+        TarikhTamat = xdata.TarikhTamat ?? DateTime.MinValue;
+        SewaBulanan = xdata.SewaBulanan ?? 0M;
+        SewaTahunan = xdata.SewaTahunan ?? 0M;
     }
 
 

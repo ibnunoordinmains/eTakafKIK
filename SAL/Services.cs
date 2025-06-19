@@ -23,8 +23,14 @@ namespace SAL
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
         Task<int> CountJumlahTWAKosongBothKategori(); Task<int> CountJumlahTWKKosongBothKategori();
-        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori);
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori, string StatusPenghunian);
         Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Kosong(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Kosong();
+        Task<int> CountJumlahTWKDisewa(); Task<int> CountJumlahTWADisewa();
+        Task<int> CountJumlahTWKBukanDisewa(); Task<int> CountJumlahTWABukanDisewa();
+        Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
+
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Sewa(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Sewa();
+        Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian(); Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -153,15 +159,14 @@ namespace SAL
             return await _master.CountJumlahTWKKosongBothKategori();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori)
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori, string statuspenghunian)
         {
-            return await _master.GetDetailsTanahWakafKosong(kategori);
+            return await _master.GetDetailsTanahWakafKosong(kategori, statuspenghunian);
         }
-
 
         public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Kosong()
         {
-            var ada = await _master.GetDetailsTanahWakafKosong("Wakaf (am)");
+            var ada = await _master.GetDetailsTanahWakafKosong("Wakaf (am)","Kosong");
             if (ada != null)
             {
                 for (int i = 0; i < ada.Count(); i++)
@@ -174,7 +179,7 @@ namespace SAL
 
         public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Kosong()
         {
-            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)");
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)","Kosong");
             if (ada1 != null)
             {
                 for (int i = 0; i < ada1.Count(); i++)
@@ -185,7 +190,73 @@ namespace SAL
             return ada1;
         }
 
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Sewa()
+        {
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)", "Disewa");
+            if (ada1 != null)
+            {
+                for (int i = 0; i < ada1.Count(); i++)
+                {
+                    ada1.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return ada1;
+        }
 
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Sewa()
+        {
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (am)", "Disewa");
+            if (ada1 != null)
+            {
+                for (int i = 0; i < ada1.Count(); i++)
+                {
+                    ada1.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return ada1;
+        }
+
+        public async Task<int> CountJumlahTWADisewa()
+        {
+            return await _master.CountJumlahTWADisewa();
+        }
+
+        public async Task<int> CountJumlahTWKDisewa()
+        {
+            return await _master.CountJumlahTWKDisewa();
+        }
+
+        public async Task<int> CountJumlahTWKBukanDisewa()
+        {
+            return await _master.CountJumlahTWKBukanDisewa();
+        }
+        public async Task<int> CountJumlahTWABukanDisewa()
+        {
+            return await _master.CountJumlahTWABukanDisewa();
+        }
+
+        public async Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian()
+        {
+            return await _master.GetKegunaanByStatusPenghunian();
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
+        {
+            var bil =  await _master.CariRekodHartaTanahWakafByDaerahSahaja(daerah);
+            if (bil != null)
+            {
+                for (int i = 0; i < bil.Count(); i++)
+                {
+                    bil.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return bil;
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot)
+        {
+            return await _master.CarianRekodHartaTanahByNoLotSahaja(nolot); 
+        }
     }
 
 }

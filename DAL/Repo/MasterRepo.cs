@@ -25,7 +25,12 @@ namespace DAL.Repo
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
         Task<int> CountJumlahTWAKosongBothKategori(); Task<int> CountJumlahTWKKosongBothKategori();
-        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori);
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori, string StatusPenghunian);
+        Task<int> CountJumlahTWADisewa(); Task<int> CountJumlahTWKDisewa();
+        Task<int> CountJumlahTWKBukanDisewa(); Task<int> CountJumlahTWABukanDisewa();
+        Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian();
+        Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
+        Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
     }
     public class MasterRepo(ServerProd serverProd ) : IMasterRepo
     {
@@ -196,7 +201,7 @@ namespace DAL.Repo
 
         public async Task<IEnumerable<DashboardInfo>> GetKegunaanTanah()
         {
-            string sql = @"SELECT jenishartanah, count(JenisHartanah) as jumlahtanah FROM tblLegasiWakafMAINS group by JenisHartanah order by JenisHartanah";
+            string sql = @"SELECT jenishartanah as keterangan, count(JenisHartanah) as jumlahtanah FROM tblLegasiWakafMAINS group by JenisHartanah order by JenisHartanah";
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
         }
 
@@ -212,13 +217,24 @@ namespace DAL.Repo
             return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
         }
 
+        public async Task<int> CountJumlahTWADisewa()
+        {
+            string sql = @"SELECT count(*) as jumlah FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf='Wakaf (am)' and StatusPenghunian='Disewa'";
+            return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
+        }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori)
+        public async Task<int> CountJumlahTWKDisewa()
+        {
+            string sql = @"SELECT count(*) as jumlah FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf='Wakaf (Khas)' and StatusPenghunian='Disewa'";
+            return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori, string StatusPenghunian)
         {
             try
             {
-                string sql = @"SELECT *  FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf = @kategori and StatusPenghunian = 'Kosong'";
-                return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { kategori = kategori});
+                string sql = @"SELECT *  FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf = @kategori and StatusPenghunian = @StatusPenghunian";
+                return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { kategori = kategori, StatusPenghunian = StatusPenghunian});
             }
             catch(System.Exception err)
             {
@@ -228,13 +244,37 @@ namespace DAL.Repo
         }
 
 
+        public async Task<int> CountJumlahTWKBukanDisewa()
+        {
+            string sql = @"SELECT count(*) as jumlah FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf='Wakaf (Khas)' and StatusPenghunian='Bukan Sewaan'";
+            return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
+        }
+
+        public async Task<int> CountJumlahTWABukanDisewa()
+        {
+            string sql = @"SELECT count(*) as jumlah FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf='Wakaf (am)' and StatusPenghunian='Bukan Sewaan'";
+            return await _serverProd.Connections.ExecuteScalarAsync<int>(sql);
+        }
 
 
+        public async Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian()
+        {
+            string sql = @"SELECT statuspenghunian as keterangan, count(statuspenghunian) as jumlahtanah FROM tblLegasiWakafMAINS group by statuspenghunian order by statuspenghunian";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
+        {
+            string sql = @"SELECT * FROM tblLegasiWakafMAINS where Daerah = @Daerah";
+            return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { daerah = daerah });
+        }
 
 
-
-
-
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot)
+        {
+            string sql = @"select * from tblLegasiWakafMAINS where nolot = @nolot";
+            return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { nolot = nolot });
+        }
 
 
     }

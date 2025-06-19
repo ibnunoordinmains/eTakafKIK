@@ -35,38 +35,122 @@ window.updateChart = (labels, dataValues) => {
 
 window.updateChart2 = (labels, dataValues) => {
     setTimeout(() => {
-        var canvas = document.getElementById('landChart2');
+        const canvas = document.getElementById('landChart2');
         if (!canvas) {
             console.error("Canvas element not found!");
             return;
         }
-        var ctx = canvas.getContext('2d');
+
+        const ctx = canvas.getContext('2d');
+        const backgroundColors = generateRandomColors(dataValues.length);
+
+        const scatterData = dataValues.map((val, i) => ({
+            x: i + 1,
+            y: val
+        }));
+
         new Chart(ctx, {
-            type: 'line', // Change from 'bar' to 'line'
+            type: 'bubble',
             data: {
-                labels: labels,
                 datasets: [{
-                    label: 'Kategori Tanah :',
-                    data: dataValues,
-                    backgroundColor: 'rgba(67, 97, 238, 0.2)', // Semi-transparent color for visibility
-                    borderColor: '#4361ee', // Line color
-                    borderWidth: 2,
-                    pointBackgroundColor: '#3a86ff', // Color of data points
-                    pointBorderColor: '#ffffff',
-                    pointRadius: 5, // Size of data points
-                    fill: false // Fills area below line
+                    label: 'Kategori Tanah',
+                    data: scatterData,
+                    backgroundColor: backgroundColors,
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { beginAtZero: true },
-                    x: { grid: { display: false } }
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Index'
+                        },
+                        beginAtZero: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Jumlah'
+                        },
+                        beginAtZero: true
+                    }
                 },
-                plugins: { legend: { display: true } } // Show legend
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (ctx) {
+                                const label = labels?.[ctx.dataIndex] || `Data ${ctx.dataIndex + 1}`;
+                                return `${label} → Jumlah: ${ctx.raw.y}`;
+                            }
+                        }
+                    }
+                }
             }
         });
-    }, 500); // Delay execution slightly
+    }, 500);
+};
+const generateRandomColors = (count) => {
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+        const color = `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`;
+        colors.push(color);
+    }
+    return colors;
+};
+
+window.updateChart3 = (labels, dataValues) => {
+    setTimeout(() => {
+        const canvas = document.getElementById('landChart3');
+        if (!canvas) {
+            console.error("Canvas element not found!");
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        const randomColors = generateRandomColors(dataValues.length);
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: randomColors,
+                    borderColor: '#ffffff',
+                    borderWidth: 2,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                return `${label}: ${value.toLocaleString()}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }, 500);
 };
 
