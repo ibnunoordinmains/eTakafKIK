@@ -11,8 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var prodConnStr = builder.Configuration.GetConnectionString("PROD") ?? "";
 var SPMBConnStr = builder.Configuration.GetConnectionString("SPMB") ?? "";
+var EHRConnStr = builder.Configuration.GetConnectionString("EHR") ?? "";
+
 builder.Services.AddScoped<ServerProd>(conn => new ServerProd(prodConnStr));
 builder.Services.AddScoped<Server130>(conn => new Server130(SPMBConnStr));
+builder.Services.AddScoped<ServerEHR>(conn => new ServerEHR(EHRConnStr));
 
 builder.Services.AddSweetAlert2(options =>
 {

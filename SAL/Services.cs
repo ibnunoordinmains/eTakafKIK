@@ -28,9 +28,11 @@ namespace SAL
         Task<int> CountJumlahTWKDisewa(); Task<int> CountJumlahTWADisewa();
         Task<int> CountJumlahTWKBukanDisewa(); Task<int> CountJumlahTWABukanDisewa();
         Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
-
         Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Sewa(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Sewa();
         Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian(); Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
+        Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
+
+        Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -252,11 +254,21 @@ namespace SAL
             }
             return bil;
         }
-
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot)
         {
             return await _master.CarianRekodHartaTanahByNoLotSahaja(nolot); 
         }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah)
+        {
+            return await _master.CarianRekodBasedOnLotdanDaerahSahaja(nolot, daerah);
+        }
+
+        public async Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf)
+        {
+            return await _master.GetInfoDataFromEHR(nostaf); 
+        }
+
     }
 
 }

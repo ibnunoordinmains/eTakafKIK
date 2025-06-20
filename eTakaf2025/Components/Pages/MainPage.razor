@@ -1,34 +1,60 @@
 ﻿@using eTakaf2025.Components.Layout
 @layout EmptyLayout
 
-@page "/MainPage"
+@page "/"
 
 
     <div class="container">
-    <h1 class="text-center" style="font-weight:bold;">PORTAL CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN</h1>
-        <div class="text-center">
-            <img src="Images/etakaf_bg.png" alt="Portal Carian Info Tanah Wakaf"
-                 class="img-fluid shadow-sm" style="width: 80%;">
-        </div>
+      <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="col-12 col-md-12 col-lg-9">
+            <div class="card" >
+                <div class="text-center mt-4 mb-3">
+                    <img src="/images/mainslogo.png" class="img-fluid" alt="Logo Mains" style="width:150px;height:auto;" />
+                </div>
+                <div class="card-header" style="background: linear-gradient(to bottom right, #50AE87, #0D5B3A); ">
+                    <div class="main-header text-center fw-bold"><h1>MAJLIS AGAMA ISLAM NEGERI SEMBILAN</h1></div>
+                    <div class="sub-header text-center fw-bold"><h3>e-TAKAF</h3></div>
+                    <div class="sub-header text-center fw-bold"><h4>SISTEM CARIAN MAKLUMAT TANAH WAKAF</h4></div>
+                </div>
 
-    <div class="container-fluid mt-1">
-        <div class="row justify-content-center">
-            <div class="col-4 text-center mt-2">               
-                <a href="Login" class="btn btn-success">
-                    <i class="fa-regular fa-unlock-keyhole pe-2"></i> Login 
-                </a>
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">Staff MAINS</h5>
+                            <a href="Login" class="btn btn-success">
+                                Log Masuk
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">Orang Awam</h5>
+                            <a href="LoginAwam" class="btn btn-success">
+                                Log Masuk
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-4 text-center mt-2">
-                <a href="PendaftaranId" class="btn btn-success">
-                    <i class="fa-light fa-address-card pe-2"></i> Daftar Pengguna
-                </a>
-            </div>
-        </div>
+        </div>       
     </div>
 
     </div>
    
-
+    <style type="text/css">
+    body {
+        background-image: url('../Images/Mainetakaf.png'); /* Replace with your image path */
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+       /*  min-height: 100vh; 
+        min-height: 100vh; */
+        align-items: center;
+       
+        /*justify-content: center; */
+    }
+    </style>
 @code {
 
 }

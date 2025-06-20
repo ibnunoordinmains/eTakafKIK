@@ -1,6 +1,4 @@
-﻿@page "/MaklumatRekodWakaf/{Jenis}"
-
-<PageTitle>Maklumat Tanah Wakaf</PageTitle>
+﻿@page "/MaklumatCarian/{SearchNoLot}/{SearchDaerah}/"
 
 @layout MainLayout
 @using CurrieTechnologies.Razor.SweetAlert2
@@ -13,7 +11,7 @@
 
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(false))
 @inject IServices _service
 @inject SweetAlertService Swal
 @inject IConfiguration _conf
@@ -21,10 +19,10 @@
 @inject IIdentityAuthenticationLib myIden
 
 
- <div class="container-fluid mt-1">
+<div class="container-fluid mt-1">
     <div class="card shadow-sm rounded-4 border-0">
         <div class="card-header bg-primary text-white rounded-top-4">
-            <h5 class="mb-0 fw-semibold"><i class="bi bi-table me-2"></i>@Message</h5>
+            <h5 class="mb-0 fw-semibold"><i class="bi bi-table me-2"></i>PAPARAN CARIAN MAKLUMAT BERDASARKAN NOMBOR LOT DAN DAERAH</h5>
         </div>
 
         <div class="card-body bg-light rounded-bottom-4">
@@ -58,16 +56,22 @@
                                     <td>@xx.SyaratNyataTanah</td>
                                     <td class="text-center fw-bold text-danger">@(xx.Luastanahdiwakafkanekar?.ToString("F2") ?? "0.00")</td>
                                     <td>
-                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
+                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="() => getInfoDetails(xx)">
                                             <i class="fa-regular fa-circle-info"></i>
-                                         </button>
+                                        </button>
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
-            }           
+            }
+            else
+            {
+                <div>
+                    <p>Tiada Rekod Dijumpai ...</p>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -245,19 +249,22 @@
                             </div>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-         </div>            
         </div>
     </div>
+</div>
 
 
 @code {
     [Parameter]
-    public string Jenis { get; set; } = string.Empty;
+    public string SearchNoLot { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SearchDaerah { get; set; } = string.Empty;
 
     public string Jeniss = string.Empty;
     public string Message = string.Empty;
@@ -289,28 +296,32 @@
     public decimal SewaBulanan;
     public decimal SewaTahunan;
 
-       
-
     IEnumerable<tblLegasiWakafMAINS> _data = [];
 
-    protected override async Task OnInitializedAsync()
+
+
+    public string strlotno = string.Empty;
+    public string strdaerah = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
     {
-        Jeniss = Jenis;
-        if (Jeniss == "TWA") Message = "Laporan Tanah Wakaf AM (Tanah Kosong)";
-        if (Jeniss == "TWK") Message = "Laporan Tanah Wakaf KHAS (Tanah Kosong)";
-        if (Jeniss == "TWAS") Message = "Laporan Tanah Wakaf AM (Tanah Disewa)";
-        if (Jeniss == "TWKS") Message = "Laporan Tanah Wakaf KHAS (Tanah Disewa)";
+        strdaerah = EncryptionHelper.Decrypt(SearchDaerah); 
+        strlotno = EncryptionHelper.Decrypt(SearchNoLot);
 
-        if (Jeniss == "Seremban") Message = "Laporan Tanah Wakaf Daerah Seremban";
-        if (Jeniss == "Kuala Pilah") Message = "Laporan Tanah Wakaf Daerah Kuala Pilah";
-        if (Jeniss == "Rembau") Message = "Laporan Tanah Wakaf Daerah Rembau";
-        if (Jeniss == "Tampin") Message = "Laporan Tanah Wakaf Daerah Tampin";
-        if (Jeniss == "Jelebu") Message = "Laporan Tanah Wakaf Daerah Jelebu";
-        if (Jeniss == "Jempol") Message = "Laporan Tanah Wakaf Daerah Jempol";
-        if (Jeniss == "Port Dickson") Message = "Laporan Tanah Wakaf Daerah Port Dickson";
-
-
+        if (!string.IsNullOrEmpty(strdaerah) && !string.IsNullOrEmpty(strlotno))
+        {
+            _data = await _service.CarianRekodBasedOnLotdanDaerahSahaja(strlotno, strdaerah);
+            if (_data.Any())
+            {
+                adaRekod = true;
+            }
+        }
         StateHasChanged();
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {       
 
         Mode = _conf["Mode"]?.ToString() ?? string.Empty;
         var authState = await myIden.GetUserAsync();
@@ -321,103 +332,6 @@
             await myIden.SignOutUserAsync();
             string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            if (Jeniss == "TWA")
-            {
-                _data = await _service.GetRekodTWA_Kosong(); 
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); 
-            } 
-            else if (Jeniss == "TWK")
-            {
-                _data = await _service.GetRekodTWK_Kosong();
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "TWKS")
-            {
-                _data = await _service.GetRekodTWK_Sewa();
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "TWAS")
-            {
-                _data = await _service.GetRekodTWA_Sewa();
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Seremban")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Seremban");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Kuala Pilah")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Kuala Pilah");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Rembau")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Rembau");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Jelebu")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Jelebu");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Jempol")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Jempol");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Port Dickson")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Port Dickson");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            else if (Jeniss == "Tampin")
-            {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Tampin");
-                if (_data.Any()) adaRekod = true;
-                await Task.Delay(300); 
-                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
-                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
-            }
-            StateHasChanged();
-
         }
     }
 

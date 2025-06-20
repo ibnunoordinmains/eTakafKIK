@@ -35,35 +35,16 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="Dashboard">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Carian
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
-                            <li><a class="dropdown-item wakalah-link" href="CarianMaklumatWakaf">Carian Maklumat Tanah Wakaf</a></li>
-                        </ul>
-                    </li>
-                  
                 </ul>
-
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="navbar-text text-white fw-bold">Selamat Datang  @Nama.ToUpper()</span>
+                    </li>
+                </ul>
                
                 <!-- Right-Aligned Menu Item -->
                 <ul class="navbar-nav ms-auto">  
-                  
-                   @*  <li class="nav-item">
-                        <div class="d-flex align-items-center me-3">
-                            <input type="text" class="form-control me-2" placeholder="Carian Lot Sahaja..."
-                                   @bind="_searchText" @bind:event="oninput" />
-
-                            <button class="btn btn-outline-light" @onclick="GoSearch" @onclick:preventDefault="true">
-                                Cari
-                            </button>
-
-
-                        </div>
-                    </li> *@
-
-                    <li class="nav-item dropdown">
+                      <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-sharp fa-regular fa-door-open"></i>
                         </a>
@@ -106,6 +87,7 @@
 @code
 {
     public string Mode = string.Empty;
+    public string Nama = string.Empty;
 
     public ModelSearch modelDB = new()
         {
@@ -118,6 +100,11 @@
         Mode = _conf["Mode"]?.ToString() ?? string.Empty;
         var authState = await myIden.GetUserAsync();
         var user = authState.Identity as ClaimsIdentity;
+
+          Nama = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
+                var role = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
+               // var given = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? string.Empty;
+
 
         if (user == null || !user.IsAuthenticated)
         {

@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using SAL
 @using System.Security.Claims
+@using System.Web
 @using eTakaf2025.Components.Layout
 
 @attribute [Authorize]
@@ -21,20 +22,33 @@
 
 <div class="container-fluid">
     @if (adaRekod)
-    {
-      
-
-
-        <div class="container mb-5">
+    {     
+         <div class="container mb-5">
             <div class="card stat-card total-card mb-4">
                 <div class="row align-items-center px-3 mt-3 mb-3">
-                    <div class="input-group">                       
-                            <input type="text" class="form-control" placeholder="Caeian Maklumat Tanah Melalui Nombor Lot Sahaja ..." aria-label="Search" id="searchInput">
-                        <input type="text" class="form-control" placeholder="Caeian Maklumat Tanah Melalui Nombor Lot Sahaja ..." aria-label="Search" id="searchInput">
-                            <button class="btn btn-warning text-white fw-bold" type="submit">
+                    <div class="input-group flex-wrap gap-2">
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control fw-bold" @bind="SearchNoLot" placeholder="Carian Maklumat Tanah Melalui Nombor Lot Sahaja ..." aria-label="Search" id="searchInput">
+                        </div>
+                        <div>
+                            <select class="form-select fw-bold" required @bind="SearchDaerah">
+                                <option class="fw-bold" value="">Sila Pilih Daerah</option>
+                                <option class="fw-bold" value="JELEBU">JELEBU</option>
+                                <option class="fw-bold" value="JEMPOL">JEMPOL</option>
+                                <option class="fw-bold" value="KUALA PILAH">KUALA PILAH</option>
+                                <option class="fw-bold" value="PORT DICKSON">PORT DICKSON</option>
+                                <option class="fw-bold" value="REMBAU">REMBAU</option>
+                                <option class="fw-bold" value="SEREMBAN">SEREMBAN</option>
+                                <option class="fw-bold" value="TAMPIN">TAMPIN</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-warning text-white fw-bold" type="button" @onclick="CarianMaklumatBYLotDaerah">
                                 <i class="bi bi-search"></i> Cari Rekod
-                            </button>                     
+                            </button>
+                        </div>
                     </div>
+
                 </div>
             </div>
             
@@ -99,7 +113,7 @@
             </div>
             <div class="row mb-5">
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="card stat-card" style="background: linear-gradient(15deg,   #12a103 , #d0fccb  )">
+                    <div class="card stat-card" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div>
                                 <h5 class="card-title mb-0">WAKAF AM</h5>
@@ -113,12 +127,12 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="card stat-card" style="background: linear-gradient(15deg,   #12a103 , #d0fccb  )">
+                    <div class="card stat-card" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div>
                                 <h5 class="card-title mb-0">WAKAF KHAS</h5>
-                                <div class="stat-value mt-2" @onclick="ShowTWKKosong" style="cursor: pointer;color:yellow;">@TanahKosongTWK_P.ToString("N2")%</div>
-                                <div class="stat-label fw-bold">@TanahKosongTWA Bidang Tanah Kosong</div>
+                                <div class="stat-value mt-2" @onclick="ShowTWKKosong" style="cursor: pointer;color:white;">@TanahKosongTWK_P.ToString("N2")%</div>
+                                <div class="stat-label fw-bold">@TanahKosongTWK Bidang Tanah Kosong</div>
                             </div>
                             <div class="stat-icon">
                                 <i class="bi bi-map"></i>
@@ -127,11 +141,11 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="card stat-card" style="background: linear-gradient(to left,  #4361ee,#c4eae6 )">
+                    <div class="card stat-card" style="background: linear-gradient(135deg, #80D192, #77BFA3);">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div>
                                 <h5 class="card-title mb-0">WAKAF AM</h5>
-                                <div class="stat-value mt-2" @onclick="ShowTWASewa" style="cursor: pointer;color:darkorange;">@TanahSewaTWA_P.ToString("N2")%</div>
+                                <div class="stat-value mt-2" @onclick="ShowTWASewa" style="cursor: pointer;color:white;">@TanahSewaTWA_P.ToString("N2")%</div>
                                 <div class="stat-label">@TanahSewaTWA Bidang Tanah Disewa</div>
                             </div>
                             <div class="stat-icon">
@@ -141,11 +155,12 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="card stat-card" style="background: linear-gradient(to left,  #4361ee,#c4eae6 )">
+                    @* <div class="card stat-card" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);"> *@
+                    <div class="card stat-card" style="background: linear-gradient(135deg, #80D192, #77BFA3);">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div>
                                 <h5 class="card-title mb-0">WAKAF KHAS</h5>
-                                <div class="stat-value mt-2" @onclick="ShowTWKSewa" style="cursor: pointer;color:mediumvioletred;">@TanahSewaTWK_P.ToString("N2")%</div>
+                                <div class="stat-value mt-2" @onclick="ShowTWKSewa" style="cursor: pointer;color:white;">@TanahSewaTWK_P.ToString("N2")%</div>
                                 <div class="stat-label">@TanahSewaTWK Bidang Tanah Disewa</div>
                             </div>
                             <div class="stat-icon">
@@ -363,7 +378,8 @@
 
     public string Mode = string.Empty;
     public bool adaRekod = false;
-    
+
+    public string SearchNoLot = string.Empty;public string SearchDaerah = string.Empty;
 
     public int SerembanJumlah = 0; public int RembauJumlah = 0; public int JelebuJumlah = 0;
     public int KualaPilahJumlah = 0; public int PortDicksonJumlah = 0; public int TampinJumlah = 0;
@@ -573,6 +589,29 @@
         JelebuPercent = Convert.ToDecimal(daerahMap["Jelebu"]);
     }
 
+    private async Task CarianMaklumatBYLotDaerah()
+    {
 
+        if (!string.IsNullOrEmpty(SearchNoLot) && !string.IsNullOrEmpty(SearchDaerah))
+        {
+            try
+            {
+                SearchNoLot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchNoLot));
+                SearchDaerah = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchDaerah));
+
+                string baseUrl = (Mode == "Dev") ? $"/MaklumatCarian/{SearchNoLot}/{SearchDaerah}" : $"/e-Takaf/MaklumatCarian/{SearchDaerah}/{SearchNoLot}";
+                NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+
+            }
+            catch(System.Exception err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+        else
+        {
+            await _service.ShowSweetAlertAsync("Pastikan No. Lot dan Daerah Dipilih Terlebih Dahulu", "Makluman", SweetAlertIcon.Info, false, "Ok");
+        }
+    }
 
 }

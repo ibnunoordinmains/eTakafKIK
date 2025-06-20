@@ -4,6 +4,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,10 +32,15 @@ namespace DAL.Repo
         Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian();
         Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
+        Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
+        Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
+
+
     }
-    public class MasterRepo(ServerProd serverProd ) : IMasterRepo
+    public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr ) : IMasterRepo
     {
         private readonly ServerProd _serverProd = serverProd;
+        private readonly ServerEHR _serverEhr = serverEhr;
         public async Task<IEnumerable<InfoDaerah>> GetInfoDaerahOnly()
         {
            try
@@ -269,12 +275,25 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { daerah = daerah });
         }
 
-
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot)
         {
             string sql = @"select * from tblLegasiWakafMAINS where nolot = @nolot";
             return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { nolot = nolot });
         }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah)
+        {
+            string sql = @"select * from tblLegasiWakafMAINS where nolot = @nolot and daerah = @daerah";
+            return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new {nolot = nolot, daerah = daerah });
+        }
+
+        public async Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf)
+        {
+            string sql = @" select * from view_butiran_staf where nostaf = @nostaf";
+            return await _serverEhr.Connections.QueryAsync<ViewButiranStaf>(sql, new { nostaf =  nostaf});
+        }
+
+
 
 
     }

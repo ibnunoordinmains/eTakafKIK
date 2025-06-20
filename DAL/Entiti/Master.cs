@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace DAL.Entiti
 {
+    public class LoginModel
+    {
+        public string UserId { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
     public class ModelSearch
     {
         public string NoLotSearch { get; set; } = string.Empty;
@@ -156,5 +162,31 @@ namespace DAL.Entiti
         public int? JumlahBelanja { get; set; } = null;
         public string NoDaftar { get; set; } = string.Empty;
     }
+
+    public class ViewButiranStaf
+    {
+        public string NoStaf { get; set; } = string.Empty;
+        public string NoStafBaca { get; set; } = string.Empty;
+        public string NoStafPenuh { get; set; } = string.Empty;
+        public string Nama { get; set; } = string.Empty;
+        public string Ic { get; set; } = string.Empty;
+        public int? JabatanId { get; set; }
+        public string Jabatan { get; set; } = string.Empty;
+        public int? BahagianId { get; set; }
+        public string Bahagian { get; set; } = string.Empty;
+        public int? UnitId { get; set; }
+        public string Unit { get; set; } = string.Empty;
+        public int PenempatanId { get; set; }
+        public string Penempatan { get; set; } = string.Empty;
+        public int? JawatanId { get; set; }
+        public string Jawatan { get; set; } = string.Empty;
+        public int? GredId { get; set; }
+        public string Gred { get; set; } = string.Empty;
+        public string Emel { get; set; } = string.Empty;
+        public string NoTelefon { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
+    }
+
+
 
 }

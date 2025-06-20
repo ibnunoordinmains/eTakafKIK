@@ -19,6 +19,8 @@ public abstract class BaseConnectionMySqlServer(string connectionString)
 // concrete class
 public class Server130(string connStr) : BaseConnectionSqlServer(connStr) { }
 
+public class ServerEHR(string connStr) : BaseConnectionSqlServer(connStr) { }
+
 public class ServerProd(string connStr) : BaseConnectionSqlServer(connStr) { }
 
 public class ServerCikMan(string connStr) : BaseConnectionMySqlServer(connStr) { }
