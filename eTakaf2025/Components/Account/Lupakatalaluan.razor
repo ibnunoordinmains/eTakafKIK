@@ -1,0 +1,233 @@
+﻿@page "/LupaKatalaluan"
+
+<PageTitle>Lupa Katalaluan</PageTitle>
+
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using IdentityAuthentication
+@using Microsoft.AspNetCore.Mvc
+@using SAL
+@using eTakaf2025.Components.Layout
+
+@inject IIdentityAuthenticationLib myIden
+@inject IJSRuntime JSRuntime
+@layout EmptyLayout
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+
+
+
+<div class="container">
+    <div class="card mx-auto">
+        <div class="card-body">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+
+            <h2 class="card-title text-center">Reset Katalaluan</h2>
+            <p class="card-subtitle text-center"></p>
+            <hr />
+
+            @if (!string.IsNullOrEmpty(alertMessage))
+            {
+                <div class="alert alert-error alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    @alertMessage                   
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(alertMessageS))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    @alertMessageS
+                   
+                </div>
+            }
+           
+
+          <EditForm Model="user" OnValidSubmit="UpdatePassword" FormName="X1">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="email" class="form-label">No. Kad Pengenalan</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <InputText type="text" @bind-Value="user.NoKP" class="form-control" id="nokp" placeholder="No KP Tanpa -" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <InputText type="email" @bind-Value="user.Email" class="form-control" id="email" placeholder="Emel yang berdaftar" required />
+                    </div>
+                </div>
+
+                <!-- New Password Field -->
+                <div class="form-group">
+                    <label for="newPassword" class="form-label">Katalaluan Baru</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-key"></i>
+                        </span>
+                        <InputText type="password" @bind-Value="user.Katalaluan" class="form-control" id="newPassword" placeholder="Katalaluan baru" required />
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Pastikan Katalaluan Baru </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                        <InputText type="password" @bind-Value="user.Katalaluan1" class="form-control" id="confirmPassword" placeholder="Pastikan katalaluan baru" required />
+                    </div>
+                </div>
+
+                <div class="password-requirements">
+                    <p class="mb-2 fw-semibold">Password must contain:</p>
+                    <div class="requirement" id="length-req">
+                        <i class="far fa-circle"></i>
+                        At least 8 characters
+                    </div>
+                    <div class="requirement" id="uppercase-req">
+                        <i class="far fa-circle"></i>
+                        At least one uppercase letter
+                    </div>
+                    <div class="requirement" id="number-req">
+                        <i class="far fa-circle"></i>
+                        At least one number
+                    </div>
+                    <div class="requirement" id="special-req">
+                        <i class="far fa-circle"></i>
+                        At least one special character
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sync-alt btn-icon"></i>Reset Password
+                    </button>
+                    <a href="LoginAwam" class="btn btn-outline-secondary">Kembali</a>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+<style type="text/css">
+    body {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        min-height: 100vh;
+        align-items: center;
+        /*  display: flex; */
+        /*justify-content: center; */
+    }
+
+    .card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(67, 97, 238, 0.1);
+        overflow: hidden;
+        max-width: 500px;
+        width: 100%;
+    }
+</style>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public tblInfoUsereTakaf user { get; set; } = new tblInfoUsereTakaf();
+
+    public string Mode = string.Empty;
+    public string alertMessage = string.Empty;
+    public string alertMessageS = string.Empty;
+
+    private async Task LoadFile()
+    {
+        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        Mode = _conf["Mode"] ?? string.Empty;
+        return base.OnInitializedAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void BacktoLogin()
+    {
+        string baseUrl = (Mode == "Dev") ? "/LoginAwam" : "/e-takaf/LoginAwam";
+        NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    }
+
+    private async Task UpdatePassword(EditContext content)
+    {
+        if (content.Validate())
+        {
+            try
+            {
+                var aa = await _service.CheckExistingUserId(user.NoKP, user.Email);
+                if (aa == true)
+                {
+                    if (user.Katalaluan == user.Katalaluan1)
+                    {
+                        string newP = BCrypt.Net.BCrypt.EnhancedHashPassword("N$r75**" + user.Katalaluan1);
+                        user.Katalaluan = newP;
+
+                        var _sudah = await _service.UpdateExistingPassword(user);
+                        if (_sudah == true)
+                        {
+                            Cleartext();
+                            alertMessageS = "Penukaran Katalaluan Anda Berjaya.";
+                        }
+                        else
+                        {
+                            alertMessage = "Penukaran Katalaluan Anda Tidak Berjaya.";
+                        }
+                        StateHasChanged();
+                    }
+                    else
+                    {
+                        alertMessage = "Pastikan Katalaluan Adalah Sama Keduanya...."; StateHasChanged();
+                    }
+                }
+                else
+                {
+                    alertMessage = "Tiada Rekod/Info Dijumpai ....";StateHasChanged();
+                }
+            }
+            catch(System.Exception err)
+            {
+                throw new Exception (err.Message);
+            }
+        }
+    }
+
+    private void Cleartext()
+    {
+        user.NoKP = string.Empty;
+        user.Email = string.Empty;
+        user.Katalaluan = string.Empty;
+        user.Katalaluan1 = string.Empty;
+
+    }
+
+}

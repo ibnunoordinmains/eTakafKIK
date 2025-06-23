@@ -301,6 +301,9 @@
         if (Jeniss == "TWAS") Message = "Laporan Tanah Wakaf AM (Tanah Disewa)";
         if (Jeniss == "TWKS") Message = "Laporan Tanah Wakaf KHAS (Tanah Disewa)";
 
+        if (Jeniss == "TWABS") Message = "Laporan Tanah Wakaf AM (Bukan Sewaan)";
+        if (Jeniss == "TWKBS") Message = "Laporan Tanah Wakaf KHAS (Bukan Sewaan)";
+
         if (Jeniss == "Seremban") Message = "Laporan Tanah Wakaf Daerah Seremban";
         if (Jeniss == "Kuala Pilah") Message = "Laporan Tanah Wakaf Daerah Kuala Pilah";
         if (Jeniss == "Rembau") Message = "Laporan Tanah Wakaf Daerah Rembau";
@@ -360,6 +363,24 @@
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
+
+            else if (Jeniss == "TWABS")
+            {
+                _data = await _service.GetRekodTWA_BukanSewaan();
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300);
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+            else if (Jeniss == "TWKBS")
+            {
+                _data = await _service.GetRekodTWK_BukanSewaan();
+                if (_data.Any()) adaRekod = true;
+                await Task.Delay(300);
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+            }
+
             else if (Jeniss == "Seremban")
             {
                 _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Seremban");

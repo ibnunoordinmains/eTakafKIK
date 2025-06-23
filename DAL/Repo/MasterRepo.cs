@@ -34,16 +34,17 @@ namespace DAL.Repo
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
         Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
-
+        Task<IEnumerable<DashboardInfo>> GetInfoTanahKosongByDaerahSahaja(); Task<bool> CheckExistingUserId(string nokp, string email);
+        Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data);
 
     }
-    public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr ) : IMasterRepo
+    public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
         private readonly ServerProd _serverProd = serverProd;
         private readonly ServerEHR _serverEhr = serverEhr;
         public async Task<IEnumerable<InfoDaerah>> GetInfoDaerahOnly()
         {
-           try
+            try
             {
                 string sql = @"select distinct(Daerah) as DaerahDW from tblDaerahInfo order by daerah";
                 return await _serverProd.Connections.QueryAsync<InfoDaerah>(sql);
@@ -88,9 +89,9 @@ namespace DAL.Repo
             try
             {
                 string sql = @"SELECT * FROM [tblLegasiWakaf] where daerah = @daerah and nolot = @nolot and JENISNOHAKMILIK = @jenisnohakmilik";
-                return await _serverProd.Connections.QueryAsync<tblLegasiWakaf>(sql, new {daerah = daerah, jenisnohakmilik = jenisnohakmilik, nolot = nolot });
+                return await _serverProd.Connections.QueryAsync<tblLegasiWakaf>(sql, new { daerah = daerah, jenisnohakmilik = jenisnohakmilik, nolot = nolot });
             }
-            catch(SqlException err)
+            catch (SqlException err)
             {
                 throw new Exception(err.Message);
             }
@@ -105,7 +106,7 @@ namespace DAL.Repo
                 string sql = @"select nombor from tblNoTakaf where JenisCarian=@JenisCarian";
                 // return await _serverProd.Connections.QuerySingleAsync<int>(sql, new { JenisCarian = jenisCarian });
                 var result = await _serverProd.Connections.QuerySingleOrDefaultAsync<int>(sql, new { JenisCarian = jenisCarian });
-                return result; 
+                return result;
             }
             catch (SqlException err)
             {
@@ -134,7 +135,7 @@ namespace DAL.Repo
                 string sql = @" select daerah,nofail as kategori, count(nofail) as jumlah  from tblLegasiWakaf
                                where nofail='TWA'
                                group by nofail,DAERAH order by DAERAH asc";
-                return  await _serverProd.Connections.QueryAsync<myCarian4>(sql);
+                return await _serverProd.Connections.QueryAsync<myCarian4>(sql);
             }
             catch (SqlException err)
             {
@@ -149,7 +150,7 @@ namespace DAL.Repo
                 string sql = @" select daerah,nofail as kategori, count(nofail) as jumlah  from tblLegasiWakaf
                                where nofail='TWA' and daerah = @daerah
                                group by nofail,DAERAH order by DAERAH asc";
-                return await _serverProd.Connections.QueryAsync<myCarian4>(sql, new { daerah = daerah});
+                return await _serverProd.Connections.QueryAsync<myCarian4>(sql, new { daerah = daerah });
             }
             catch (SqlException err)
             {
@@ -186,7 +187,7 @@ namespace DAL.Repo
 
                 return count > 0;
             }
-            catch(System.Exception err)
+            catch (System.Exception err)
             {
                 return false;
                 throw new Exception(err.Message);
@@ -240,9 +241,9 @@ namespace DAL.Repo
             try
             {
                 string sql = @"SELECT *  FROM tblLegasiWakafMAINS where KategoriSumberAmWakaf = @kategori and StatusPenghunian = @StatusPenghunian";
-                return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { kategori = kategori, StatusPenghunian = StatusPenghunian});
+                return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { kategori = kategori, StatusPenghunian = StatusPenghunian });
             }
-            catch(System.Exception err)
+            catch (System.Exception err)
             {
                 throw new Exception(err.Message);
             }
@@ -284,13 +285,38 @@ namespace DAL.Repo
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah)
         {
             string sql = @"select * from tblLegasiWakafMAINS where nolot = @nolot and daerah = @daerah";
-            return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new {nolot = nolot, daerah = daerah });
+            return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { nolot = nolot, daerah = daerah });
         }
 
         public async Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf)
         {
             string sql = @" select * from view_butiran_staf where nostaf = @nostaf";
-            return await _serverEhr.Connections.QueryAsync<ViewButiranStaf>(sql, new { nostaf =  nostaf});
+            return await _serverEhr.Connections.QueryAsync<ViewButiranStaf>(sql, new { nostaf = nostaf });
+        }
+
+
+        public async Task<IEnumerable<DashboardInfo>> GetInfoTanahKosongByDaerahSahaja()
+        {
+            string sql = @"select count(daerah) as jumlahtanah, daerah from tblLegasiWakafMAINS
+                            where
+                            StatusPenghunian='kosong'
+                            group by daerah order by daerah";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
+        }
+
+
+        public async Task<bool> CheckExistingUserId(string nokp, string email)
+        {
+            string sql = @"SELECT COUNT(*) FROM tblInfoUsereTakaf WHERE nokp = @nokp AND email = @email";
+            int count = await _serverProd.Connections.QuerySingleAsync<int>(sql, new { nokp, email });
+            return count > 0;
+        }
+
+        public async Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data)
+        {
+            string sql = @"update tblInfoUsereTakaf set katalaluan = @katalaluan where nokp = @nokp AND email = @email";
+            var xx =  await _serverProd.Connections.ExecuteAsync(sql, new {katalaluan = data.Katalaluan, nokp = data.NoKP, email = data.Email });
+            return xx > 0;
         }
 
 

@@ -46,8 +46,14 @@ body {
 }
 
 .stat-value {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--dark-color);
+}
+
+.stat-value1 {
+    font-size: 2.0rem;
+    font-weight: 500;
     color: var(--dark-color);
 }
 
@@ -99,6 +105,65 @@ body {
 .info-value {
     font-weight: 500;
     font-size: 1.05rem;
+}
+
+.accordion-item {
+    border: none;
+    margin-bottom: 1rem;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+    .accordion-item:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+.accordion-header {
+    border-radius: 12px;
+}
+
+.accordion-button {
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #2d3748;
+    background-color: #ffffff;
+    border-radius: 12px !important;
+}
+
+    .accordion-button:not(.collapsed) {
+        color: #4361ee;
+        background-color: #f0f4ff;
+        box-shadow: none;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(67, 97, 238, 0.3);
+    }
+
+    .accordion-button::after {
+        background-size: 1.25rem;
+        transition: all 0.3s ease;
+        background-color: #edf2ff;
+        border-radius: 50%;
+        padding: 0.75rem;
+        background-position: center;
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        background-color: #4361ee;
+        transform: rotate(180deg);
+    }
+
+.accordion-body {
+    padding: 1.5rem;
+    background-color: #ffffff;
+    color: #4a5568;
+    line-height: 1.6;
 }
 
 @media (max-width: 768px) {

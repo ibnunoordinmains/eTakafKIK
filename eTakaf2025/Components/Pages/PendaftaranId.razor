@@ -149,7 +149,7 @@
             {
                 ClearData();
                 StateHasChanged();
-                string baseUrl = (Mode == "Dev") ? "/Login" : "/e-takaf/Login";
+                string baseUrl = (Mode == "Dev") ? "/" : "/e-takaf/";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
             else

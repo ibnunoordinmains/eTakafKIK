@@ -53,7 +53,7 @@
             </div>
             
         <!-- Summary Card -->
-            <div class="row mb-5">
+            <div class="row mb-5 justify-content-center d-flex">
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="card stat-card total-card">
                         <div class="card-body d-flex align-items-center justify-content-between">
@@ -67,7 +67,114 @@
                             </div>
                         </div>
                     </div>
+                </div>              
+               @*  <div class="col-lg-3 col-md-4 col-12">
+                    <div class="card stat-card" style="border: 1px solid  #ceab23 ;">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="card-title mb-0">TANAH BUKAN SEWAAN</h5>
+                                <div class="stat-value mt-2" style="color: #ceab23 ;">@TotalJumlahTanahBukanSewaan_P.ToString("N2")%</div>
+                                <div class="stat-label fw-bolder">@TotalJumlahTanahBukanSewaan bIDANG TANAH</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-map"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div> *@
+            </div>
+
+            <!--details box for description -->
+            <div class="row justify-content-center d-flex">
+                    <div class="col-xxl-3 col-xl-6">              
+                        <div class="card stat-card shadow-lg">
+                        <div class="card-header bg-success text-white text-center">
+                            <h5 class="mb-0">TANAH KOSONG</h5>
+                        </div>
+                                 <div class="card-body text-center">
+                                 <h5 class="card-title mb-0">TANAH KOSONG</h5>
+                                 <div class="stat-value mt-2" style="color:red;">@TotalJumlahTanahKosong_P.ToString("N2")% </div>
+                                    <div class="stat-label fw-bolder">@TotalJumlahTanahKosong Bidang Tanah Keseluruhan</div>
+                                    <hr />
+                                    <div class="row text-center pe-2 mt-3">
+                                        <div class="col-6 border-end">
+                                            <h6 class="card-title text-primary mb-0">WAKAF AM</h6>
+                                            <div class="stat-value1 mt-2" @onclick="ShowTWAKosong" style="cursor: pointer;color: #d6a80c ;">@TanahKosongTWA_P.ToString("N2")%</div>
+                                            <div class="stat-label fw-bold">@TanahKosongTWA BIdang Tanah Kosong</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6 class="card-title text-warning mb-0">WAKAF KHAS</h6>
+                                            <div class="stat-value1 mt-2" @onclick="ShowTWKKosong" style="cursor: pointer;color: #94a90c ;">@TanahKosongTWK_P.ToString("N2")%</div>
+                                            <div class="stat-label fw-bold">@TanahKosongTWK Bidang Tanah Kosong</div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-xxl-3 col-xl-6">
+                        <div class="card stat-card shadow-lg">
+                            <div class="card-header bg-success text-white text-center">
+                                <h5 class="mb-0">TANAH SEWA</h5>
+                            </div>
+                            <div class="card-body text-center">
+                            <h6 class="card-title mb-0">TANAH SEWA</h6>
+                            <div class="stat-value mt-2" style="color:darkgreen;">@TotalJumlahTanahSewa_P.ToString("N2")%</div>
+                            <div class="stat-label fw-bolder">@TotalJumlahTanahSewa BIDANG tANAH Keseluruhan</div>
+                            <hr />
+                                <div class="row text-center pe-2 mt-3">
+                                    <div class="col-6 border-end">
+                                        <h6 class="card-title text-primary mb-0">WAKAF AM</h6>
+                                        <div class="stat-value1 mt-2" @onclick="ShowTWASewa" style="cursor: pointer;color:darkblue;">@TanahSewaTWA_P.ToString("N2")%</div>
+                                        <div class="stat-label">@TanahSewaTWA Bidang Tanah Disewa</div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <h6 class="card-title text-warning mb-0">WAKAF KHAS</h6>
+                                        <div class="stat-value1 mt-2" @onclick="ShowTWKSewa" style="cursor: pointer;color:darkblue;">@TanahSewaTWK_P.ToString("N2")%</div>
+                                        <div class="stat-label">@TanahSewaTWK Bidang Tanah Disewa</div>
+                                    </div>
+                                </div>                           
+                            </div>                           
+                        </div>
+                    </div>
+                <div class="col-xxl-3 col-xl-6">
+                    <div class="card stat-card shadow-lg">
+                        <div class="card-header">
+                            <div class="card-title">
+                                TANAH BUKAN SEWAAN
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-0">TANAH BUKAN SEWAAN</h5>
+                            <div class="stat-value mt-2" style="color: #ceab23 ;">@TotalJumlahTanahBukanSewaan_P.ToString("N2")%</div>
+                            <div class="stat-label fw-bolder">@TotalJumlahTanahBukanSewaan bIDANG TANAH Keseluruhan</div>
+                            <hr />
+                            <div class="row text-center pe-2 mt-3">
+                                <div class="col-6 border-end">
+                                    <h6 class="card-title text-primary mb-0">WAKAF AM</h6>
+                                    <div class="stat-value1 mt-2" @onclick="ShowTWABukanSewaan" style="cursor: pointer;color:darkblue;">@TanahBukanSewaanTWA_P.ToString("N2")%</div>
+                                    <div class="stat-label">@TanahBukanSewaanTWA Bidang Tanah Bukan Sewaaan</div>
+                                </div>
+
+                                <div class="col-6">
+                                    <h6 class="card-title text-warning mb-0">WAKAF KHAS</h6>
+                                    <div class="stat-value1 mt-2" @onclick="ShowTWKBukanSewaan" style="cursor: pointer;color:darkblue;">@TanahBukanSewaanTWK_P.ToString("N2")%</div>
+                                    <div class="stat-label">@TanahBukanSewaanTWK Bidang Tanah Bukan Sewaan</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+             </div>
+
+
+
+
+@* 
+            <!--Tanah Kosong-->
+            <div class="row mb-5 justify-content-center d-flex">
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="card stat-card" style="border: 1px solid red;">
                         <div class="card-body d-flex align-items-center justify-content-between">
@@ -82,36 +189,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-12">
-                    <div class="card stat-card" style="border: 1px solid green;">
-                        <div class="card-body d-flex align-items-center justify-content-between">
-                            <div>
-                                <h5 class="card-title mb-0">TANAH SEWA</h5>
-                                <div class="stat-value mt-2" style="color:darkgreen;">@TotalJumlahTanahSewa_P.ToString("N2")%</div>
-                                <div class="stat-label fw-bolder">@TotalJumlahTanahSewa BIDANG tANAH</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="bi bi-map"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-12">
-                    <div class="card stat-card" style="border: 1px solid  #ceab23 ;">
-                        <div class="card-body d-flex align-items-center justify-content-between">
-                            <div>
-                                <h5 class="card-title mb-0">TANAH BUKAN SEWAAN</h5>
-                                <div class="stat-value mt-2" style="color: #ceab23 ;">@TotalJumlahTanahBukanSewaan_P.ToString("N2")%</div>
-                                <div class="stat-label fw-bolder">@TotalJumlahTanahBukanSewaan bIDANG TANAH</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="bi bi-map"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mb-5">
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="card stat-card" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);">
                         <div class="card-body d-flex align-items-center justify-content-between">
@@ -140,6 +217,24 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!--tanah sewa-->
+            <div class="row mb-5 justify-content-center d-flex">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="card stat-card" style="border: 1px solid green;">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="card-title mb-0">TANAH SEWA</h5>
+                                <div class="stat-value mt-2" style="color:darkgreen;">@TotalJumlahTanahSewa_P.ToString("N2")%</div>
+                                <div class="stat-label fw-bolder">@TotalJumlahTanahSewa BIDANG tANAH</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-map"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="card stat-card" style="background: linear-gradient(135deg, #80D192, #77BFA3);">
                         <div class="card-body d-flex align-items-center justify-content-between">
@@ -155,7 +250,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-12">
-                    @* <div class="card stat-card" style="background: linear-gradient(135deg, #3a7bd5, #00d2ff);"> *@
+                  
                     <div class="card stat-card" style="background: linear-gradient(135deg, #80D192, #77BFA3);">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div>
@@ -169,15 +264,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
-          
+            </div> *@
+                     
             <hr />
+            <!--Chart-->
             <div class="row mt-5">
                 <div class="col-sm-12 col-md-4">
                     <div class="card stat-card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span>Jumlah Tanah Wakaf PerDaerah</span>
+                                <span>Jumlah Penyumbang Tanah Wakaf Mengikut Daerah</span>
                                 <i class="bi bi-bar-chart"></i>
                             </div>
                         </div>
@@ -192,7 +288,7 @@
                     <div class="card stat-card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span>Kegunaan Tanah Wakaf</span>
+                                <span>Kategori Kegunaan Tanah Wakaf</span>
                                 <i class="bi bi-bar-chart"></i>
                             </div>
                         </div>
@@ -219,152 +315,189 @@
                     </div>
                 </div>
              </div>
+             <div class="row mt-5">
+                <div class="col-md-4 col-sm-12">
+                    <div class="card stat-card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Jumlah Tanah Kosong Mengikut Daerah</span>
+                                <i class="bi bi-bar-chart"></i>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="landChart4"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
            
              <hr />
-            <!-- District Cards -->
-            <div class="row g-4mt-3">
-                <!-- Seremban Card -->
-                <h5 class="fw-bold mb-4 text-center">Jumlah Tanah Wakaf Mengikut Senarai Daerah</h5>
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>SEREMBAN</span>
-                                <i class="bi bi-building"></i>
+
+             <div class="accordion" id="modernAccordion">
+            <!-- Item 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            MAKLUMAT JUMLAH TANAH WAKAF MENGIKUT DAERAH NEGERI SEMBILAN
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#modernAccordion">
+                    <div class="accordion-body">
+                            <!-- District Cards -->
+                            <div class="row g-4mt-3">
+                                <!-- Seremban Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>SEREMBAN</span>
+                                                <i class="bi bi-building"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Seremban"))">@SerembanPercent.ToString("N2")% </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small> @SerembanJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kuala Pilah Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>KUALA PILAH</span>
+                                                <i class="bi bi-house"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Kuala Pilah"))">@KualaPilahPercent.ToString("N2")%</div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 38%;" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small> @KualaPilahJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tampin Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>TAMPIN</span>
+                                                <i class="bi bi-tree"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Tampin"))">@TampinPercent.ToString("N2")%  </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small>@TampinJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Jelebu Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>JELEBU</span>
+                                                <i class="bi bi-geo"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jelebu"))">@JelebuPercent.ToString("N2")% </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small> @JelebuJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Port Dickson Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>PORT DICKSON</span>
+                                                <i class="bi bi-water"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Port Dickson"))">@PortDicksonPercent.ToString("N2")%</div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small> @PortDicksonJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Rembau Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>REMBAU</span>
+                                                <i class="bi bi-pin-map"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Rembau"))">@RembauPercent.ToString("N2")% </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 16%;" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small>@RembauJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Jempol Card -->
+                                <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>JEMPOL</span>
+                                                <i class="bi bi-signpost-2"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jempol"))">@JempolPercent.ToString("N2")% </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar" style="background-color: #7209b7; width: 13%;" role="progressbar" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small>@JempolJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>  
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Seremban"))">@SerembanPercent.ToString("N2")% </div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small> @SerembanJumlah dari @TotalJumlahTW</small></div>
-                        </div>
                     </div>
                 </div>
+            </div>
+            
+                       
+          
+            
+           
+        </div>
 
-                <!-- Kuala Pilah Card -->
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>KUALA PILAH</span>
-                                <i class="bi bi-house"></i>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Kuala Pilah"))">@KualaPilahPercent.ToString("N2")%</div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 38%;" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small> @KualaPilahJumlah dari @TotalJumlahTW</small></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tampin Card -->
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>TAMPIN</span>
-                                <i class="bi bi-tree"></i>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Tampin"))">@TampinPercent.ToString("N2")%  </div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small>@TampinJumlah dari @TotalJumlahTW</small></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Jelebu Card -->
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>JELEBU</span>
-                                <i class="bi bi-geo"></i>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jelebu"))">@JelebuPercent.ToString("N2")% </div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small> @JelebuJumlah dari @TotalJumlahTW</small></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Port Dickson Card -->
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>PORT DICKSON</span>
-                                <i class="bi bi-water"></i>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Port Dickson"))">@PortDicksonPercent.ToString("N2")%</div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small> @PortDicksonJumlah dari @TotalJumlahTW</small></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rembau Card -->
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>REMBAU</span>
-                                <i class="bi bi-pin-map"></i>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Rembau"))">@RembauPercent.ToString("N2")% </div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 16%;" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small>@RembauJumlah dari @TotalJumlahTW</small></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Jempol Card -->
-                <div class="col-md-3">
-                    <div class="card stat-card">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>JEMPOL</span>
-                                <i class="bi bi-signpost-2"></i>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jempol"))">@JempolPercent.ToString("N2")% </div>
-                            <div class="stat-label">Bidang Tanah</div>
-                            <div class="progress mt-3" style="height: 10px;">
-                                <div class="progress-bar" style="background-color: #7209b7; width: 13%;" role="progressbar" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="text-end mt-1"><small>@JempolJumlah dari @TotalJumlahTW</small></div>
-                        </div>
-                    </div>
-                </div>
-            </div>            
-
+            
         </div>
     }
 
@@ -375,6 +508,7 @@
 
 @code {
     IEnumerable<DashboardInfo> _data = []; IEnumerable<DashboardInfo> _data2 = []; IEnumerable<DashboardInfo> _statushuni = [];
+    IEnumerable<DashboardInfo> _tanahkosong = [];
 
     public string Mode = string.Empty;
     public bool adaRekod = false;
@@ -391,6 +525,7 @@
     public int TotalJumlahTanahKosong = 0; public int TotalJumlahTanahSewa = 0; public int TotalJumlahTanahBukanSewaan = 0;
     public double TotalJumlahTanahKosong_P = 0; public double TotalJumlahTanahSewa_P = 0; public double TotalJumlahTanahBukanSewaan_P = 0;
     public double TanahKosongTWA_P = 0; public double TanahKosongTWK_P = 0; public double TanahSewaTWA_P = 0; public double TanahSewaTWK_P = 0;
+    public double TanahBukanSewaanTWA_P = 0; public double TanahBukanSewaanTWK_P = 0;
 
     public decimal SerembanPercent; public decimal JempolPercent; public decimal RembauPercent; public decimal JelebuPercent;
     public decimal KualaPilahPercent; public decimal TampinPercent; public decimal PortDicksonPercent;
@@ -427,6 +562,20 @@
         : $"/e-Takaf/MaklumatRekodWakaf/{"TWK"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
+
+    private void ShowTWABukanSewaan()
+    {
+        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWABS"}" : $"/e-Takaf/MaklumatRekodWakaf/{"TWABS"}";
+        NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    }
+    private void ShowTWKBukanSewaan()
+    {
+        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWKBS"}" : $"/e-Takaf/MaklumatRekodWakaf/{"TWKBS"}";
+        NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    }
+
+
+
 
     private void ShowData(string data)
     {
@@ -476,6 +625,7 @@
             adaRekod = (_data = await _service.GetDashboardInfo()).Any();
             _data2 = await _service.GetKegunaanTanah();
             _statushuni = await _service.GetKegunaanByStatusPenghunian();
+            _tanahkosong = await _service.GetInfoTanahKosongByDaerahSahaja();
 
             TotalJumlahTW = _data.Sum(x => x.JumlahTanah);
             if (adaRekod)
@@ -520,6 +670,15 @@
                   _statushuni.Select(d => d.JumlahTanah).ToArray());
                 }
 
+                if (_tanahkosong.Any())
+                {
+                    await JSRuntime.InvokeVoidAsync("updateChart4",
+                    _tanahkosong.Select(d => d.Daerah).ToArray(),
+                    _tanahkosong.Select(d => d.JumlahTanah).ToArray());
+                }
+
+
+
                 TanahKosongTWA = await _service.CountJumlahTWAKosongBothKategori();
                 TanahKosongTWK = await _service.CountJumlahTWKKosongBothKategori();
                 TanahSewaTWA = await _service.CountJumlahTWADisewa();
@@ -539,7 +698,8 @@
                 TanahKosongTWK_P = ((double)TanahKosongTWK / TotalJumlahTanahKosong) * 100;
                 TanahSewaTWA_P = ((double)TanahSewaTWA / TotalJumlahTanahSewa) * 100;
                 TanahSewaTWK_P = ((double)TanahSewaTWK / TotalJumlahTanahSewa) * 100;
-
+                TanahBukanSewaanTWA_P = ((double)TanahBukanSewaanTWA / TotalJumlahTanahBukanSewaan) * 100;
+                TanahBukanSewaanTWK_P = ((double)TanahBukanSewaanTWK / TotalJumlahTanahBukanSewaan) * 100;
                 StateHasChanged();
             }
 

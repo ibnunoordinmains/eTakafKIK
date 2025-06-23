@@ -58,7 +58,7 @@
 
                     </EditForm>
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <a href="LupaPassword" class="text-decoration-none fw-bold">Lupa katalaluan?</a>
+                            <a href="LupaKatalaluan" class="text-decoration-none fw-bold">Lupa katalaluan?</a>
                             <a href="PendaftaranId" class="text-decoration-none fw-bold">Akaun Baru</a>                           
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
@@ -216,9 +216,13 @@
 </style>
 
 @code {
-
     [SupplyParameterFromForm]
-    public LoginModel modelDB { get; set; } = new LoginModel();
+    public LoginModel modelDB { get; set; } = new LoginModel()
+        {
+            UserId = "750726075267",
+            Password = "Password@2025"
+        };
+
 
     public bool isError = false;
     public string NoKP = string.Empty;

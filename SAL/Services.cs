@@ -33,6 +33,10 @@ namespace SAL
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
 
         Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
+        Task<IEnumerable<DashboardInfo>> GetInfoTanahKosongByDaerahSahaja(); Task<bool> CheckExistingUserId(string nokp, string email);
+        Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_BukanSewaan(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_BukanSewaan();
+        Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data);
+
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -218,6 +222,34 @@ namespace SAL
             return ada1;
         }
 
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_BukanSewaan()
+        {
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (am)", "Bukan Sewaan");
+            if (ada1 != null)
+            {
+                for (int i = 0; i < ada1.Count(); i++)
+                {
+                    ada1.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return ada1;
+        }
+
+        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_BukanSewaan()
+        {
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)", "Bukan Sewaan");
+            if (ada1 != null)
+            {
+                for (int i = 0; i < ada1.Count(); i++)
+                {
+                    ada1.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return ada1;
+        }
+
+
+
         public async Task<int> CountJumlahTWADisewa()
         {
             return await _master.CountJumlahTWADisewa();
@@ -268,6 +300,23 @@ namespace SAL
         {
             return await _master.GetInfoDataFromEHR(nostaf); 
         }
+
+        public async Task<IEnumerable<DashboardInfo>> GetInfoTanahKosongByDaerahSahaja()
+        {
+            return await _master.GetInfoTanahKosongByDaerahSahaja();
+        }
+
+        public async Task<bool> CheckExistingUserId(string nokp, string email)
+        {
+            return await _master.CheckExistingUserId(nokp, email);
+        }
+
+        public async Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data)
+        {
+            return await _master.UpdateExistingPassword(data);
+        }
+
+
 
     }
 
