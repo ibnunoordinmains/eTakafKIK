@@ -228,11 +228,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Tarikh Mula</div>
-                                    <div class="info-value" id="tarikhMula">@TarikhMula.ToString("dd/MM/yyyy")</div>
+                                    <div class="info-value" id="tarikhMula">
+                                        @(TarikhMula == DateTime.MinValue ? "" : TarikhMula.ToString("dd/MM/yyyy"))
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Tarikh Akhir</div>
-                                    <div class="info-value" id="tarikhTamat">@TarikhTamat.ToString("dd/MM/yyyy")</div>
+                                    <div class="info-value" id="tarikhTamat">
+                                        @(TarikhTamat == DateTime.MinValue ? "" : TarikhTamat.ToString("dd/MM/yyyy"))
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="info-label">Sewaan Bulanan</div>
@@ -289,7 +293,7 @@
     public decimal SewaBulanan;
     public decimal SewaTahunan;
 
-       
+
 
     IEnumerable<tblLegasiWakafMAINS> _data = [];
 

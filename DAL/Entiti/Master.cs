@@ -134,8 +134,8 @@ namespace DAL.Entiti
         public string StatusPenghunian { get; set; } = string.Empty;
         public string Kategori { get; set; } = string.Empty;
         public string Tempoh { get; set; } = string.Empty;
-        public DateTime? TarikhMula { get; set; } = null;
-        public DateTime? TarikhTamat { get; set; } = null;
+        public DateTime? TarikhMula { get; set; } 
+        public DateTime? TarikhTamat { get; set; } 
         public decimal? SewaBulanan { get; set; } = null;
         public decimal? SewaTahunan { get; set; } = null;
         public double? Semasa { get; set; } = null;
@@ -188,5 +188,12 @@ namespace DAL.Entiti
     }
 
 
+
+    public class PecahanRekodTanah
+    {
+        public string JenisWakaf { get; set; } = string.Empty;
+        public string Kategori { get; set; } = string.Empty;
+        public int Jumlah { get; set; }
+    }
 
 }

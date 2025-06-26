@@ -36,7 +36,8 @@ namespace DAL.Repo
         Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
         Task<IEnumerable<DashboardInfo>> GetInfoTanahKosongByDaerahSahaja(); Task<bool> CheckExistingUserId(string nokp, string email);
         Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data);
-
+        Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahKosongbyKategoriDetails(string statuspenghunian);
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahKosongByKategoriWakaf(string statuspenghunian);
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
@@ -319,8 +320,24 @@ namespace DAL.Repo
             return xx > 0;
         }
 
+        public async Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahKosongbyKategoriDetails(string statuspenghunian)
+        {
+            string sql = @"select KategoriSumberAmWakaf as JenisWakaf,Kategori, count(*) as Jumlah from tblLegasiWakafMAINS
+                            where StatusPenghunian = @statuspenghunian
+                            group by KategoriSumberAmWakaf,kategori
+                            order by KategoriSumberAmWakaf";
+            return await _serverProd.Connections.QueryAsync<PecahanRekodTanah>(sql ,new { statuspenghunian = statuspenghunian });
+        }
 
 
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahKosongByKategoriWakaf(string statuspenghunian)
+        {
+            string sql = @"
+                            SELECT KategoriSumberAmWakaf + ' - ' + Kategori AS Keterangan, COUNT(*) AS JumlahTanah
+                            FROM tblLegasiWakafMAINS WHERE StatusPenghunian = @statuspenghunian GROUP BY 
+                            KategoriSumberAmWakaf, Kategori ORDER BY KategoriSumberAmWakaf";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql, new { statuspenghunian = statuspenghunian});
+        }
 
     }
 }
