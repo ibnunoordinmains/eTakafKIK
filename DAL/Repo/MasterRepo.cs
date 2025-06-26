@@ -38,6 +38,7 @@ namespace DAL.Repo
         Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data);
         Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahKosongbyKategoriDetails(string statuspenghunian);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahKosongByKategoriWakaf(string statuspenghunian);
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah);
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
@@ -338,6 +339,19 @@ namespace DAL.Repo
                             KategoriSumberAmWakaf, Kategori ORDER BY KategoriSumberAmWakaf";
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql, new { statuspenghunian = statuspenghunian});
         }
+
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah)
+        {
+            string sql = @"SELECT daerah, KategoriSumberAmWakaf + ' - ' + Kategori AS Keterangan, COUNT(*) AS JumlahTanah
+                            FROM tblLegasiWakafMAINS where daerah=@daerah GROUP BY 
+                            KategoriSumberAmWakaf, Kategori,daerah  ORDER BY KategoriSumberAmWakaf";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql,new { daerah = daerah });
+        }
+
+
+
+
+
 
     }
 }

@@ -38,6 +38,7 @@ namespace SAL
         Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data);
         Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahKosongbyKategoriDetails(string statuspenghunian);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahKosongByKategoriWakaf(string statuspenghunian);
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah);
 
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
@@ -328,7 +329,10 @@ namespace SAL
             return await _master.GetDashboardInfoPecahanTanahKosongByKategoriWakaf(statuspenghunian);   
         }
 
-
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah)
+        {
+            return await _master.GetDashboardInfoGroupByDaerahDanJenisWakaf(daerah);
+        }
 
 
 
