@@ -76,8 +76,36 @@
                                 <div class="card stat-card total-card">
                                     <div class="card-body d-flex align-items-center justify-content-between">
                                         <div>
-                                            <h5 class="card-title mb-0">JUMLAH TANAH WAKAF</h5>
+                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN WAKAF</h5>
                                             <div class="stat-value mt-2">@TotalJumlahTW</div>
+                                            <div class="stat-label">Keseluruhan</div>
+                                        </div>
+                                        <div class="stat-icon">
+                                            <i class="bi bi-map"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-12">
+                                <div class="card stat-card total-card">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN KOSONG</h5>
+                                            <div class="stat-value mt-2"><span style="color:yellow;">@TotalJumlahTanahKosong</SPAN></div>
+                                            <div class="stat-label">Keseluruhan</div>
+                                        </div>
+                                        <div class="stat-icon">
+                                            <i class="bi bi-map"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-12">
+                                <div class="card stat-card total-card">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN DIGUNA</h5>
+                                            <div class="stat-value mt-2">@TotalJumlahTanahSewa</div>
                                             <div class="stat-label">Keseluruhan</div>
                                         </div>
                                         <div class="stat-icon">
@@ -89,7 +117,7 @@
                         </div>
 
                         <div class="row justify-content-center d-flex">
-                            <div class="col-xxl-3 col-xl-6">
+                            <div class="col-xxl-3 col-xl-6 mb-3">
                                 <div class="card stat-card shadow-lg">
                                     <div class="card-header bg-success text-white text-center">
                                         <h5 class="mb-0">TANAH/BANGUNAN KOSONG</h5>
@@ -115,7 +143,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xxl-3 col-xl-5">
+                            <div class="col-xxl-6 col-xl-10 mb-3">
                                 <div class="card stat-card shadow-lg h-100">
                                     <div class="card-header bg-success text-white text-center">
                                         <h5 class="mb-0">Pecahan Tanah/Bangunan Kosong Mengikut Jenis Wakaf</h5>
@@ -127,7 +155,7 @@
                                                 <table class="table table-bordered table-hover text-center align-middle mb-0">
                                                     <thead class="table-light">
                                                         <tr>
-                                                            <th class="fw-bold">Jenis Wakaf</th>
+                                                            <th class="fw-bold">Wakaf</th>
                                                             <th class="fw-bold">Kategori</th>
                                                             <th class="fw-bold">Jumlah</th>
                                                         </tr>
@@ -143,12 +171,14 @@
                                                                 <td class="fw-bold" style="color:red;">@xx.Jumlah</td>
                                                             </tr>
                                                         }
-                                                       @*  <tr class="table-light">
+                                                        <tr class="table-light">
+                                                            <td></td>
                                                             <td class="fw-bold text-end">Jumlah Keseluruhan</td>
                                                             <td class="fw-bold text-danger">
                                                                 @_detailTanahKosong.Sum(x => x.Jumlah)
                                                             </td>
-                                                        </tr> *@
+                                                        </tr>
+                                                     
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -157,7 +187,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xxl-3 col-xl-7">
+                           @*  <div class="col-xxl-3 col-xl-7 mb-3">
                                 <div class="card stat-card shadow-lg h-100">
                                     <div class="card stat-card">
                                         <div class="card-header">
@@ -173,7 +203,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> *@
 
                             <div class="col-xxl-3 col-xl-7">
                                 <div class="card stat-card shadow-lg h-100">
@@ -199,10 +229,10 @@
                             <div class="col-xxl-3 col-xl-6">
                                 <div class="card stat-card shadow-lg">
                                     <div class="card-header bg-success text-white text-center">
-                                        <h5 class="mb-0">TANAH/BANGUNAN SEWA</h5>
+                                        <h5 class="mb-0">TANAH/BANGUNAN TIDAK KOSONG</h5>
                                     </div>
                                     <div class="card-body text-center">
-                                        <h6 class="card-title mb-0">TANAH SEWA</h6>
+                                        <h6 class="card-title mb-0">TANAH SELAIN KOSONG</h6>
                                         <div class="stat-value mt-2" style="color:darkgreen;">@TotalJumlahTanahSewa_P.ToString("N2")%</div>
                                         <div class="stat-label fw-bolder">@TotalJumlahTanahSewa BIDANG tANAH Keseluruhan</div>
                                         <hr />
@@ -222,10 +252,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xxl-4 col-xl-5">
+                            <div class="col-xxl-6 col-xl-5">
                                 <div class="card stat-card shadow-lg h-100">
                                     <div class="card-header bg-success text-white text-center">
-                                        <h5 class="mb-0">Pecahan Tanah/Bangunan Disewa Mengikut Jenis Wakaf</h5>
+                                        <h5 class="mb-0">Pecahan Tanah/Bangunan Tidak Kosong Mengikut Jenis Wakaf</h5>
                                     </div>
                                     @if (adaRekodDetailsSewaan)
                                     {
@@ -251,6 +281,13 @@
                                                                 <td class="fw-bold" style="color:red;">@xx.Jumlah</td>
                                                             </tr>
                                                         }
+                                                        <tr class="table-light">
+                                                            <td></td>
+                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                            <td class="fw-bold text-danger">
+                                                                @_detailDisewa.Sum(x => x.Jumlah)
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -259,12 +296,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-xxl-4 col-xl-7">
+                            <div class="col-xxl-3 col-xl-7">
                                 <div class="card stat-card shadow-lg h-100">
                                     <div class="card stat-card">
                                         <div class="card-header">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span>Pecahan Tanah/Bangunan Disewa Mengikut Jenis Wakaf</span>
+                                                <span>Pecahan Tanah/Bangunan Tidak Kosong Mengikut Jenis Wakaf</span>
                                                 <i class="bi bi-bar-chart"></i>
                                             </div>
                                         </div>
@@ -279,7 +316,7 @@
 
                         </div>
 
-                        <div class="row justify-content-center d-flex mt-5">
+                       @*  <div class="row justify-content-center d-flex mt-5">
                             <div class="col-xxl-3 col-xl-6">
                                 <div class="card stat-card shadow-lg">
                                     <div class="card-header">
@@ -363,39 +400,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--Chart-->
-                      @*   <div class="row mt-5">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>Jumlah Tanah Wakaf Mengikut Daerah</span>
-                                            <i class="bi bi-bar-chart"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas id="landChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>Jumlah Tanah Mengikut Kategori</span>
-                                            <i class="bi bi-bar-chart"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas id="landChart3"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> *@
+                        *@
                     </div>
                 }
 
@@ -1022,13 +1027,13 @@
             _tanahkosong = await _service.GetInfoTanahKosongByDaerahSahaja();
 
             _dashInfoTanahKosong = await _service.GetDashboardInfoPecahanTanahKosongByKategoriWakaf("Kosong");
-            _dashInfoDiSewa = await _service.GetDashboardInfoPecahanTanahKosongByKategoriWakaf("Disewa");
+            _dashInfoDiSewa = await _service.GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf("Kosong");
             _dashInfoBukanSewaan = await _service.GetDashboardInfoPecahanTanahKosongByKategoriWakaf("Bukan Sewaan");
 
             _detailTanahKosong = await _service.GetPecahanRecordTanahKosongbyKategoriDetails("Kosong");
             if (_detailTanahKosong.Any()) adaRekodDetails = true;
 
-            _detailDisewa = await _service.GetPecahanRecordTanahKosongbyKategoriDetails("Disewa");
+            _detailDisewa = await _service.GetPecahanRecordTanahBukanKosongbyKategoriDetails("Disewa");
             if (_detailDisewa.Any()) adaRekodDetailsSewaan = true;
 
             _detailBukanSewaan = await _service.GetPecahanRecordTanahKosongbyKategoriDetails("Bukan Sewaan");

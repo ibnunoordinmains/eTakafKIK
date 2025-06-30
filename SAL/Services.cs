@@ -23,22 +23,26 @@ namespace SAL
         Task<IEnumerable<tblInfoUsereTakaf>> GetLoginInfo(string NoKp);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfo(); Task<IEnumerable<DashboardInfo>> GetKegunaanTanah();
         Task<int> CountJumlahTWAKosongBothKategori(); Task<int> CountJumlahTWKKosongBothKategori();
-        Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori, string StatusPenghunian);
-        Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Kosong(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Kosong();
+        Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosong(string kategori, string StatusPenghunian);
+        Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_Kosong(); Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_Kosong();
         Task<int> CountJumlahTWKDisewa(); Task<int> CountJumlahTWADisewa();
         Task<int> CountJumlahTWKBukanDisewa(); Task<int> CountJumlahTWABukanDisewa();
         Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
-        Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Sewa(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Sewa();
+        Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_Sewa(); Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_Sewa();
         Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian(); Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
 
         Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
         Task<IEnumerable<DashboardInfo>> GetInfoTanahKosongByDaerahSahaja(); Task<bool> CheckExistingUserId(string nokp, string email);
-        Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_BukanSewaan(); Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_BukanSewaan();
+        Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_BukanSewaan(); Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_BukanSewaan();
         Task<bool> UpdateExistingPassword(tblInfoUsereTakaf data);
         Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahKosongbyKategoriDetails(string statuspenghunian);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahKosongByKategoriWakaf(string statuspenghunian);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah);
+        Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahBukanKosongbyKategoriDetails(string statuspenghunian);
+        Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(string statuspenghunian);
+
+        //Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafBukanKosong(string kategori, string StatusPenghunian);
 
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
@@ -168,87 +172,86 @@ namespace SAL
             return await _master.CountJumlahTWKKosongBothKategori();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetDetailsTanahWakafKosong(string kategori, string statuspenghunian)
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosong(string kategori, string statuspenghunian)
         {
             return await _master.GetDetailsTanahWakafKosong(kategori, statuspenghunian);
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Kosong()
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_Kosong()
         {
-            var ada = await _master.GetDetailsTanahWakafKosong("Wakaf (am)","Kosong");
+            var ada = await _master.GetDetailsTanahWakafKosong("AM","Kosong");
             if (ada != null)
             {
                 for (int i = 0; i < ada.Count(); i++)
                 {
-                    ada.ElementAt(i).Bil = i + 1;
+                    ada.ElementAt(i).Id = i + 1;
                 }
             }
-            return ada;
+            return ada ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Kosong()
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_Kosong()
         {
-            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)","Kosong");
+            var ada1 = await _master.GetDetailsTanahWakafKosong("KHAS","Kosong");
             if (ada1 != null)
             {
                 for (int i = 0; i < ada1.Count(); i++)
                 {
-                    ada1.ElementAt(i).Bil = i + 1;
+                    ada1.ElementAt(i).Id = i + 1;
                 }
             }
-            return ada1;
+            return ada1 ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_Sewa()
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_Sewa()
         {
-            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)", "Disewa");
+            var ada1 = await _master.GetDetailsTanahWakafBukanKosong("Khas", "Kosong");
             if (ada1 != null)
             {
                 for (int i = 0; i < ada1.Count(); i++)
                 {
-                    ada1.ElementAt(i).Bil = i + 1;
+                    ada1.ElementAt(i).Id = i + 1;
                 }
             }
-            return ada1;
-        }
-
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_Sewa()
+            return ada1 ?? Enumerable.Empty<tblInfoTanahWakaf>();
+        }     
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_Sewa()
         {
-            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (am)", "Disewa");
+            var ada1 = await _master.GetDetailsTanahWakafBukanKosong("Am", "Kosong");
             if (ada1 != null)
             {
                 for (int i = 0; i < ada1.Count(); i++)
                 {
-                    ada1.ElementAt(i).Bil = i + 1;
+                    ada1.ElementAt(i).Id = i + 1;
                 }
             }
-            return ada1;
+            return ada1 ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWA_BukanSewaan()
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_BukanSewaan()
         {
-            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (am)", "Bukan Sewaan");
+            var ada1 = await _master.GetDetailsTanahWakafKosong("AM", "Bukan Sewaan");
             if (ada1 != null)
             {
                 for (int i = 0; i < ada1.Count(); i++)
                 {
-                    ada1.ElementAt(i).Bil = i + 1;
+                    ada1.ElementAt(i).Id = i + 1;
                 }
             }
-            return ada1;
+            return ada1 ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> GetRekodTWK_BukanSewaan()
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_BukanSewaan()
         {
-            var ada1 = await _master.GetDetailsTanahWakafKosong("Wakaf (Khas)", "Bukan Sewaan");
+            var ada1 = await _master.GetDetailsTanahWakafKosong("Khas", "Bukan Sewaan");
             if (ada1 != null)
             {
                 for (int i = 0; i < ada1.Count(); i++)
                 {
-                    ada1.ElementAt(i).Bil = i + 1;
+                    ada1.ElementAt(i).Id = i + 1;
                 }
             }
-            return ada1;
+            return ada1 ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
 
 
@@ -334,8 +337,15 @@ namespace SAL
             return await _master.GetDashboardInfoGroupByDaerahDanJenisWakaf(daerah);
         }
 
+        public async Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahBukanKosongbyKategoriDetails(string statuspenghunian)
+        {
+            return await _master.GetPecahanRecordTanahBukanKosongbyKategoriDetails(statuspenghunian);
+        }
 
-
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(string statuspenghunian)
+        {
+            return await _master.GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(statuspenghunian);
+        }
     }
 
 }

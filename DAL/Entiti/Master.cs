@@ -163,6 +163,26 @@ namespace DAL.Entiti
         public string NoDaftar { get; set; } = string.Empty;
     }
 
+    public class tblInfoTanahWakaf
+    {
+        public int Id { get; set; }
+        public int BIL { get; set; } = 0;
+        public string NO_DAFTAR { get; set; } = string.Empty;
+        public string PEWAKAF { get; set; } = string.Empty;
+        public string JENIS_WAKAF { get; set; } = string.Empty;
+        public string DAERAH { get; set; } = string.Empty;
+        public string JENIS_NO_HAKMILIK { get; set; } = string.Empty;
+        public string NO_LOT { get; set; } = string.Empty;
+        public string MUKIM_PEKAN_BANDAR { get; set; } = string.Empty;
+        public string KEGUNAAN_KATEGORI { get; set; } = string.Empty;
+        public double KELUASAN_TANAH_ha { get; set; } = 0.0;
+        public double KELUASAN_YANG_DIWAKAFKAN_ha { get; set; } = 0.0;
+        public double NILAIAN_TANAH_RM { get; set; } = 0.0;
+        public DateTime? TAHUN_WAKAF { get; set; } = null;
+        public string KOD { get; set; } = string.Empty;
+        public string CATATAN { get; set; } = string.Empty;
+    }
+
     public class ViewButiranStaf
     {
         public string NoStaf { get; set; } = string.Empty;

@@ -38,25 +38,25 @@
                                 <th>No Fail</th>
                                 <th>No Lot</th>
                                 <th>Daerah</th>
-                                <th>Status Penghunian</th>
-                                <th>Kategori Tanah</th>
-                                <th>Senarai Nyata Tanah</th>
+                                <th>Mukim/Bandar</th>
+                                <th>Kategori</th>
+                                <th>Kegunaan Semasa</th>
                                 <th>Keluasan Tanah Diwakaf (Ekar)</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var xx in _data)
+                            @foreach (var xx in _dataB)
                             {
                                 <tr>
-                                    <td class="text-center">@xx.Bil</td>
-                                    <td class="text-center text-primary">@xx.NoDaftar</td>
-                                    <td>@xx.NoLot</td>
-                                    <td class="fw-bold text-primary">@xx.Daerah</td>
-                                    <td class="fw-bold text-danger">@xx.StatusPenghunian</td>
-                                    <td>@xx.Kategori</td>
-                                    <td>@xx.SyaratNyataTanah</td>
-                                    <td class="text-center fw-bold text-danger">@(xx.Luastanahdiwakafkanekar?.ToString("F2") ?? "0.00")</td>
+                                    <td class="text-center">@xx.Id</td>
+                                    <td class="text-center text-primary">@xx.NO_DAFTAR</td>
+                                    <td>@xx.NO_LOT</td>
+                                    <td class="fw-bold text-primary">@xx.DAERAH</td>
+                                    <td class="fw-bold text-danger">@xx.MUKIM_PEKAN_BANDAR</td>
+                                    <td>@xx.KEGUNAAN_KATEGORI</td>
+                                    <td>@xx.CATATAN</td>
+                                    <td class="text-center fw-bold text-danger">@(xx.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("F2") ?? "0.00")</td>
                                     <td>
                                         <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
                                             <i class="fa-regular fa-circle-info"></i>
@@ -296,14 +296,15 @@
 
 
     IEnumerable<tblLegasiWakafMAINS> _data = [];
+    IEnumerable<tblInfoTanahWakaf> _dataB = [];
 
     protected override async Task OnInitializedAsync()
     {
         Jeniss = Jenis;
         if (Jeniss == "TWA") Message = "Laporan Tanah Wakaf AM (Tanah Kosong)";
         if (Jeniss == "TWK") Message = "Laporan Tanah Wakaf KHAS (Tanah Kosong)";
-        if (Jeniss == "TWAS") Message = "Laporan Tanah Wakaf AM (Tanah Disewa)";
-        if (Jeniss == "TWKS") Message = "Laporan Tanah Wakaf KHAS (Tanah Disewa)";
+        if (Jeniss == "TWAS") Message = "Laporan Tanah Wakaf AM (Bukan Tanah Kosong)";
+        if (Jeniss == "TWKS") Message = "Laporan Tanah Wakaf KHAS (Bukan Tanah Kosong)";
 
         if (Jeniss == "TWABS") Message = "Laporan Tanah Wakaf AM (Bukan Sewaan)";
         if (Jeniss == "TWKBS") Message = "Laporan Tanah Wakaf KHAS (Bukan Sewaan)";
@@ -337,32 +338,32 @@
         {
             if (Jeniss == "TWA")
             {
-                _data = await _service.GetRekodTWA_Kosong(); 
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.GetRekodTWA_Kosong(); 
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll"); 
             } 
             else if (Jeniss == "TWK")
             {
-                _data = await _service.GetRekodTWK_Kosong();
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.GetRekodTWK_Kosong();
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "TWKS")
             {
-                _data = await _service.GetRekodTWK_Sewa();
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.GetRekodTWK_Sewa();
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "TWAS")
             {
-                _data = await _service.GetRekodTWA_Sewa();
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.GetRekodTWA_Sewa();
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
@@ -370,16 +371,16 @@
 
             else if (Jeniss == "TWABS")
             {
-                _data = await _service.GetRekodTWA_BukanSewaan();
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.GetRekodTWA_BukanSewaan();
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300);
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "TWKBS")
             {
-                _data = await _service.GetRekodTWK_BukanSewaan();
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.GetRekodTWK_BukanSewaan();
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300);
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
@@ -446,32 +447,32 @@
         }
     }
 
-    private void getInfoDetails(tblLegasiWakafMAINS xdata)
+    private void getInfoDetails(tblInfoTanahWakaf xdata)
     {
-        AlamatPremis = xdata.AlamatPremis;
-        NamaPenyewaPenghuni = xdata.NamaPenyewaPenghuni;
-        NamaHartanah = xdata.NamaHartanah;
-        LuasTanahM2 = xdata.LuasTanahm2 ?? 0;
-        LuasTanahEkar = xdata.LuasTanahekar ?? 0;
-        LuasTanahDalamGeran = xdata.LuasTanahHaDalamGeran ?? 0;
-        LuasTanahDiwakafkanEkar = xdata.Luastanahdiwakafkanekar ?? 0;
-        LuasTanahDiwakafkanHa = xdata.LuastanahdiwakafkanHa ?? 0;
-        JenisHartanah = xdata.JenisHartanah;
-        NoLot = xdata.NoLot;
-        NoGeran = xdata.NoGeran;
-        Mukim = xdata.Mukim;
-        Daerah = xdata.Daerah;
-        PeganganTanah = xdata.PeganganTanah;
-        TempohPajakan = xdata.TempohPajakan;
-        SyaratNyataTanah = xdata.SyaratNyataTanah;
-        KategoriSumberAmWakaf = xdata.KategoriSumberAmWakaf;
-        StatusPenghunian = xdata.StatusPenghunian;
-        Kategori = xdata.Kategori;
-        Tempoh = xdata.Tempoh;
-        TarikhMula = xdata.TarikhMula ?? DateTime.MinValue;
-        TarikhTamat = xdata.TarikhTamat ?? DateTime.MinValue;
-        SewaBulanan = xdata.SewaBulanan ?? 0M;
-        SewaTahunan = xdata.SewaTahunan ?? 0M;
+        AlamatPremis = xdata.DAERAH;
+        NamaPenyewaPenghuni = "";
+        NamaHartanah = "";
+        LuasTanahM2 = 0;
+        LuasTanahEkar =  0;
+        LuasTanahDalamGeran =  0;
+        LuasTanahDiwakafkanEkar =  0;
+        LuasTanahDiwakafkanHa = Convert.ToDouble(xdata.KELUASAN_YANG_DIWAKAFKAN_ha);
+        JenisHartanah = xdata.KEGUNAAN_KATEGORI;
+        NoLot = xdata.NO_LOT;
+        NoGeran = xdata.JENIS_NO_HAKMILIK;
+        Mukim = xdata.MUKIM_PEKAN_BANDAR;
+        Daerah = xdata.DAERAH;
+        PeganganTanah = "";
+        TempohPajakan = "";
+        SyaratNyataTanah = "";
+        KategoriSumberAmWakaf = xdata.JENIS_WAKAF;
+        StatusPenghunian = "";
+        Kategori = xdata.KEGUNAAN_KATEGORI;
+        Tempoh = "";
+        TarikhMula =  DateTime.MinValue;
+        TarikhTamat =  DateTime.MinValue;
+        SewaBulanan = 0M;
+        SewaTahunan = 0M;
     }
 
 
