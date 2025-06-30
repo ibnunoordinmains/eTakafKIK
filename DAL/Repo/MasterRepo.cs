@@ -386,9 +386,9 @@ namespace DAL.Repo
 
         public async Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah)
         {
-            string sql = @"SELECT daerah, KategoriSumberAmWakaf + ' - ' + Kategori AS Keterangan, COUNT(*) AS JumlahTanah
-                            FROM tblLegasiWakafMAINS where daerah=@daerah GROUP BY 
-                            KategoriSumberAmWakaf, Kategori,daerah  ORDER BY KategoriSumberAmWakaf";
+            string sql = @"SELECT daerah, Jenis_Wakaf AS Keterangan, COUNT(*) AS JumlahTanah
+                            FROM tblinfotanahwakaf where daerah=@daerah GROUP BY 
+                            jenis_wakaf,daerah  ORDER BY jenis_wakaf";
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql,new { daerah = daerah });
         }
 
