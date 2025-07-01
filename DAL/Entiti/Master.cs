@@ -216,4 +216,87 @@ namespace DAL.Entiti
         public int Jumlah { get; set; }
     }
 
+
+    public class NilaiRMTanahWakaf
+    {
+        public double JumlahKeseluruhan { get; set; }
+        public double JumlahBukanKosong { get; set; }
+        public double JumlahKosong { get; set; }
+    }
+
+
+    public class OutputCarian
+    {
+        // Fields from tblLegasiWakafMAINS
+        public byte Bil { get; set; }
+        public string Alamat_Premis { get; set; } = string.Empty;
+        public string NamaPenyewaPenghuni { get; set; } = string.Empty;
+        public string LuasRuangLantaisqft { get; set; } = string.Empty;
+        public string NamaHartanah { get; set; } = string.Empty;
+        public double? LuasTanahm2 { get; set; }
+        public double? LuasTanahsqft { get; set; }
+        public double? LuasTanahHaDalamGeran { get; set; }
+        public double? LuasTanahekar { get; set; }
+        public double? LuastanahdiwakafkanHa { get; set; }
+        public double? Luastanahdiwakafkanekar { get; set; }
+        public string JenisHartanah { get; set; } = string.Empty;
+        public string NoLot { get; set; } = string.Empty;
+        public string NoGeran { get; set; } = string.Empty;
+        public string Mukim { get; set; } = string.Empty;
+        public string Daerah { get; set; } = string.Empty;
+        public string PeganganTanah { get; set; } = string.Empty;
+        public string TempohPajakan { get; set; } = string.Empty;
+        public string SyaratNyataTanah { get; set; } = string.Empty;
+        public string KategoriSumberAmWakaf { get; set; } = string.Empty;
+        public string StatusPenghunian { get; set; } = string.Empty;
+        public string Kategori { get; set; } = string.Empty;
+        public string Tempoh { get; set; } = string.Empty;
+        public DateTime? TarikhMula { get; set; }
+        public DateTime? TarikhTamat { get; set; }
+        public double? SewaBulanan { get; set; }
+        public decimal? SewaTahunan { get; set; }
+        public double? Semasa { get; set; }
+        public double? Terkumpul { get; set; }
+        public double? Semasa2 { get; set; }
+        public double? Terkumpul2 { get; set; }
+        public string Catatan { get; set; } = string.Empty;
+        public double? CukaiTanah { get; set; }
+        public double? CukaiPintuSetahun { get; set; }
+        public string Insurans { get; set; } = string.Empty;
+        public string Security { get; set; } = string.Empty;
+        public string Pembersihan { get; set; } = string.Empty;
+        public string Parking { get; set; } = string.Empty;
+        public string Elektrik { get; set; } = string.Empty;
+        public string Air { get; set; } = string.Empty;
+        public string Akuarium { get; set; } = string.Empty;
+        public string ServisCaj { get; set; } = string.Empty;
+        public string SinkingFund { get; set; } = string.Empty;
+        public string PenyelenggaraanBulanan { get; set; } = string.Empty;
+        public string KerjakerjaPembaikan2025 { get; set; } = string.Empty;
+        public string BajetPembaikan2025 { get; set; } = string.Empty;
+        public string StatusSemasaHartanah { get; set; } = string.Empty;
+        public string Nota { get; set; } = string.Empty;
+        public byte? JumlahBelanja { get; set; }
+        public string NoDaftar { get; set; } = string.Empty;
+
+        // Fields from TblInfoTanahWakaf
+        public byte BIL { get; set; }
+        public string NO_DAFTAR { get; set; } = string.Empty;
+        public string PEWAKAF { get; set; } = string.Empty;
+        public string JENIS_WAKAF { get; set; } = string.Empty;
+        public string DAERAH { get; set; } = string.Empty;
+        public string JENIS_NO_HAKMILIK { get; set; } = string.Empty;
+        public string NO_LOT { get; set; } = string.Empty;
+        public string MUKIM_PEKAN_BANDAR { get; set; } = string.Empty;
+        public string KEGUNAAN_KATEGORI { get; set; } = string.Empty;
+        public double KELUASAN_TANAH_ha { get; set; }
+        public double KELUASAN_YANG_DIWAKAFKAN_ha { get; set; }
+        public double? NILAIAN_TANAH_RM { get; set; }
+        public DateTime? TAHUN_WAKAF { get; set; }
+        public string KOD { get; set; } = string.Empty;
+        public string CATATAN { get; set; } = string.Empty;
+    }
+
+
+
 }

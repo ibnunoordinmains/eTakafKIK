@@ -53,7 +53,7 @@ body {
 
 .stat-value1 {
     font-size: 2.0rem;
-    font-weight: 500;
+    font-weight: 300;
     color: var(--dark-color);
 }
 
@@ -97,7 +97,8 @@ body {
 }
 
 .info-label {
-    color: var(--secondary-color);
+    /*color: var(--secondary-color);*/
+    color :#0e8320;
     font-size: 0.9rem;
     margin-bottom: 0.25rem;
 }

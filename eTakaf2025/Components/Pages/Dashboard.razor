@@ -70,7 +70,63 @@
                             </div>
                         </div>
 
-                        <!-- Summary Card -->
+                        <div class="row mb-5 g-4 justify-content-center">
+            <!-- Stat Card 1 -->
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="stat-card position-relative">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Nilai Keseluruhan</h5>
+                                <div class="stat-value1 fw-bold">RM @JumlahRMTotalTW</div>
+                                <div class="stat-label">Jumlah Aset Wakaf</div>
+                            </div>
+                            <div class="stat-icon text-primary">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stat Card 2 -->
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="stat-card orange position-relative">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Nilai Tanah/Bangunan Wakaf Kosong</h5>
+                                <div class="stat-value1 orangered-value fw-bold">RM @JumlahRMTanahKosongTW</div>
+                                <div class="stat-label">Belum Dimanfaatkan</div>
+                            </div>
+                            <div class="stat-icon" style="color: #fd7e14;">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stat Card 3 -->
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="stat-card green position-relative">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title">Nilai Tanah/Bangunan Wakaf Aktif</h5>
+                                <div class="stat-value1 green-value fw-bold">RM @JumlahRMTanahBukanKosongTW</div>
+                                <div class="stat-label">Sedang Dimanfaatkan</div>
+                            </div>
+                            <div class="stat-icon" style="color: #198754;">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
                         <div class="row mb-5 justify-content-center d-flex">
                             <div class="col-lg-3 col-md-4 col-12">
                                 <div class="card stat-card total-card">
@@ -406,480 +462,482 @@
 
             </div>
             <!--DashboardInfo Utk Daerah2-->
-            <div class="tab-pane fade" id="dashboard2" role="tabpanel" aria-labelledby="products-tab">
-                <div class="card mt-3 pe-3 px-3">
-                    <div class="card-header bg-success text-white text-center">
-                        <h5 class="mb-0">MAKLUMAT TANAH/BANGUNAN WAKAF MENGIKUT DAERAH</h5>
-                    </div>
-                   <div class="card-body">
-                        <div class="row mt-2">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="card stat-card h-100">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>Jumlah Tanah/Bangunan Wakaf Mengikut Daerah</span>
-                                            <i class="bi bi-bar-chart"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas id="landChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="tab-pane fade" id="dashboard2" role="tabpanel" aria-labelledby="products-tab">
+                    <div class="container mt-3 mb-5">
+                         <div class="card stat-card mt-3 pe-3 px-3">
+                            <div class="card-header mt-2 bg-success text-white text-center">
+                                <h5 class="mb-0">MAKLUMAT TANAH/BANGUNAN WAKAF MENGIKUT DAERAH</h5>
                             </div>
+                             <div class="card-body">
+                                <div class="row mt-2 d-flex justify-content-center">
+                                    <div class="col-sm-12 col-md-8">
+                                        <div class="card stat-card h-100">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>Jumlah Tanah/Bangunan Wakaf Mengikut Daerah</span>
+                                                    <i class="bi bi-bar-chart"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="chart-container">
+                                                    <canvas id="landChart"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                           
-                        </div>
-                        <div class="row g-4 mt-3">
-                            <!-- Seremban Card -->
-                            <div class="col-sm-12 col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>SEREMBAN</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Seremban"))">@SerembanPercent.ToString("N2")% </div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small> @SerembanJumlah dari @TotalJumlahTW</small></div>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI SEREMBAN</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaSeremban)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashSerembanInfo)
-                                                        {
-                                                            <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
-                                                            </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashSerembanInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                    <!-- Seremban Card -->
+                                    <div class="col-sm-12 col-md-3">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>SEREMBAN</span>
+                                                    <i class="bi bi-building"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Seremban"))">@SerembanPercent.ToString("N2")% </div>
+                                                <div class="stat-label">Bidang Tanah</div>
+                                                <div class="progress mt-3" style="height: 10px;">
+                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="text-end mt-1"><small> @SerembanJumlah dari @TotalJumlahTW</small></div>
                                             </div>
                                         </div>
-                                    }
+                                    </div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI SEREMBAN</span>
+                                                    <i class="bi bi-building"></i>
+                                                </div>
+                                            </div>
+                                            @if (adaSeremban)
+                                            {
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div class="table-responsive w-100">
+                                                        <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                            <thead class="table-success">
+                                                                <tr>
+                                                                    <th class="fw-bold">Keterangan</th>
+                                                                    <th class="fw-bold">Jumlah</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var xx in _dashSerembanInfo)
+                                                                {
+                                                                    <tr>
+                                                                        <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                            @xx.Keterangan
+                                                                        </td>
+                                                                        <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                    </tr>
+                                                                }
+                                                                <tr class="table-light">
+                                                                    <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                    <td class="fw-bold text-danger">
+                                                                        @_dashSerembanInfo.Sum(x => x.JumlahTanah)
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
                                     
-                                </div>
-                            </div>
-                            </div>
-                        <div class="row g-4 mt-3">
-                            <!-- Kuala Pilah Card -->
-                            <div class="col-sm-12 col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>KUALA PILAH</span>
-                                            <i class="bi bi-house"></i>
                                         </div>
                                     </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Kuala Pilah"))">@KualaPilahPercent.ToString("N2")%</div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 38%;" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small> @KualaPilahJumlah dari @TotalJumlahTW</small></div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI KUALA PILAH</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaKualaPilah)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashKualaPilahInfo)
-                                                        {
-                                                            <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
-                                                            </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashKualaPilahInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                    <!-- Kuala Pilah Card -->
+                                    <div class="col-sm-12 col-md-3">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>KUALA PILAH</span>
+                                                    <i class="bi bi-house"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Kuala Pilah"))">@KualaPilahPercent.ToString("N2")%</div>
+                                                <div class="stat-label">Bidang Tanah</div>
+                                                <div class="progress mt-3" style="height: 10px;">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 38%;" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="text-end mt-1"><small> @KualaPilahJumlah dari @TotalJumlahTW</small></div>
                                             </div>
                                         </div>
-                                    }
+                                    </div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI KUALA PILAH</span>
+                                                    <i class="bi bi-building"></i>
+                                                </div>
+                                            </div>
+                                            @if (adaKualaPilah)
+                                            {
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div class="table-responsive w-100">
+                                                        <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                            <thead class="table-success">
+                                                                <tr>
+                                                                    <th class="fw-bold">Keterangan</th>
+                                                                    <th class="fw-bold">Jumlah</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var xx in _dashKualaPilahInfo)
+                                                                {
+                                                                    <tr>
+                                                                        <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                            @xx.Keterangan
+                                                                        </td>
+                                                                        <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                    </tr>
+                                                                }
+                                                                <tr class="table-light">
+                                                                    <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                    <td class="fw-bold text-danger">
+                                                                        @_dashKualaPilahInfo.Sum(x => x.JumlahTanah)
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-4 mt-3">
-                            <!-- Tampin Card -->
-                            <div class="col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>TAMPIN</span>
-                                            <i class="bi bi-tree"></i>
                                         </div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Tampin"))">@TampinPercent.ToString("N2")%  </div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small>@TampinJumlah dari @TotalJumlahTW</small></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI TAMPIN</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaTampin)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashTampinInfo)
-                                                        {
-                                                            <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
-                                                            </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashTampinInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                    <!-- Tampin Card -->
+                                    <div class="col-md-3">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>TAMPIN</span>
+                                                    <i class="bi bi-tree"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Tampin"))">@TampinPercent.ToString("N2")%  </div>
+                                                <div class="stat-label">Bidang Tanah</div>
+                                                <div class="progress mt-3" style="height: 10px;">
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="text-end mt-1"><small>@TampinJumlah dari @TotalJumlahTW</small></div>
                                             </div>
                                         </div>
-                                    }
+                                    </div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI TAMPIN</span>
+                                                    <i class="bi bi-building"></i>
+                                                </div>
+                                            </div>
+                                            @if (adaTampin)
+                                            {
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div class="table-responsive w-100">
+                                                        <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                            <thead class="table-success">
+                                                                <tr>
+                                                                    <th class="fw-bold">Keterangan</th>
+                                                                    <th class="fw-bold">Jumlah</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var xx in _dashTampinInfo)
+                                                                {
+                                                                    <tr>
+                                                                        <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                            @xx.Keterangan
+                                                                        </td>
+                                                                        <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                    </tr>
+                                                                }
+                                                                <tr class="table-light">
+                                                                    <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                    <td class="fw-bold text-danger">
+                                                                        @_dashTampinInfo.Sum(x => x.JumlahTanah)
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-4 mt-3">
-                            <!-- Jelebu Card -->
-                            <div class="col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>JELEBU</span>
-                                            <i class="bi bi-geo"></i>
                                         </div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jelebu"))">@JelebuPercent.ToString("N2")% </div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small> @JelebuJumlah dari @TotalJumlahTW</small></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI JELEBU</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaJelebu)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashJelebuInfo)
-                                                        {
-                                                            <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
-                                                            </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashJelebuInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                    <!-- Jelebu Card -->
+                                    <div class="col-md-3">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>JELEBU</span>
+                                                    <i class="bi bi-geo"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jelebu"))">@JelebuPercent.ToString("N2")% </div>
+                                                <div class="stat-label">Bidang Tanah</div>
+                                                <div class="progress mt-3" style="height: 10px;">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 21%;" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="text-end mt-1"><small> @JelebuJumlah dari @TotalJumlahTW</small></div>
                                             </div>
                                         </div>
-                                    }
+                                    </div>
+                                    <div class="col-sm-12 col-md-5">
+                                        <div class="card stat-card">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI JELEBU</span>
+                                                    <i class="bi bi-building"></i>
+                                                </div>
+                                            </div>
+                                            @if (adaJelebu)
+                                            {
+                                                <div class="card-body d-flex justify-content-center align-items-center">
+                                                    <div class="table-responsive w-100">
+                                                        <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                            <thead class="table-success">
+                                                                <tr>
+                                                                    <th class="fw-bold">Keterangan</th>
+                                                                    <th class="fw-bold">Jumlah</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var xx in _dashJelebuInfo)
+                                                                {
+                                                                    <tr>
+                                                                        <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                            @xx.Keterangan
+                                                                        </td>
+                                                                        <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                    </tr>
+                                                                }
+                                                                <tr class="table-light">
+                                                                    <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                    <td class="fw-bold text-danger">
+                                                                        @_dashJelebuInfo.Sum(x => x.JumlahTanah)
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
 
-                                </div>
-                            </div>
-                        </div>
-                            <div class="row g-4 mt-3">
-                            <!-- Port Dickson Card -->
-                                <div class="col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>PORT DICKSON</span>
-                                            <i class="bi bi-water"></i>
                                         </div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Port Dickson"))">@PortDicksonPercent.ToString("N2")%</div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small> @PortDicksonJumlah dari @TotalJumlahTW</small></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI PORT DICKSON</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaPortDickson)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashPortDicksonInfo)
-                                                        {
-                                                            <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
-                                                            </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashPortDicksonInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                <!-- Port Dickson Card -->
+                                    <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>PORT DICKSON</span>
+                                                <i class="bi bi-water"></i>
                                             </div>
                                         </div>
-                                    }
-
-                                </div>
-                            </div>
-                            </div>
-                            <div class="row g-4 mt-3">
-                            <!-- Rembau Card -->
-                                 <div class="col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>REMBAU</span>
-                                            <i class="bi bi-pin-map"></i>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Port Dickson"))">@PortDicksonPercent.ToString("N2")%</div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 17%;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small> @PortDicksonJumlah dari @TotalJumlahTW</small></div>
                                         </div>
                                     </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Rembau"))">@RembauPercent.ToString("N2")% </div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar bg-secondary" role="progressbar" style="width: 16%;" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small>@RembauJumlah dari @TotalJumlahTW</small></div>
-                                    </div>
                                 </div>
-                            </div>
                                 <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI REMBAU</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaRembau)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashRembauInfo)
-                                                        {
-                                                            <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
-                                                            </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashRembauInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI PORT DICKSON</span>
+                                                <i class="bi bi-building"></i>
                                             </div>
                                         </div>
-                                    }
-
-                                </div>
-                            </div>
-                            </div>
-                            <div class="row g-4 mt-3">
-                            <!-- Jempol Card -->
-                                <div class="col-md-3">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>JEMPOL</span>
-                                            <i class="bi bi-signpost-2"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jempol"))">@JempolPercent.ToString("N2")% </div>
-                                        <div class="stat-label">Bidang Tanah</div>
-                                        <div class="progress mt-3" style="height: 10px;">
-                                            <div class="progress-bar" style="background-color: #7209b7; width: 13%;" role="progressbar" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-end mt-1"><small>@JempolJumlah dari @TotalJumlahTW</small></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-5">
-                                <div class="card stat-card">
-                                    <div class="card-header">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI JEMPOL</span>
-                                            <i class="bi bi-building"></i>
-                                        </div>
-                                    </div>
-                                    @if (adaJempol)
-                                    {
-                                        <div class="card-body d-flex justify-content-center align-items-center">
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-bordered table-hover text-center align-middle mb-0">
-                                                    <thead class="table-success">
-                                                        <tr>
-                                                            <th class="fw-bold">Keterangan</th>
-                                                            <th class="fw-bold">Jumlah</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var xx in _dashJempolInfo)
-                                                        {
+                                        @if (adaPortDickson)
+                                        {
+                                            <div class="card-body d-flex justify-content-center align-items-center">
+                                                <div class="table-responsive w-100">
+                                                    <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                        <thead class="table-success">
                                                             <tr>
-                                                                <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
-                                                                    @xx.Keterangan
-                                                                </td>
-                                                                <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                <th class="fw-bold">Keterangan</th>
+                                                                <th class="fw-bold">Jumlah</th>
                                                             </tr>
-                                                        }
-                                                        <tr class="table-light">
-                                                            <td class="fw-bold text-end">Jumlah Keseluruhan</td>
-                                                            <td class="fw-bold text-danger">
-                                                                @_dashJempolInfo.Sum(x => x.JumlahTanah)
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var xx in _dashPortDicksonInfo)
+                                                            {
+                                                                <tr>
+                                                                    <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                        @xx.Keterangan
+                                                                    </td>
+                                                                    <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                </tr>
+                                                            }
+                                                            <tr class="table-light">
+                                                                <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                <td class="fw-bold text-danger">
+                                                                    @_dashPortDicksonInfo.Sum(x => x.JumlahTanah)
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                <!-- Rembau Card -->
+                                     <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>REMBAU</span>
+                                                <i class="bi bi-pin-map"></i>
                                             </div>
                                         </div>
-                                    }
-
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Rembau"))">@RembauPercent.ToString("N2")% </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 16%;" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small>@RembauJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
+                                    <div class="col-sm-12 col-md-5">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI REMBAU</span>
+                                                <i class="bi bi-building"></i>
+                                            </div>
+                                        </div>
+                                        @if (adaRembau)
+                                        {
+                                            <div class="card-body d-flex justify-content-center align-items-center">
+                                                <div class="table-responsive w-100">
+                                                    <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                        <thead class="table-success">
+                                                            <tr>
+                                                                <th class="fw-bold">Keterangan</th>
+                                                                <th class="fw-bold">Jumlah</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var xx in _dashRembauInfo)
+                                                            {
+                                                                <tr>
+                                                                    <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                        @xx.Keterangan
+                                                                    </td>
+                                                                    <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                </tr>
+                                                            }
+                                                            <tr class="table-light">
+                                                                <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                <td class="fw-bold text-danger">
+                                                                    @_dashRembauInfo.Sum(x => x.JumlahTanah)
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row g-4 mt-3 d-flex justify-content-center">
+                                <!-- Jempol Card -->
+                                    <div class="col-md-3">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>JEMPOL</span>
+                                                <i class="bi bi-signpost-2"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div class="stat-value" style="color: #458833 ;cursor:pointer;" @onclick="@(() => ShowData("Jempol"))">@JempolPercent.ToString("N2")% </div>
+                                            <div class="stat-label">Bidang Tanah</div>
+                                            <div class="progress mt-3" style="height: 10px;">
+                                                <div class="progress-bar" style="background-color: #7209b7; width: 13%;" role="progressbar" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <div class="text-end mt-1"><small>@JempolJumlah dari @TotalJumlahTW</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="card stat-card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>MAKLUMAT TANAH/BANGUNAN WAKAF DI JEMPOL</span>
+                                                <i class="bi bi-building"></i>
+                                            </div>
+                                        </div>
+                                        @if (adaJempol)
+                                        {
+                                            <div class="card-body d-flex justify-content-center align-items-center">
+                                                <div class="table-responsive w-100">
+                                                    <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                                        <thead class="table-success">
+                                                            <tr>
+                                                                <th class="fw-bold">Keterangan</th>
+                                                                <th class="fw-bold">Jumlah</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var xx in _dashJempolInfo)
+                                                            {
+                                                                <tr>
+                                                                    <td class="fw-bold" style="color:@(xx.Keterangan == "Wakaf (am)" ? "#75BBA7" : "#645244")">
+                                                                        @xx.Keterangan
+                                                                    </td>
+                                                                    <td class="fw-bold" style="color:red;">@xx.JumlahTanah</td>
+                                                                </tr>
+                                                            }
+                                                            <tr class="table-light">
+                                                                <td class="fw-bold text-end">Jumlah Keseluruhan</td>
+                                                                <td class="fw-bold text-danger">
+                                                                    @_dashJempolInfo.Sum(x => x.JumlahTanah)
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                </div>
                         </div>
-                   </div>
+                        </div>
+                    </div>               
                 </div>
             </div>
         </div>
@@ -900,7 +958,7 @@
     IEnumerable<DashboardInfo> _dashSerembanInfo = []; IEnumerable<DashboardInfo> _dashRembauInfo = []; IEnumerable<DashboardInfo> _dashTampinInfo = [];
     IEnumerable<DashboardInfo> _dashJelebuInfo = []; IEnumerable<DashboardInfo> _dashPortDicksonInfo = []; IEnumerable<DashboardInfo> _dashKualaPilahInfo = [];
     IEnumerable<DashboardInfo> _dashJempolInfo = [];
-
+    IEnumerable<NilaiRMTanahWakaf> _nilaiRM = [];
 
     public string Mode = string.Empty;
     public bool adaRekod = false;
@@ -928,6 +986,8 @@
 
     public decimal SerembanPercent; public decimal JempolPercent; public decimal RembauPercent; public decimal JelebuPercent;
     public decimal KualaPilahPercent; public decimal TampinPercent; public decimal PortDicksonPercent;
+
+    public string JumlahRMTotalTW = string.Empty ; public string JumlahRMTanahKosongTW = string.Empty; public string JumlahRMTanahBukanKosongTW= string.Empty;
 
     private async Task LoadFile()
     {
@@ -1039,7 +1099,14 @@
             _detailBukanSewaan = await _service.GetPecahanRecordTanahKosongbyKategoriDetails("Bukan Sewaan");
             if (_detailBukanSewaan.Any()) adaRekodDetailsXlehSewa = true;
 
-
+            _nilaiRM = await _service.GetNilaiRMTanahWakaf();
+            if (_nilaiRM.Any())
+            {
+                var xdat = _nilaiRM.FirstOrDefault();
+                JumlahRMTotalTW = xdat.JumlahKeseluruhan.ToString("N2");
+                JumlahRMTanahBukanKosongTW = xdat.JumlahBukanKosong.ToString("N2");
+                JumlahRMTanahKosongTW = xdat.JumlahKosong.ToString("N2");
+            }
 
 
             TotalJumlahTW = _data.Sum(x => x.JumlahTanah);

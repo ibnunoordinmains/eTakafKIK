@@ -32,7 +32,7 @@
             {
                 <div class="table-responsive">
                     <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
-                        <thead class="table-primary text-center align-middle">
+                        <thead class="table-success text-center align-middle">
                             <tr>
                                 <th>#</th>
                                 <th>No Fail</th>
@@ -40,8 +40,8 @@
                                 <th>Daerah</th>
                                 <th>Mukim/Bandar</th>
                                 <th>Kategori</th>
-                                <th>Kegunaan Semasa</th>
-                                <th>Keluasan Tanah Diwakaf (Ekar)</th>
+                                <th>Catatan</th>
+                                <th>Keluasan Tanah Diwakaf (Ha)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -51,14 +51,14 @@
                                 <tr>
                                     <td class="text-center">@xx.Id</td>
                                     <td class="text-center text-primary">@xx.NO_DAFTAR</td>
-                                    <td>@xx.NO_LOT</td>
+                                    <td class="text-center fw-bold">@xx.NO_LOT</td>
                                     <td class="fw-bold text-primary">@xx.DAERAH</td>
-                                    <td class="fw-bold text-danger">@xx.MUKIM_PEKAN_BANDAR</td>
-                                    <td>@xx.KEGUNAAN_KATEGORI</td>
+                                    <td class="fw-bold text-danger">@xx.MUKIM_PEKAN_BANDAR.ToString().ToUpper()</td>
+                                    <td class="fw-bold @GetColorKategori(xx.KEGUNAAN_KATEGORI)">@xx.KEGUNAAN_KATEGORI</td>
                                     <td>@xx.CATATAN</td>
                                     <td class="text-center fw-bold text-danger">@(xx.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("F2") ?? "0.00")</td>
                                     <td>
-                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
+                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
                                             <i class="fa-regular fa-circle-info"></i>
                                          </button>
                                     </td>
@@ -76,7 +76,7 @@
 <div class="modal fade" id="staticCenteredModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <div class="modal-header" style="background :linear-gradient(135deg, #3a0ca3, #4361ee) !important;color:white;">
+            <div class="modal-header" style="background :linear-gradient(135deg, #50AD36, #42DF16) !important;color:white;">
                 <h5 class="modal-title">MAKLUMAT LANJUT TANAH WAKAF</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -298,6 +298,18 @@
     IEnumerable<tblLegasiWakafMAINS> _data = [];
     IEnumerable<tblInfoTanahWakaf> _dataB = [];
 
+    private string GetColorKategori(string kategori)
+    {
+        return kategori switch
+        {
+            "Bangunan" => "text-primary",
+            "Pertanian" => "text-success",
+            "Strata" => "text-info",
+            _ => "text-dark"
+        };
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
         Jeniss = Jenis;
@@ -388,56 +400,56 @@
 
             else if (Jeniss == "Seremban")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Seremban");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("SEREMBAN");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "Kuala Pilah")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Kuala Pilah");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("KUALA PILAH");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "Rembau")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Rembau");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("REMBAU");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "Jelebu")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Jelebu");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("JELEBU");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "Jempol")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Jempol");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("JEMPOL");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "Port Dickson")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Port Dickson");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("PORT DICKSON");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
             }
             else if (Jeniss == "Tampin")
             {
-                _data = await _service.CariRekodHartaTanahWakafByDaerahSahaja("Tampin");
-                if (_data.Any()) adaRekod = true;
+                _dataB = await _service.CariRekodHartaTanahWakafByDaerahSahaja("TAMPIN");
+                if (_dataB.Any()) adaRekod = true;
                 await Task.Delay(300); 
                 await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
                 await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
@@ -447,32 +459,74 @@
         }
     }
 
-    private void getInfoDetails(tblInfoTanahWakaf xdata)
+    private async Task getInfoDetails(tblInfoTanahWakaf xdata)
     {
-        AlamatPremis = xdata.DAERAH;
-        NamaPenyewaPenghuni = "";
-        NamaHartanah = "";
-        LuasTanahM2 = 0;
-        LuasTanahEkar =  0;
-        LuasTanahDalamGeran =  0;
-        LuasTanahDiwakafkanEkar =  0;
-        LuasTanahDiwakafkanHa = Convert.ToDouble(xdata.KELUASAN_YANG_DIWAKAFKAN_ha);
-        JenisHartanah = xdata.KEGUNAAN_KATEGORI;
-        NoLot = xdata.NO_LOT;
-        NoGeran = xdata.JENIS_NO_HAKMILIK;
-        Mukim = xdata.MUKIM_PEKAN_BANDAR;
-        Daerah = xdata.DAERAH;
-        PeganganTanah = "";
-        TempohPajakan = "";
-        SyaratNyataTanah = "";
-        KategoriSumberAmWakaf = xdata.JENIS_WAKAF;
-        StatusPenghunian = "";
-        Kategori = xdata.KEGUNAAN_KATEGORI;
-        Tempoh = "";
-        TarikhMula =  DateTime.MinValue;
-        TarikhTamat =  DateTime.MinValue;
-        SewaBulanan = 0M;
-        SewaTahunan = 0M;
+        try
+        {
+
+            var asknolot = xdata.NO_LOT; var askdaerah = xdata.DAERAH;
+
+            IEnumerable<OutputCarian> infoDat = await _service.GetInfoDetailsBothTables(asknolot, askdaerah);
+            if (infoDat.Any())
+            {
+                var dataa = infoDat.FirstOrDefault();
+
+                AlamatPremis = dataa?.Alamat_Premis ?? "";
+                NamaPenyewaPenghuni = dataa?.NamaPenyewaPenghuni ?? "";
+                NamaHartanah = dataa?.NamaHartanah ?? "";
+                LuasTanahM2 = Convert.ToDouble(dataa?.LuasTanahm2 ?? 0);
+                LuasTanahEkar = 0;
+                LuasTanahDalamGeran = 0;
+                LuasTanahDiwakafkanEkar = 0;
+                LuasTanahDiwakafkanHa = Convert.ToDouble(xdata.KELUASAN_YANG_DIWAKAFKAN_ha);
+                JenisHartanah = dataa?.JenisHartanah ?? "";
+                NoLot = dataa?.NoLot ?? "";
+                NoGeran = dataa?.JENIS_NO_HAKMILIK ?? "";
+                Mukim = dataa?.MUKIM_PEKAN_BANDAR ?? "";
+                Daerah = dataa?.Daerah ?? "";
+                PeganganTanah = dataa?.PeganganTanah ?? "";
+                TempohPajakan = dataa?.TempohPajakan ?? "";
+                SyaratNyataTanah = dataa?.SyaratNyataTanah ?? "";
+                KategoriSumberAmWakaf = dataa?.JENIS_WAKAF ?? "";// xdata.JENIS_WAKAF;
+                StatusPenghunian = dataa?.StatusPenghunian ?? "";
+                Kategori = dataa?.Kategori ?? "";
+                Tempoh = dataa?.Tempoh ?? "";
+                TarikhMula = dataa?.TarikhMula ?? DateTime.MinValue;
+                TarikhTamat = dataa?.TarikhTamat ?? DateTime.MinValue;
+                SewaBulanan = Convert.ToDecimal(dataa?.SewaBulanan);
+                SewaTahunan = Convert.ToDecimal(dataa?.SewaTahunan);
+            }
+
+
+            // AlamatPremis = xdata.DAERAH;
+            // NamaPenyewaPenghuni = "";
+            // NamaHartanah = "";
+            // LuasTanahM2 = 0;
+            // LuasTanahEkar = 0;
+            // LuasTanahDalamGeran = 0;
+            // LuasTanahDiwakafkanEkar = 0;
+            // LuasTanahDiwakafkanHa = Convert.ToDouble(xdata.KELUASAN_YANG_DIWAKAFKAN_ha);
+            // JenisHartanah = xdata.KEGUNAAN_KATEGORI;
+            // NoLot = xdata.NO_LOT;
+            // NoGeran = xdata.JENIS_NO_HAKMILIK;
+            // Mukim = xdata.MUKIM_PEKAN_BANDAR;
+            // Daerah = xdata.DAERAH;
+            // PeganganTanah = "";
+            // TempohPajakan = "";
+            // SyaratNyataTanah = "";
+            // KategoriSumberAmWakaf = xdata.JENIS_WAKAF;
+            // StatusPenghunian = "";
+            // Kategori = xdata.KEGUNAAN_KATEGORI;
+            // Tempoh = "";
+            // TarikhMula = DateTime.MinValue;
+            // TarikhTamat = DateTime.MinValue;
+            // SewaBulanan = 0M;
+            // SewaTahunan = 0M;
+        }
+        catch(System.Exception err)
+        {
+            throw new Exception(err.Message);
+        }
     }
 
 

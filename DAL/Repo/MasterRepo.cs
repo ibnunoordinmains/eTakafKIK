@@ -30,7 +30,7 @@ namespace DAL.Repo
         Task<int> CountJumlahTWADisewa(); Task<int> CountJumlahTWKDisewa();
         Task<int> CountJumlahTWKBukanDisewa(); Task<int> CountJumlahTWABukanDisewa();
         Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian();
-        Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
+        Task<IEnumerable<tblInfoTanahWakaf>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
         Task<IEnumerable<ViewButiranStaf>> GetInfoDataFromEHR(string nostaf);
@@ -42,6 +42,9 @@ namespace DAL.Repo
         Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahBukanKosongbyKategoriDetails(string statuspenghunian);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(string statuspenghunian);
         Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafBukanKosong(string kategori, string StatusPenghunian);
+        Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf();
+        Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
+
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
@@ -295,15 +298,15 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
+        public async Task<IEnumerable<tblInfoTanahWakaf>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
         {
-            string sql = @"SELECT * FROM tblLegasiWakafMAINS where Daerah = @Daerah";
-            return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { daerah = daerah });
+            string sql = @"SELECT * FROM tblinfotanahwakaf where Daerah = @Daerah";
+            return await _serverProd.Connections.QueryAsync<tblInfoTanahWakaf>(sql, new { daerah = daerah });
         }
 
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot)
         {
-            string sql = @"select * from tblLegasiWakafMAINS where nolot = @nolot";
+            string sql = @"select * from tblinfotanahwakaf where no_lot = @nolot";
             return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { nolot = nolot });
         }
 
@@ -392,9 +395,33 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql,new { daerah = daerah });
         }
 
+        public async Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf()
+        {
+            string sql = @"
+                        SELECT
+                            SUM(NILAIAN_TANAH_RM) AS JumlahKeseluruhan,
+                            SUM(CASE 
+                                    WHEN kod NOT IN ('BRWK','IPIK','IPITK','LKR','STK','TK','TKGETAH','TKSAWIT','TS') 
+                                    THEN NILAIAN_TANAH_RM ELSE 0
+                                END) AS JumlahBukanKosong,
+                            SUM(CASE 
+                                    WHEN kod IN ('BRWK','IPIK','IPITK','LKR','STK','TK','TKGETAH','TKSAWIT','TS') 
+                                    THEN NILAIAN_TANAH_RM ELSE 0
+                                END) AS JumlahKosong
+                        FROM tblinfotanahwakaf";
+            return await _serverProd.Connections.QueryAsync<NilaiRMTanahWakaf>(sql);
+        }
 
 
-
+        public async Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah)
+        {
+            string sql = @"SELECT * FROM tblLegasiWakafMAINS a
+                                FULL OUTER JOIN TblInfoTanahWakaf b
+                                    ON a.NoLot = b.NO_LOT AND a.Daerah = b.DAERAH
+                                WHERE (a.NoLot = @nolot AND a.Daerah = @daerah)
+                                    OR (b.NO_LOT = @nolot AND b.DAERAH = @daerah)";
+            return await _serverProd.Connections.QueryAsync<OutputCarian>(sql, new { nolot = nolot, daerah = daerah }); 
+        }
 
 
     }

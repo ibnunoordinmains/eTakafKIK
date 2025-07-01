@@ -27,7 +27,7 @@ namespace SAL
         Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_Kosong(); Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_Kosong();
         Task<int> CountJumlahTWKDisewa(); Task<int> CountJumlahTWADisewa();
         Task<int> CountJumlahTWKBukanDisewa(); Task<int> CountJumlahTWABukanDisewa();
-        Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
+        Task<IEnumerable<tblInfoTanahWakaf>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah);
         Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWA_Sewa(); Task<IEnumerable<tblInfoTanahWakaf>> GetRekodTWK_Sewa();
         Task<IEnumerable<DashboardInfo>> GetKegunaanByStatusPenghunian(); Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot);
         Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah);
@@ -41,6 +41,8 @@ namespace SAL
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah);
         Task<IEnumerable<PecahanRekodTanah>> GetPecahanRecordTanahBukanKosongbyKategoriDetails(string statuspenghunian);
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(string statuspenghunian);
+        Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf();
+        Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
 
         //Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafBukanKosong(string kategori, string StatusPenghunian);
 
@@ -280,17 +282,17 @@ namespace SAL
             return await _master.GetKegunaanByStatusPenghunian();
         }
 
-        public async Task<IEnumerable<tblLegasiWakafMAINS>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
+        public async Task<IEnumerable<tblInfoTanahWakaf>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
         {
             var bil =  await _master.CariRekodHartaTanahWakafByDaerahSahaja(daerah);
             if (bil != null)
             {
                 for (int i = 0; i < bil.Count(); i++)
                 {
-                    bil.ElementAt(i).Bil = i + 1;
+                    bil.ElementAt(i).Id = i + 1;
                 }
             }
-            return bil;
+            return bil ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodHartaTanahByNoLotSahaja(string nolot)
         {
@@ -346,6 +348,18 @@ namespace SAL
         {
             return await _master.GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(statuspenghunian);
         }
+
+        public async Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf()
+        {
+            return await _master.GetNilaiRMTanahWakaf();
+        }
+
+        public async Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah)
+        {
+            return await _master.GetInfoDetailsBothTables(nolot, daerah);
+        }
+
+
     }
 
 }
