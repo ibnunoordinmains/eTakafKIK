@@ -290,7 +290,7 @@ private void OnUserIdInput(ChangeEventArgs e)
                 if (isMatch)
                 {                    
                     await myIden.SignInUserAsync(modelDB.UserId, modelDB.UserId, "user", "user");
-                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/e-Takaf/Dashboard";
+                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
                 }
                 else

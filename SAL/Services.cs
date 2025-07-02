@@ -43,8 +43,7 @@ namespace SAL
         Task<IEnumerable<DashboardInfo>> GetDashboardInfoPecahanTanahBukanKosongByKategoriWakaf(string statuspenghunian);
         Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf();
         Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
-
-        //Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafBukanKosong(string kategori, string StatusPenghunian);
+        Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic();
 
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
@@ -359,7 +358,18 @@ namespace SAL
             return await _master.GetInfoDetailsBothTables(nolot, daerah);
         }
 
-
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic()
+        {
+            var bil =  await _master.GetDetailsTanahWakafKosongForAKForPublic();
+            if (bil != null)
+            {
+                for (int i = 0; i < bil.Count(); i++)
+                {
+                    bil.ElementAt(i).Id = i + 1;
+                }
+            }
+            return bil ?? Enumerable.Empty<tblInfoTanahWakaf>();
+        }
     }
 
 }

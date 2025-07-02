@@ -1,0 +1,172 @@
+﻿@page "/HomeInfoWakaf"
+
+<PageTitle>Dashboard Info Maklumat Wakaf</PageTitle>
+
+@layout MainLayout
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using IdentityAuthentication
+@using Microsoft.AspNetCore.Authorization
+@using SAL
+@using System.Security.Claims
+@using System.Web
+@using eTakaf2025.Components.Layout
+
+@attribute [Authorize]
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+@inject IIdentityAuthenticationLib myIden
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="primary-tabs">
+            <ul class="nav nav-tabs" id="primaryTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#dashboard1" type="button" role="tab" aria-controls="products" aria-selected="true">
+                        <i class="bi bi-grid me-2"></i>DASHBOARD
+                    </button>
+                </li>               
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="dashboard1" role="tabpanel" aria-labelledby="products-tab">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-12 mt-3">
+                            <h3 class="text-black text-center mb-0">
+                                <i class="bi bi-graph-up-arrow me-3"></i>
+                               WAKAF TANAH/BANGUNAN SEDIA UNTUK DISEWA
+                            </h3>
+                            <p class="text-white-50 text-center">Comprehensive overview of your financial data</p>
+                        </div>
+                    </div>
+                     <div class="row mb-4 justify-content-center d-flex">
+                        <div class="col-sm-12 col-md-4">
+                            <div class="card dashboard-card grand-total-card">
+                                <div class="card-body">
+                                    <div class="grand-total-amount">@JumlahRekod</div>
+                                    <p class="mb-0 mt-3 opacity-75">WAKAF TANAH/BANGUNAN</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-sm-12 col-md-3">
+                            <div class="card dashboard-card grand-total-card">
+                                <div class="card-body">
+                                   <div class="grand-total-amount1">@TanahKosongTWA</div>
+                                    <p class="mb-0 mt-3 opacity-75">AM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-3">
+                            <div class="card dashboard-card grand-total-card">
+                                <div class="card-body">                                   
+                                    <div class="grand-total-amount1">@TanahKosongTWK</div>
+                                    <p class="mb-0 mt-3 opacity-75">KHAS</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 mt-4">
+                            <h3 class="text-primary text-center fw-bold">
+                                <i class="bi bi-graph-up-arrow me-2"></i>
+                                WAKAF TANAH/BANGUNAN SEDIA UNTUK DISEWA
+                            </h3>
+                            <p class="text-muted text-center fs-6">Ringkasan maklumat aset wakaf sedia untuk disewa</p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4 justify-content-center">
+                        <!-- Total Wakaf -->
+                        <div class="col-sm-12 col-md-4 mb-3">
+                            <div class="card stat-card text-center shadow-sm border-0 grand-total-card rounded-4">
+                                <div class="card-body">
+                                    <h2 class="text-dark display-5 fw-bold">@JumlahRekod</h2>
+                                    <p class="text-secondary mt-2 mb-0 fs-5">Wakaf Tanah/Bangunan</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wakaf AM -->
+                        <div class="col-sm-12 col-md-3 mb-3">
+                            <div class="card stat-card text-center shadow-sm border-0 bg-info-subtle rounded-4">
+                                <div class="card-body">
+                                    <h2 class="text-primary display-6 fw-bold">@TanahKosongTWA</h2>
+                                    <p class="text-primary-emphasis mt-2 mb-0 fs-6">Tanah Kosong (AM)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wakaf KHAS -->
+                        <div class="col-sm-12 col-md-3 mb-3">
+                            <div class="card stat-card text-center shadow-sm border-0 bg-warning-subtle rounded-4">
+                                <div class="card-body">
+                                    <h2 class="text-warning display-6 fw-bold">@TanahKosongTWK</h2>
+                                    <p class="text-warning-emphasis mt-2 mb-0 fs-6">Tanah Kosong (KHAS)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    public string Mode = string.Empty;
+    public bool adaRekod = false;
+    public int TanahKosongTWA = 0; public int TanahKosongTWK = 0;
+
+    IEnumerable<tblInfoTanahWakaf> _data = [];
+    public int JumlahRekod = 0;
+
+    private async Task LoadFile()
+    {
+        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Mode = _conf["Mode"]?.ToString() ?? string.Empty;
+        var authState = await myIden.GetUserAsync();
+        var user = authState.Identity as ClaimsIdentity;
+
+        if (user == null || !user.IsAuthenticated)
+        {
+            await myIden.SignOutUserAsync();
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _data = await _service.GetDetailsTanahWakafKosongForAKForPublic();
+            if (_data.Any()) adaRekod = true;
+
+            TanahKosongTWA = await _service.CountJumlahTWAKosongBothKategori();
+                TanahKosongTWK = await _service.CountJumlahTWKKosongBothKategori();
+
+            JumlahRekod = _data.Count();
+            StateHasChanged();
+        }
+    }
+
+
+
+
+
+}

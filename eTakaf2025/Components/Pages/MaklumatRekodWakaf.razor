@@ -115,6 +115,10 @@
                                     <h5 class="mb-0">Maklumat Asas</h5>
                                 </div>
                                 <div class="mb-3">
+                                    <div class="info-label">Pewakaf</div>
+                                    <div class="info-value" id="namaHartanah">@Pewakaf</div>
+                                </div>
+                                <div class="mb-3">
                                     <div class="info-label">Hartanah</div>
                                     <div class="info-value" id="namaHartanah">@NamaHartanah</div>
                                 </div>
@@ -268,7 +272,7 @@
     public string Mode = string.Empty;
     public bool adaRekod = false;
 
-    public string AlamatPremis = string.Empty;
+    public string AlamatPremis = string.Empty; public string Pewakaf = string.Empty;
     public string NamaPenyewaPenghuni = string.Empty;
     public string NamaHartanah = string.Empty;
     public double LuasTanahM2;
@@ -471,6 +475,7 @@
             {
                 var dataa = infoDat.FirstOrDefault();
 
+                Pewakaf = dataa?.PEWAKAF ?? "";
                 AlamatPremis = dataa?.Alamat_Premis ?? "";
                 NamaPenyewaPenghuni = dataa?.NamaPenyewaPenghuni ?? "";
                 NamaHartanah = dataa?.NamaHartanah ?? "";

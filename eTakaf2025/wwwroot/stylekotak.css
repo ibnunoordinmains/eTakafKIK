@@ -192,6 +192,101 @@ body {
             color: rgba(255, 255, 255, 1);
         }
 
+
+
+.dashboard-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+.grand-total-card {
+    /*background: linear-gradient(135deg, #ff6b6b, #ee5a24);*/
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.grand-total-amount {
+    font-size: 4rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+
+.grand-total-amount1 {
+    font-size: 4rem;
+    font-weight: 500;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+.table-card {
+    background: white;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+.category-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.revenue-badge {
+    background: #d4edda;
+    color: #155724;
+}
+
+.expense-badge {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.investment-badge {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.revenue-summary {
+    background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+    color: white;
+}
+
+.expense-summary {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+}
+
+.investment-summary {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+
 @media (max-width: 768px) {
     .col-md-4 {
         margin-bottom: 20px;

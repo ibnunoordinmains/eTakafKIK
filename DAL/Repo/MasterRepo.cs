@@ -45,6 +45,8 @@ namespace DAL.Repo
         Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf();
         Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
 
+        Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic();
+
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
@@ -250,10 +252,28 @@ namespace DAL.Repo
             {
                 string sql = @"select * from tblinfotanahwakaf
                                 where jenis_wakaf = @kategori and  
-                                  kod in('BRWK','IPIK','IPITK','LKR','STK','TK','TKGETAH','TKSAWIT','TS')";
+                                  kod in ('BRWK','IPIK','IPITK','LKR','STK','TK','TKGETAH','TKSAWIT','TS')";
                 string pattern = $"%{StatusPenghunian}%";
                
                 return await _serverProd.Connections.QueryAsync<tblInfoTanahWakaf>(sql, new { kategori = kategori, pattern });
+            }
+            catch (System.Exception err)
+            {
+                throw new Exception(err.Message);
+            }
+        }
+
+
+        public async Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic()
+        {
+            try
+            {
+                string sql = @"select * from tblinfotanahwakaf
+                                where (jenis_wakaf = 'AM' or jenis_wakaf='KHAS') and  
+                                  kod in ('BRWK','IPIK','IPITK','LKR','STK','TK','TKGETAH','TKSAWIT','TS')";
+                //string pattern = $"%{StatusPenghunian}%";
+
+                return await _serverProd.Connections.QueryAsync<tblInfoTanahWakaf>(sql);
             }
             catch (System.Exception err)
             {
