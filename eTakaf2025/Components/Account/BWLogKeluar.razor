@@ -44,18 +44,19 @@
 
     public string? MESSAGE = string.Empty;
 
-    private bool _canNavigateAway = false;
+    // private bool _canNavigateAway = false;
     public string? Mode, baseUrl = string.Empty;
 
-    private string? _message = "👌 You'r successfully logged out.";
+    //  private string? _message = "👌 You'r successfully logged out.";
 
 
     protected override async Task OnParametersSetAsync()
     {
 
         Mode = _conf["Mode"];
-        MESSAGE = "👍 Terima Kasih";
+        MESSAGE = "👍 Terima Kasih"; await Task.CompletedTask;
         StateHasChanged();
+
 
     }
 

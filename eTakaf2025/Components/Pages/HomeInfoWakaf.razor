@@ -2,7 +2,7 @@
 
 <PageTitle>Dashboard Info Maklumat Wakaf</PageTitle>
 
-@layout MainLayout
+@layout MainLayoutAwam
 @using CurrieTechnologies.Razor.SweetAlert2
 @using DAL.Entiti
 @using IdentityAuthentication
@@ -29,98 +29,405 @@
                     <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#dashboard1" type="button" role="tab" aria-controls="products" aria-selected="true">
                         <i class="bi bi-grid me-2"></i>DASHBOARD
                     </button>
-                </li>               
+                </li>
             </ul>
         </div>
+
         <div class="tab-content">
             <div class="tab-pane fade show active" id="dashboard1" role="tabpanel" aria-labelledby="products-tab">
                 <div class="container-fluid">
-                    <div class="row ">
-                        <div class="col-12 mt-3">
-                            <h3 class="text-black text-center mb-0">
-                                <i class="bi bi-graph-up-arrow me-3"></i>
-                               WAKAF TANAH/BANGUNAN SEDIA UNTUK DISEWA
-                            </h3>
-                            <p class="text-white-50 text-center">Comprehensive overview of your financial data</p>
-                        </div>
-                    </div>
-                     <div class="row mb-4 justify-content-center d-flex">
-                        <div class="col-sm-12 col-md-4">
-                            <div class="card dashboard-card grand-total-card">
-                                <div class="card-body">
-                                    <div class="grand-total-amount">@JumlahRekod</div>
-                                    <p class="mb-0 mt-3 opacity-75">WAKAF TANAH/BANGUNAN</p>
-                                </div>
+                    <div class="row  justify-content-center mt-5 mb-5 d-flex">
+                        <div class="card stat-card shadow-lg w-50">
+                            <div class="card-header bg-success text-white text-center">
+                                <h5 class="mb-0"> WAKAF TANAH/BANGUNAN SEDIA UNTUK DISEWA</h5>
                             </div>
-                        </div>
-                         <div class="col-sm-12 col-md-3">
-                            <div class="card dashboard-card grand-total-card">
-                                <div class="card-body">
-                                   <div class="grand-total-amount1">@TanahKosongTWA</div>
-                                    <p class="mb-0 mt-3 opacity-75">AM</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12 col-md-3">
-                            <div class="card dashboard-card grand-total-card">
-                                <div class="card-body">                                   
-                                    <div class="grand-total-amount1">@TanahKosongTWK</div>
-                                    <p class="mb-0 mt-3 opacity-75">KHAS</p>
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-0">JUMLAH KESELURUHAN</h5>
+                                <div class="stat-value mt-2" style="color:red;">@JumlahRekod</div>
+                                <div class="stat-label fw-bolder"></div>
+                                <hr />
+                                <div class="row text-center pe-2 mt-3">
+                                    <div class="col-6 border-end">
+                                        <h6 class="card-title text-primary mb-0">WAKAF AM</h6>
+                                        <div class="stat-value1 mt-2" style="cursor: pointer;color: #d6a80c ;">@TanahKosongTWA</div>
+                                        <div class="stat-label fw-bold"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6 class="card-title text-warning mb-0">WAKAF KHAS</h6>
+                                        <div class="stat-value1 mt-2" style="cursor: pointer;color: #94a90c ;">@TanahKosongTWK</div>
+                                        <div class="stat-label fw-bold"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12 mt-4">
-                            <h3 class="text-primary text-center fw-bold">
-                                <i class="bi bi-graph-up-arrow me-2"></i>
-                                WAKAF TANAH/BANGUNAN SEDIA UNTUK DISEWA
-                            </h3>
-                            <p class="text-muted text-center fs-6">Ringkasan maklumat aset wakaf sedia untuk disewa</p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4 justify-content-center">
-                        <!-- Total Wakaf -->
-                        <div class="col-sm-12 col-md-4 mb-3">
-                            <div class="card stat-card text-center shadow-sm border-0 grand-total-card rounded-4">
-                                <div class="card-body">
-                                    <h2 class="text-dark display-5 fw-bold">@JumlahRekod</h2>
-                                    <p class="text-secondary mt-2 mb-0 fs-5">Wakaf Tanah/Bangunan</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Wakaf AM -->
-                        <div class="col-sm-12 col-md-3 mb-3">
-                            <div class="card stat-card text-center shadow-sm border-0 bg-info-subtle rounded-4">
-                                <div class="card-body">
-                                    <h2 class="text-primary display-6 fw-bold">@TanahKosongTWA</h2>
-                                    <p class="text-primary-emphasis mt-2 mb-0 fs-6">Tanah Kosong (AM)</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Wakaf KHAS -->
-                        <div class="col-sm-12 col-md-3 mb-3">
-                            <div class="card stat-card text-center shadow-sm border-0 bg-warning-subtle rounded-4">
-                                <div class="card-body">
-                                    <h2 class="text-warning display-6 fw-bold">@TanahKosongTWK</h2>
-                                    <p class="text-warning-emphasis mt-2 mb-0 fs-6">Tanah Kosong (KHAS)</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="container-fluid mt-5  d-flex justify-content-center">
+    <div class="card shadow-sm rounded-4 border-0 w-75">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h5 class="mb-0 fw-semibold"><i class="bi bi-table me-2"></i>Senarai Tanah/Bangunan Wakaf</h5>
+        </div>
+
+        <div class="card-body bg-light rounded-bottom-4">
+            @if (adaRekod)
+            {
+                <div class="table-responsive">
+                    @if (adaRekod)
+                    {
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
+                                <thead class="table-success text-center align-middle">
+                                    <tr>
+                                        <td>Bil</td>
+                                        <td>Daerah</td>
+                                        <td>Mukim</td>
+                                        <td>Jenis Wakaf</td>
+                                        <td>Geran Hak Milik</td>
+                                        <td>No Lot</td>
+                                        <td>Kategori</td>
+                                        <td>Luas Diwakafkan (Ha)</td>
+                                        <td>Info</td>
+                                        <td>Permohonan Penyewaan</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var data in _data)
+                                    {
+                                        <tr>
+                                            <td>@data.BIL</td>
+                                            <td class="text-center fw-bold text-primary">@data.DAERAH</td>
+                                            <td class="text-center fw-bold text-primary">@data.MUKIM_PEKAN_BANDAR</td>
+                                            <td class="text-center text-success">@data.JENIS_WAKAF</td>
+                                            <td class="text-center text-danger">@data.JENIS_NO_HAKMILIK</td>
+                                            <td class="text-center text-primary">@data.NO_LOT</td>
+                                            <td class="text-center text-warning">@data.KEGUNAAN_KATEGORI</td>
+                                            <td>@data.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("N2")</td>
+                                            <td>
+                                                <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="() => getInfoDetails(data)">
+                                                    <i class="fa-regular fa-circle-info"></i>
+                                                </button>
+                                            </td>
+                                            <td class="text-center">
+
+                                                <button title="Permohonan Penyewaan" data-bs-toggle="modal" data-bs-target="#QueryModal" class="btn btn-icon btn-outline-danger rounded-pill btn-wave" @onclick="() => getInfoDetails(data)">
+                                                    <i class="fa-regular fa-clipboard-question"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staticCenteredModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Informasi Tanah/Bangunan Wakaf</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Location Information -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Lokasi</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Alamat</div>
+                                <div class="info-value">@AlamatPremis</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Daerah</div>
+                                <div class="info-value">@Daerah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Mukim</div>
+                                <div class="info-value">@Mukim</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Information -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-house-door"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Wakaf</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Pewakaf</div>
+                                <div class="info-value">@Pewakaf</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Hartanah</div>
+                                <div class="info-value">@NamaHartanah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Jenis Hartanah</div>
+                                <div class="info-value">@JenisHartanah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Kategori</div>
+                                <div class="info-value">@Kategori</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Jenis Wakaf</div>
+                                <div class="info-value">@KategoriSumberAmWakaf</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Land Area -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-rulers"></i>
+                                </div>
+                                <h6 class="section-title">Keluasan Tanah/Bangunan</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Keluasan DiWakafkan (Ha)</div>
+                                <div class="info-value">@LuasTanahDiwakafkanHa.ToString("N2")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="col-md-12 col-lg-8">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Harta</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">No. Lot</div>
+                                        <div class="info-value">@NoLot</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Nombor Geran</div>
+                                        <div class="info-value">@NoGeran</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Pegangan Hartanah</div>
+                                        <div class="info-value">@PeganganTanah</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">Pajakan</div>
+                                        <div class="info-value">@TempohPajakan</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Syarat Nyata Tanah</div>
+                                        <div class="info-value">@SyaratNyataTanah</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="QueryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background :linear-gradient(135deg, #50AD36, #42DF16) !important;color:white;">
+                <h5 class="modal-title">PERMOHONAN SEWA TANAH/BANGUNAN WAKAF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="info-label">Nama Pemohon :</label>
+                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NamaPemohon"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="info-label">No. Kad Pengenalan :</label>
+                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NOKP" />
+
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Location Information -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Lokasi</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Alamat</div>
+                                <div class="info-value">@AlamatPremis</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Daerah</div>
+                                <div class="info-value">@Daerah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Mukim</div>
+                                <div class="info-value">@Mukim</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Information -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-house-door"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Wakaf</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Pewakaf</div>
+                                <div class="info-value">@Pewakaf</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Hartanah</div>
+                                <div class="info-value">@NamaHartanah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Jenis Hartanah</div>
+                                <div class="info-value">@JenisHartanah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Kategori</div>
+                                <div class="info-value">@Kategori</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Jenis Wakaf</div>
+                                <div class="info-value">@KategoriSumberAmWakaf</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Land Area -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-rulers"></i>
+                                </div>
+                                <h6 class="section-title">Keluasan Tanah/Bangunan</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Keluasan DiWakafkan (Ha)</div>
+                                <div class="info-value">@LuasTanahDiwakafkanHa.ToString("N2")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="col-md-12 col-lg-8">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Harta</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">No. Lot</div>
+                                        <div class="info-value">@NoLot</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Nombor Geran</div>
+                                        <div class="info-value">@NoGeran</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Pegangan Hartanah</div>
+                                        <div class="info-value">@PeganganTanah</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">Pajakan</div>
+                                        <div class="info-value">@TempohPajakan</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Syarat Nyata Tanah</div>
+                                        <div class="info-value">@SyaratNyataTanah</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" @onclick="HantarSewa" class="btn btn-success btn-lg">Hantar Permohonan Penyewaan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
 
@@ -128,8 +435,32 @@
     public bool adaRekod = false;
     public int TanahKosongTWA = 0; public int TanahKosongTWK = 0;
 
-    IEnumerable<tblInfoTanahWakaf> _data = [];
+    IEnumerable<tblInfoTanahWakaf> _data = [];IEnumerable<tblInfoUsereTakaf> _userInfo = [];
     public int JumlahRekod = 0;
+
+    public string AlamatPremis = string.Empty; public string Pewakaf = string.Empty;
+    public string NamaPenyewaPenghuni = string.Empty;
+    public string NamaHartanah = string.Empty;
+    public double LuasTanahM2;
+    public double LuasTanahDalamGeran;
+    public double LuasTanahEkar;
+    public double LuasTanahDiwakafkanHa;
+    public double LuasTanahDiwakafkanEkar;
+    public string JenisHartanah = string.Empty;
+    public string NoLot = string.Empty;
+    public string NoGeran = string.Empty;
+    public string Mukim = string.Empty;
+    public string Daerah = string.Empty;
+    public string PeganganTanah = string.Empty;
+    public string TempohPajakan = string.Empty;
+    public string SyaratNyataTanah = string.Empty;
+    public string KategoriSumberAmWakaf = string.Empty;
+    public string StatusPenghunian = string.Empty;
+    public string Kategori = string.Empty;
+    public string Tempoh = string.Empty;
+
+    public string NOKP = string.Empty;
+    public string NamaPemohon = string.Empty;
 
     private async Task LoadFile()
     {
@@ -141,7 +472,7 @@
         Mode = _conf["Mode"]?.ToString() ?? string.Empty;
         var authState = await myIden.GetUserAsync();
         var user = authState.Identity as ClaimsIdentity;
-
+        NOKP = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "";
         if (user == null || !user.IsAuthenticated)
         {
             await myIden.SignOutUserAsync();
@@ -154,19 +485,92 @@
     {
         if (firstRender)
         {
+            await LoadFile();
             _data = await _service.GetDetailsTanahWakafKosongForAKForPublic();
             if (_data.Any()) adaRekod = true;
 
+            await Task.Delay(300);
+            await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+            await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+
             TanahKosongTWA = await _service.CountJumlahTWAKosongBothKategori();
-                TanahKosongTWK = await _service.CountJumlahTWKKosongBothKategori();
+            TanahKosongTWK = await _service.CountJumlahTWKKosongBothKategori();
 
             JumlahRekod = _data.Count();
             StateHasChanged();
         }
     }
 
+    private async Task HantarSewa()
+    {
+        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "Adakah Anda Pasti Untuk Menghantar Permohonan Untuk Menyewa Tanah/Bangunan Ini ?",
+            Text = "Info",
+            Icon = SweetAlertIcon.Info,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Ya",
+            CancelButtonText = "Tidak"
+        });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+        }
+        else
+        {
+            
+        }
+    }
+
+    private async Task getInfoDetails(tblInfoTanahWakaf xdata)
+    {
+        try
+        {
 
 
+            _userInfo = await _service.GetLoginInfo(NOKP);
+            if (_userInfo.Any())
+            {
+                NamaPemohon = _userInfo.FirstOrDefault()?.NamaPemohon.ToString() ?? "";
+            }
+
+
+            var asknolot = xdata.NO_LOT; var askdaerah = xdata.DAERAH;
+
+            IEnumerable<OutputCarian> infoDat = await _service.GetInfoDetailsBothTables(asknolot, askdaerah);
+            if (infoDat.Any())
+            {
+                var dataa = infoDat.FirstOrDefault();
+
+                Pewakaf = dataa?.PEWAKAF ?? "";
+                AlamatPremis = dataa?.Alamat_Premis ?? "";
+                NamaPenyewaPenghuni = dataa?.NamaPenyewaPenghuni ?? "";
+                NamaHartanah = dataa?.NamaHartanah ?? "";
+                LuasTanahM2 = Convert.ToDouble(dataa?.LuasTanahm2 ?? 0);
+                LuasTanahDiwakafkanHa = Convert.ToDouble(xdata.KELUASAN_YANG_DIWAKAFKAN_ha);
+                JenisHartanah = dataa?.JenisHartanah ?? "";
+                NoLot = dataa?.NoLot ?? "";
+                NoGeran = dataa?.JENIS_NO_HAKMILIK ?? "";
+                Mukim = dataa?.MUKIM_PEKAN_BANDAR ?? "";
+                Daerah = dataa?.Daerah ?? "";
+                PeganganTanah = dataa?.PeganganTanah ?? "";
+                TempohPajakan = dataa?.TempohPajakan ?? "";
+                SyaratNyataTanah = dataa?.SyaratNyataTanah ?? "";
+                KategoriSumberAmWakaf = dataa?.JENIS_WAKAF ?? "";
+                StatusPenghunian = dataa?.StatusPenghunian ?? "";
+                Kategori = dataa?.Kategori ?? "";
+                Tempoh = dataa?.Tempoh ?? "";
+
+            }
+
+
+
+        }
+        catch (System.Exception err)
+        {
+            throw new Exception(err.Message);
+        }
+    }
 
 
 }

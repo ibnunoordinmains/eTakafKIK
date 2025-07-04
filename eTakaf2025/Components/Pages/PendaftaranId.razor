@@ -96,6 +96,7 @@
 @code {
     public string Mode = string.Empty;
     public string alertMessage = string.Empty;
+    private string message = string.Empty;
 
     private async Task LoadFile()
     {
@@ -130,7 +131,7 @@
         IsActive = true
     };
 
-    private string? message;
+   
 
     private async Task HandleValidSubmit()
     {

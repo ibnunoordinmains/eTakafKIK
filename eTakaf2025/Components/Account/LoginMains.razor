@@ -74,7 +74,7 @@
 
 <style type="text/css">
     body {
-        background-image: url('../Images/tanah_kubur.jpg'); /* Replace with your image path */
+        background-image: url('Images/tanah_kubur.jpg'); /* Replace with your image path */
         background-size: cover; /* Ensures the image covers the whole screen */
         background-position: center; /* Centers the image */
         background-repeat: no-repeat; /* Prevents repetition */
@@ -245,7 +245,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        Mode = _conf["Mode"] ?? "";
+        Mode = _conf["Mode"] ?? string.Empty; await Task.CompletedTask;
     }
 
     private async Task LoadFile()

@@ -462,7 +462,7 @@
 
             </div>
             <!--DashboardInfo Utk Daerah2-->
-                <div class="tab-pane fade" id="dashboard2" role="tabpanel" aria-labelledby="products-tab">
+            <div class="tab-pane fade" id="dashboard2" role="tabpanel" aria-labelledby="products-tab">
                     <div class="container mt-3 mb-5">
                          <div class="card stat-card mt-3 pe-3 px-3">
                             <div class="card-header mt-2 bg-success text-white text-center">
@@ -939,8 +939,8 @@
                         </div>
                     </div>               
                 </div>
-            </div>
         </div>
+    </div>
 </div>
 
 
@@ -1103,9 +1103,9 @@
             if (_nilaiRM.Any())
             {
                 var xdat = _nilaiRM.FirstOrDefault();
-                JumlahRMTotalTW = xdat.JumlahKeseluruhan.ToString("N2");
-                JumlahRMTanahBukanKosongTW = xdat.JumlahBukanKosong.ToString("N2");
-                JumlahRMTanahKosongTW = xdat.JumlahKosong.ToString("N2");
+                JumlahRMTotalTW = xdat?.JumlahKeseluruhan.ToString("N2") ?? string.Empty;
+                JumlahRMTanahBukanKosongTW = xdat?.JumlahBukanKosong.ToString("N2") ?? string.Empty;
+                JumlahRMTanahKosongTW = xdat?.JumlahKosong.ToString("N2") ?? string.Empty;
             }
 
 

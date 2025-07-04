@@ -471,7 +471,7 @@
 
     private async Task OnCarianChanged(ChangeEventArgs e)
     {
-        Carian = e.Value.ToString() ?? "";
+        Carian = e.Value?.ToString() ?? "";
         try
         {
             Carian = e.Value?.ToString() ?? string.Empty;
@@ -494,9 +494,9 @@
         }
         catch(System.Exception ex)
         {
-            // Console.WriteLine(ex.Message);
-            // throw new Exception(ex.Message);
-            await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
+             Console.WriteLine(ex.Message);await _service.ShowSweetAlertAsync("Sila Pilih Jenis Carian", "Pemilihan Carian", SweetAlertIcon.Error, false, "Ok");
+             throw new Exception(ex.Message);
+            
         }
     }
     private async Task ShowMenu()
@@ -724,7 +724,7 @@
             }
             else if (Carian4)
             {
-                int Counter = 1;
+               // int Counter = 1;
                 _lstMaklumatCarian4 = (await _service.CarianDataTWAByDaerah(DaerahPilihan));
                 if (_lstMaklumatCarian4.Any())
                 {

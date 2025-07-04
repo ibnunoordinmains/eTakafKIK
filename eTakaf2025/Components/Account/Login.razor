@@ -75,7 +75,7 @@
 <style type="text/css">
     body {
             
-            background-image: url('../Images/tanah_kubur.jpg'); /* Replace with your image path */
+            background-image: url('Images/tanah_kubur.jpg'); /* Replace with your image path */
             background-size: cover; /* Ensures the image covers the whole screen */
             background-position: center; /* Centers the image */
             background-repeat: no-repeat; /* Prevents repetition */
@@ -221,10 +221,10 @@
 @code {
     [SupplyParameterFromForm]
     public LoginModel modelDB { get; set; } = new LoginModel()
-        {
-            UserId = "750726075267",
-            Password = "Password@2025"
-        };
+    {
+        // UserId = "750726075267",
+        // Password = "Password@2025"
+    };
 
 
     public bool isError = false;
@@ -239,21 +239,22 @@
     public string Mode = string.Empty;
     // public bool adaError = false;
 
-private void OnUserIdInput(ChangeEventArgs e)
-{
-    var input = e.Value?.ToString() ?? "";
-    // Keep only digits and limit to 12 characters
-    var cleaned = new string(input.Where(char.IsDigit).ToArray())
-                            .Substring(0, Math.Min(12, input.Length));
-    modelDB.UserId = cleaned;
+    private void OnUserIdInput(ChangeEventArgs e)
+    {
+        var input = e.Value?.ToString() ?? "";
+        // Keep only digits and limit to 12 characters
+        var cleaned = new string(input.Where(char.IsDigit).ToArray())
+                                .Substring(0, Math.Min(12, input.Length));
+        modelDB.UserId = cleaned;
 
-    // Clear error alert
-    isError = false;
-    alertMessage = string.Empty;
-}
+        // Clear error alert
+        isError = false;
+        alertMessage = string.Empty;
+    }
     protected override async Task OnInitializedAsync()
     {
         Mode = _conf["Mode"] ?? "";
+        await Task.CompletedTask;
     }
 
     private async Task LoadFile()
