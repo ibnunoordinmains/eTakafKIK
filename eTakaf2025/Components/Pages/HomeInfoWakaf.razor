@@ -92,6 +92,7 @@
                                         <td>No Lot</td>
                                         <td>Kategori</td>
                                         <td>Luas Diwakafkan (Ha)</td>
+                                        <td>Status</td>
                                         <td>Info</td>
                                         <td>Permohonan Penyewaan</td>
                                     </tr>
@@ -108,6 +109,13 @@
                                             <td class="text-center text-primary">@data.NO_LOT</td>
                                             <td class="text-center text-warning">@data.KEGUNAAN_KATEGORI</td>
                                             <td>@data.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("N2")</td>
+                                            <td>
+                                                @if (data.Status == 2)
+                                                {
+                                                    <span class="badge bg-warning"><i class="fa-regular fa-stars text-primary pe-2"></i>Ditempah</span>
+          
+                                                }
+                                            </td>
                                             <td>
                                                 <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="() => getInfoDetails(data)">
                                                     <i class="fa-regular fa-circle-info"></i>
@@ -279,7 +287,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background :linear-gradient(135deg, #50AD36, #42DF16) !important;color:white;">
-                <h5 class="modal-title">PERMOHONAN SEWA TANAH/BANGUNAN WAKAF</h5>
+                <h5 class="modal-title">PERMOHONAN PENYEWAAN TANAH/BANGUNAN WAKAF DIBAWAH MAINS</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -319,10 +327,15 @@
                                 <div class="info-label">Mukim</div>
                                 <div class="info-value">@Mukim</div>
                             </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Keluasan DiWakafkan (Ha)</div>
+                                <div class="info-value">@LuasTanahDiwakafkanHa.ToString("N2")</div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Basic Information -->
+                  @*   <!-- Basic Information -->
                     <div class="col-md-6 col-lg-4">
                         <div class="info-section">
                             <div class="section-header">
@@ -374,7 +387,7 @@
                                 <div class="info-value">@LuasTanahDiwakafkanHa.ToString("N2")</div>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
 
                     <!-- Property Details -->
                     <div class="col-md-12 col-lg-8">
@@ -421,7 +434,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" @onclick="HantarSewa" class="btn btn-success btn-lg">Hantar Permohonan Penyewaan</button>
+                <button type="button" @onclick="HantarSewa" class="btn btn-success btn-lg"><i class="fa-light fa-floppy-disk pe-2"></i>Hantar Permohonan Penyewaan</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -437,6 +450,10 @@
 
     IEnumerable<tblInfoTanahWakaf> _data = [];IEnumerable<tblInfoUsereTakaf> _userInfo = [];
     public int JumlahRekod = 0;
+
+
+    public tblInfoTanahWakaf _updateData = new tblInfoTanahWakaf();
+
 
     public string AlamatPremis = string.Empty; public string Pewakaf = string.Empty;
     public string NamaPenyewaPenghuni = string.Empty;
@@ -501,6 +518,8 @@
         }
     }
 
+    public tblInfoPermohonanPenyewaan newData = new();
+
     private async Task HantarSewa()
     {
         SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
@@ -515,27 +534,69 @@
 
         if (!string.IsNullOrEmpty(result.Value))
         {
+
+            newData = new()
+            {
+                CreatedDate = DateTime.Now,
+                NoKPPemohon = NOKP,
+                NamaPemohon = NamaPemohon,
+                Daerah = Daerah,
+                Mukim = Mukim,
+                NoLot = NoLot,
+                NoGeran = NoGeran,
+                Status = 1
+            };
+
+            bool isSuccess = await _service.InsertNewPenyewaanRekod(newData);
+            bool isSuccess1 = await _service.UpdateStatusPenyewaanTanahWakaf(_updateData);
+
+            // Close the modal first
+            await JSRuntime.InvokeVoidAsync("closeModal", "QueryModal");
+
+            // Prepare SweetAlert options
+            var alertOptions = new SweetAlertOptions
+            {
+                Title = isSuccess
+                    ? "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah BERJAYA Dihantar Untuk Diproses."
+                    : "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah TIDAK BERJAYA Dihantar Untuk Diproses.",
+                Text = isSuccess ? "Info" : "Error",
+                Icon = isSuccess ? SweetAlertIcon.Info : SweetAlertIcon.Error,
+                ShowCancelButton = false,
+                ConfirmButtonText = "Ya"
+            };
+
+            // Show SweetAlert
+            await Swal.FireAsync(alertOptions);
+
+            // Navigate
+            string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
+            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+            StateHasChanged();
+
         }
-        else
-        {
-            
-        }
+
     }
 
     private async Task getInfoDetails(tblInfoTanahWakaf xdata)
     {
         try
         {
-
-
             _userInfo = await _service.GetLoginInfo(NOKP);
             if (_userInfo.Any())
             {
-                NamaPemohon = _userInfo.FirstOrDefault()?.NamaPemohon.ToString() ?? "";
+                NamaPemohon = _userInfo.FirstOrDefault()?.NamaPemohon.ToString().ToUpper() ?? "";
             }
 
 
             var asknolot = xdata.NO_LOT; var askdaerah = xdata.DAERAH;
+
+            _updateData = new()
+            {
+                NO_LOT = xdata.NO_LOT,
+                JENIS_NO_HAKMILIK = xdata.JENIS_NO_HAKMILIK,
+                DAERAH = xdata.DAERAH,
+                MUKIM_PEKAN_BANDAR = xdata.MUKIM_PEKAN_BANDAR
+            };
 
             IEnumerable<OutputCarian> infoDat = await _service.GetInfoDetailsBothTables(asknolot, askdaerah);
             if (infoDat.Any())

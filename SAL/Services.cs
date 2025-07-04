@@ -45,6 +45,9 @@ namespace SAL
         Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
         Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic();
 
+        Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data);
+        Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data);
+
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -370,6 +373,17 @@ namespace SAL
             }
             return bil ?? Enumerable.Empty<tblInfoTanahWakaf>();
         }
+
+        public async Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data)
+        {
+            return await _master.InsertNewPenyewaanRekod(data);
+        }
+
+        public async Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data)
+        {
+            return await _master.UpdateStatusPenyewaanTanahWakaf(data);
+        }
+
     }
 
 }

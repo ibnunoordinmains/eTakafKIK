@@ -47,6 +47,9 @@ namespace DAL.Repo
 
         Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic();
 
+        Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data);
+        Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data);
+
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
@@ -443,6 +446,23 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<OutputCarian>(sql, new { nolot = nolot, daerah = daerah }); 
         }
 
+        public async Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data)
+        {
+            string sql = @"INSERT INTO tblInfoPermohonanPenyewaan
+                        (CreatedDate, NoKPPemohon, NamaPemohon, Daerah, Mukim, NoLot, NoGeran, Status)
+                        VALUES (@CreatedDate, @NoKPPemohon, @NamaPemohon, @Daerah, @Mukim, @NoLot, @NoGeran, @Status)";           
+            var res = await _serverProd.Connections.ExecuteAsync(sql, data);
+            return res > 0;
+          
+        }
 
+
+        public async Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data)
+        {
+            string sql = @"update tblinfotanahwakaf set status = 2 where no_lot = @no_lot and jenis_no_hakmilik = @jenis_no_hakmilik and daerah = @daerah and mukim_pekan_bandar = @mukim_pekan_bandar";
+            var res = await _serverProd.Connections.ExecuteAsync(sql, new { no_lot = data.NO_LOT, jenis_no_hakmilik = data.JENIS_NO_HAKMILIK, daerah = data.DAERAH , mukim_pekan_bandar = data.MUKIM_PEKAN_BANDAR});
+            return res > 0;
+
+        }
     }
 }

@@ -181,6 +181,7 @@ namespace DAL.Entiti
         public DateTime? TAHUN_WAKAF { get; set; } = null;
         public string KOD { get; set; } = string.Empty;
         public string CATATAN { get; set; } = string.Empty;
+        public int Status { get; set; } = 0;
     }
 
     public class ViewButiranStaf
@@ -295,6 +296,20 @@ namespace DAL.Entiti
         public DateTime? TAHUN_WAKAF { get; set; }
         public string KOD { get; set; } = string.Empty;
         public string CATATAN { get; set; } = string.Empty;
+    }
+
+
+    public class tblInfoPermohonanPenyewaan
+    {
+        public int Id { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string NoKPPemohon { get; set; } = string.Empty;
+        public string NamaPemohon { get; set; } = string.Empty;
+        public string Daerah { get; set; } = string.Empty;
+        public string Mukim { get; set; } = string.Empty;
+        public string NoLot { get; set; } = string.Empty;
+        public string NoGeran { get; set; } = string.Empty;
+        public int? Status { get; set; }
     }
 
 
