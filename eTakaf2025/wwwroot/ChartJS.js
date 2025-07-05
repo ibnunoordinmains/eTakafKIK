@@ -343,6 +343,52 @@ window.ChartBukanDisewa = (labels, dataValues) => {
     }, 500);
 };
 
+window.pecahanwakaf = (labels, dataValues) => {
+    setTimeout(() => {
+        const canvas = document.getElementById('ChartPecahanWakaf');
+        if (!canvas) {
+            console.error("Canvas element not found!");
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        const randomColors = generateRandomColors(dataValues.length);
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: randomColors,
+                    borderColor: '#ffffff',
+                    borderWidth: 2,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                return `${label}: ${value.toLocaleString()}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }, 500);
+};
+
 
 
 function getRandomColor() {

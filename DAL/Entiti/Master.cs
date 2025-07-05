@@ -107,6 +107,9 @@ namespace DAL.Entiti
         public string JenisHartanah { get; set; } = string.Empty;
         public int JumlahTanah { get; set; }
         public string Keterangan { get; set; } = string.Empty;
+
+        public decimal Peratus { get; set; } = 0.0M;
+        public int Bil { get; set; } = 0;
     }
 
     public class tblLegasiWakafMAINS
@@ -302,6 +305,7 @@ namespace DAL.Entiti
     public class tblInfoPermohonanPenyewaan
     {
         public int Id { get; set; }
+        public int Bil { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string NoKPPemohon { get; set; } = string.Empty;
         public string NamaPemohon { get; set; } = string.Empty;
@@ -309,6 +313,8 @@ namespace DAL.Entiti
         public string Mukim { get; set; } = string.Empty;
         public string NoLot { get; set; } = string.Empty;
         public string NoGeran { get; set; } = string.Empty;
+
+        public string TujuanPenyewaan { get; set; } = string.Empty;
         public int? Status { get; set; }
     }
 

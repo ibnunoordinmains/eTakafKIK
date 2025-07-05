@@ -44,11 +44,11 @@ namespace DAL.Repo
         Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafBukanKosong(string kategori, string StatusPenghunian);
         Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf();
         Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
-
         Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic();
-
         Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data);
         Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data);
+        Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon();
+        Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan();
 
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
@@ -335,7 +335,7 @@ namespace DAL.Repo
 
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah)
         {
-            string sql = @"select * from tblLegasiWakafMAINS where nolot = @nolot and daerah = @daerah";
+            string sql = @"select * from tblinfoTanahWakaf where no_lot = @nolot and daerah = @daerah";
             return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { nolot = nolot, daerah = daerah });
         }
 
@@ -408,6 +408,17 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql, new { pattern });
         }
 
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan()
+        {
+            string sql = @"SELECT   kegunaan_kategori AS keterangan,
+                                    COUNT(jenis_wakaf) AS jumlahtanah,
+                                    ROUND(COUNT(jenis_wakaf) * 100.0 / SUM(COUNT(jenis_wakaf)) OVER(), 2) AS peratus
+                                FROM 
+                                    tblinfotanahwakaf
+                                GROUP BY 
+                                    kegunaan_kategori;";
+            return await _serverProd.Connections.QueryAsync<DashboardInfo>(sql);
+        }
      
 
         public async Task<IEnumerable<DashboardInfo>> GetDashboardInfoGroupByDaerahDanJenisWakaf(string daerah)
@@ -449,13 +460,12 @@ namespace DAL.Repo
         public async Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data)
         {
             string sql = @"INSERT INTO tblInfoPermohonanPenyewaan
-                        (CreatedDate, NoKPPemohon, NamaPemohon, Daerah, Mukim, NoLot, NoGeran, Status)
-                        VALUES (@CreatedDate, @NoKPPemohon, @NamaPemohon, @Daerah, @Mukim, @NoLot, @NoGeran, @Status)";           
+                        (CreatedDate, NoKPPemohon, NamaPemohon, Daerah, Mukim, NoLot, NoGeran, Status, TujuanPenyewaan)
+                        VALUES (@CreatedDate, @NoKPPemohon, @NamaPemohon, @Daerah, @Mukim, @NoLot, @NoGeran, @Status, @TujuanPenyewaan)";           
             var res = await _serverProd.Connections.ExecuteAsync(sql, data);
             return res > 0;
           
         }
-
 
         public async Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data)
         {
@@ -464,5 +474,15 @@ namespace DAL.Repo
             return res > 0;
 
         }
+
+        public async Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon()
+        {
+            string sql = @"select * from tblInfoPermohonanPenyewaan where status = 1 order by createddate";
+            return await _serverProd.Connections.QueryAsync<tblInfoPermohonanPenyewaan>(sql);
+        }
+
+
+
+
     }
 }

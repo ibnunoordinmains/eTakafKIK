@@ -102,18 +102,21 @@
                                     {
                                         <tr>
                                             <td>@data.BIL</td>
-                                            <td class="text-center fw-bold text-primary">@data.DAERAH</td>
+                                            <td class="text-center fw-bold">@data.DAERAH</td>
                                             <td class="text-center fw-bold text-primary">@data.MUKIM_PEKAN_BANDAR</td>
                                             <td class="text-center text-success">@data.JENIS_WAKAF</td>
                                             <td class="text-center text-danger">@data.JENIS_NO_HAKMILIK</td>
                                             <td class="text-center text-primary">@data.NO_LOT</td>
                                             <td class="text-center text-warning">@data.KEGUNAAN_KATEGORI</td>
-                                            <td>@data.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("N2")</td>
+                                            <td class="fw-bold text-center">@data.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("N2")</td>
                                             <td>
                                                 @if (data.Status == 2)
                                                 {
-                                                    <span class="badge bg-warning"><i class="fa-regular fa-stars text-primary pe-2"></i>Ditempah</span>
-          
+                                                    <span class="badge bg-warning"><i class="fa-regular fa-stars text-primary pe-2"></i>Di tempah</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success">Masih Kosong</span>
                                                 }
                                             </td>
                                             <td>
@@ -123,7 +126,7 @@
                                             </td>
                                             <td class="text-center">
 
-                                                <button title="Permohonan Penyewaan" data-bs-toggle="modal" data-bs-target="#QueryModal" class="btn btn-icon btn-outline-danger rounded-pill btn-wave" @onclick="() => getInfoDetails(data)">
+                                                <button disabled="@(!IsButtonEnabled(data.Status))" title="Permohonan Penyewaan" data-bs-toggle="modal" data-bs-target="#QueryModal" class="btn btn-icon btn-outline-danger rounded-pill btn-wave" @onclick="() => getInfoDetails(data)">
                                                     <i class="fa-regular fa-clipboard-question"></i>
                                                 </button>
                                             </td>
@@ -294,12 +297,11 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="info-label">Nama Pemohon :</label>
-                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NamaPemohon"/>
+                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NamaPemohon" />
                     </div>
                     <div class="col-md-6">
                         <label class="info-label">No. Kad Pengenalan :</label>
                         <input type="text" readonly class="form-control fw-bold text-danger" @bind="NOKP" />
-
                     </div>
                 </div>
                 <div class="row">
@@ -335,7 +337,7 @@
                         </div>
                     </div>
 
-                  @*   <!-- Basic Information -->
+                    @*   <!-- Basic Information -->
                     <div class="col-md-6 col-lg-4">
                         <div class="info-section">
                             <div class="section-header">
@@ -448,13 +450,14 @@
     public bool adaRekod = false;
     public int TanahKosongTWA = 0; public int TanahKosongTWK = 0;
 
-    IEnumerable<tblInfoTanahWakaf> _data = [];IEnumerable<tblInfoUsereTakaf> _userInfo = [];
+    IEnumerable<tblInfoTanahWakaf> _data = []; IEnumerable<tblInfoUsereTakaf> _userInfo = [];
     public int JumlahRekod = 0;
 
+    public bool isDisable = false;
 
     public tblInfoTanahWakaf _updateData = new tblInfoTanahWakaf();
 
-
+    public string TujuanPenyewaan = string.Empty;
     public string AlamatPremis = string.Empty; public string Pewakaf = string.Empty;
     public string NamaPenyewaPenghuni = string.Empty;
     public string NamaHartanah = string.Empty;
@@ -483,6 +486,12 @@
     {
         await JSRuntime.InvokeVoidAsync("loadSweetAlert");
     }
+
+    private bool IsButtonEnabled(int? status)
+    {
+        return status == 1;
+    }
+
 
     protected override async Task OnInitializedAsync()
     {

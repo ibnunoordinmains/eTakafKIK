@@ -44,10 +44,10 @@ namespace SAL
         Task<IEnumerable<NilaiRMTanahWakaf>> GetNilaiRMTanahWakaf();
         Task<IEnumerable<OutputCarian>> GetInfoDetailsBothTables(string nolot, string daerah);
         Task<IEnumerable<tblInfoTanahWakaf>> GetDetailsTanahWakafKosongForAKForPublic();
-
         Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data);
         Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data);
-
+        Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon();
+        Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan();
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -382,6 +382,33 @@ namespace SAL
         public async Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data)
         {
             return await _master.UpdateStatusPenyewaanTanahWakaf(data);
+        }
+
+
+        public async Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon()
+        {
+            var bil =  await _master.GetRecordPermohonanPenyewaanBaruMohon();
+            if (bil != null)
+            {
+                for (int i = 0; i < bil.Count(); i++)
+                {
+                    bil.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return bil ?? Enumerable.Empty<tblInfoPermohonanPenyewaan>();
+        }
+
+        public async Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan()
+        {
+            var bil = await _master.GetDashboardLaporanPecahanRekodByTanahBangunan();
+            if (bil != null)
+            {
+                for (int i = 0; i < bil.Count(); i++)
+                {
+                    bil.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return bil ?? Enumerable.Empty<DashboardInfo>();
         }
 
     }

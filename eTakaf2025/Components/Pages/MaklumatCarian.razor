@@ -46,7 +46,7 @@
                         <tbody>
                             @foreach (var xx in _data)
                             {
-                                <tr>
+                               @*  <tr>
                                     <td class="text-center">@xx.Bil</td>
                                     <td class="text-center text-primary">@xx.NoDaftar</td>
                                     <td>@xx.NoLot</td>
@@ -60,7 +60,7 @@
                                             <i class="fa-regular fa-circle-info"></i>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr> *@
                             }
                         </tbody>
                     </table>
@@ -310,7 +310,7 @@
 
         if (!string.IsNullOrEmpty(strdaerah) && !string.IsNullOrEmpty(strlotno))
         {
-            _data = await _service.CarianRekodBasedOnLotdanDaerahSahaja(strlotno, strdaerah);
+            _data = await _service.CarianRekodBasedOnLotdanDaerahSahaja(strdaerah, strlotno);
             if (_data.Any())
             {
                 adaRekod = true;
@@ -335,32 +335,32 @@
         }
     }
 
-    private void getInfoDetails(tblLegasiWakafMAINS xdata)
+    private void getInfoDetails(tblInfoTanahWakaf xdata)
     {
-        AlamatPremis = xdata.AlamatPremis;
-        NamaPenyewaPenghuni = xdata.NamaPenyewaPenghuni;
-        NamaHartanah = xdata.NamaHartanah;
-        LuasTanahM2 = xdata.LuasTanahm2 ?? 0;
-        LuasTanahEkar = xdata.LuasTanahekar ?? 0;
-        LuasTanahDalamGeran = xdata.LuasTanahHaDalamGeran ?? 0;
-        LuasTanahDiwakafkanEkar = xdata.Luastanahdiwakafkanekar ?? 0;
-        LuasTanahDiwakafkanHa = xdata.LuastanahdiwakafkanHa ?? 0;
-        JenisHartanah = xdata.JenisHartanah;
-        NoLot = xdata.NoLot;
-        NoGeran = xdata.NoGeran;
-        Mukim = xdata.Mukim;
-        Daerah = xdata.Daerah;
-        PeganganTanah = xdata.PeganganTanah;
-        TempohPajakan = xdata.TempohPajakan;
-        SyaratNyataTanah = xdata.SyaratNyataTanah;
-        KategoriSumberAmWakaf = xdata.KategoriSumberAmWakaf;
-        StatusPenghunian = xdata.StatusPenghunian;
-        Kategori = xdata.Kategori;
-        Tempoh = xdata.Tempoh;
-        TarikhMula = xdata.TarikhMula ?? DateTime.MinValue;
-        TarikhTamat = xdata.TarikhTamat ?? DateTime.MinValue;
-        SewaBulanan = xdata.SewaBulanan ?? 0M;
-        SewaTahunan = xdata.SewaTahunan ?? 0M;
+        // AlamatPremis = xdata.AlamatPremis;
+        // NamaPenyewaPenghuni = xdata.NamaPenyewaPenghuni;
+        // NamaHartanah = xdata.NamaHartanah;
+        // LuasTanahM2 = xdata.LuasTanahm2 ?? 0;
+        // LuasTanahEkar = xdata.LuasTanahekar ?? 0;
+        // LuasTanahDalamGeran = xdata.LuasTanahHaDalamGeran ?? 0;
+        // LuasTanahDiwakafkanEkar = xdata.Luastanahdiwakafkanekar ?? 0;
+        // LuasTanahDiwakafkanHa = xdata.LuastanahdiwakafkanHa ?? 0;
+        // JenisHartanah = xdata.JenisHartanah;
+        // NoLot = xdata.NoLot;
+        // NoGeran = xdata.NoGeran;
+        // Mukim = xdata.Mukim;
+        // Daerah = xdata.Daerah;
+        // PeganganTanah = xdata.PeganganTanah;
+        // TempohPajakan = xdata.TempohPajakan;
+        // SyaratNyataTanah = xdata.SyaratNyataTanah;
+        // KategoriSumberAmWakaf = xdata.KategoriSumberAmWakaf;
+        // StatusPenghunian = xdata.StatusPenghunian;
+        // Kategori = xdata.Kategori;
+        // Tempoh = xdata.Tempoh;
+        // TarikhMula = xdata.TarikhMula ?? DateTime.MinValue;
+        // TarikhTamat = xdata.TarikhTamat ?? DateTime.MinValue;
+        // SewaBulanan = xdata.SewaBulanan ?? 0M;
+        // SewaTahunan = xdata.SewaTahunan ?? 0M;
     }
 
 

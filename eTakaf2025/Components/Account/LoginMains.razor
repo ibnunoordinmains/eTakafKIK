@@ -217,9 +217,12 @@
 </style>
 
 @code {
-
     [SupplyParameterFromForm]
-    public LoginModel modelDB { get; set; } = new LoginModel();
+    public LoginModel modelDB { get; set; } = new LoginModel()
+    {
+        UserId = "1354",
+        Password = "750726075267"
+    };
 
     public bool isError = false;
     public string NoKP = string.Empty;
