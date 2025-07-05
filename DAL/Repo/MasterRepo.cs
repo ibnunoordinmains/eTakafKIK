@@ -50,6 +50,8 @@ namespace DAL.Repo
         Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon();
         Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan();
 
+        Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKP(string nokp);
+
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
     {
@@ -481,7 +483,11 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<tblInfoPermohonanPenyewaan>(sql);
         }
 
-
+        public async Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKP(string nokp)
+        {
+            string sql = @"select * from tblInfoPermohonanPenyewaan a where a.NoKPPemohon =  @nokppemohon";
+            return await _serverProd.Connections.QueryAsync<tblInfoPermohonanPenyewaan>(sql, new {nokppemohon = nokp});
+        }
 
 
     }

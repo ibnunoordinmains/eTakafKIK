@@ -36,7 +36,7 @@
                 </li>
                  <li class="nav-item" role="presentation">
                     <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#dashboard3" type="button" role="tab" aria-controls="services" aria-selected="false">
-                        <i class="bi bi-gear me-2"><span style="color:red;">@JumlahPermohonanSewa</span></i>DASHBOARD 3
+                        <span class="badge rounded-pill text-bg-danger" style="color:white;">@JumlahPermohonanSewa</span> DASHBOARD 3
                     </button>
                 </li>
             </ul>
@@ -382,10 +382,11 @@
                                 <h5>Pecahan Jenis Wakaf Mengikut Kategori</h5>
                             </div>
                             <div class="card-body stat-card mb-3">
-                                <div class="row">
+                                <div class="row mt-auto">
                                      <div class="col-sm-12 col-md-7">
                                         @if (adaPecahanRekod)
                                         {
+                                            <p class="text-center fw-bold mb-3">Rumusan Pecahan Wakaf Mengikut Kategori</p>
                                             <div class="table table-responsive">
                                                 <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
                                                     <thead class="table-success text-center align-middle">
@@ -417,7 +418,7 @@
                                     <div class="card stat-card">
                                         <div class="card-header">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span>Pecahan Wakaf Mengikut Jenis</span>
+                                                <span>Pecahan Wakaf Mengikut Jenis Kategori</span>
                                                 <i class="bi bi-bar-chart"></i>
                                             </div>
                                         </div>
@@ -1003,15 +1004,16 @@
                 </div>
 
             <div class="tab-pane fade" id="dashboard3" role="tabpanel" aria-labelledby="products-tab">
-                <div class="container mt-3 mb-3">
-                     <div class="card stat-card mt-3 pe-3 px-3">
-                            <div class="card-header mt-2 bg-success text-white text-center">
+                <div class="container-fluid mt-3 mb-3">
+                    
+                   <div class="card shadow-bg">
+                            <div class="card-header bg-success text-white rounded-top-4">
                                 <h5 class="mb-0">PERMOHONAN PENYEWAAN TANAH/BANGUNAN WAKAF</h5>
                             </div>
-                            <div class="card-body">
+                          <div class="card-body">
                                 @if (adaRekodDetailsSewaan)
                                 {
-                                    <div class="table table-responsive-lg">
+                                   <div class="table-responsive" style="overflow: auto;">
                                         <table id="myTableX" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
                                              <thead class="table-success text-center align-middle">
                                                 <tr>
@@ -1022,6 +1024,7 @@
                                                     <td>Mukim</td>
                                                     <td>No Lot</td>
                                                     <td>No Geran</td>
+                                                    <td>Tujuan Sewaan</td>
                                                     <td>Status</td>
                                                     <td></td>
                                                 </tr>
@@ -1037,6 +1040,7 @@
                                                         <td>@xd.Mukim</td>
                                                         <td class="fw-bold text-success">@xd.NoLot</td>
                                                         <td>@xd.NoGeran</td>
+                                                        <td>@xd.TujuanPenyewaan</td>
                                                         <td>
                                                             @if (xd.Status == 1)
                                                             {
@@ -1058,16 +1062,17 @@
                                    
                                 }
                         </div>
-                    </div>
+                    </div> 
+                        
+                    @*  <div class="card shadow-sm w-100 mt-3">
+                          
+                    </div> *@
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-   
+ 
 
 
 

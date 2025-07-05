@@ -48,6 +48,8 @@ namespace SAL
         Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data);
         Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon();
         Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan();
+
+        Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKP(string nokp);
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -410,6 +412,21 @@ namespace SAL
             }
             return bil ?? Enumerable.Empty<DashboardInfo>();
         }
+
+        public async Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKP(string nokp)
+        {
+            var bil = await _master.GetRecordPermohonanPenyewaanMelaluiNOKP(nokp);
+            if (bil != null)
+            {
+                for (int i = 0; i < bil.Count(); i++)
+                {
+                    bil.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return bil ?? Enumerable.Empty<tblInfoPermohonanPenyewaan>();
+        }
+
+
 
     }
 

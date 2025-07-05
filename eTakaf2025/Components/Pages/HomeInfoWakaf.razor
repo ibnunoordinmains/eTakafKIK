@@ -61,6 +61,27 @@
                             </div>
                         </div>
                     </div>
+                    @if (isAdaRekod)
+                    {
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="row justify-content-center">
+                                <div class="stat-card">
+                                    <div class="col-sm-12">
+                                        <div class="alert alert-success d-flex align-items-center mb-3" role="alert">
+                                           @*  <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i> *@
+                                            <div class="flex-grow-3" data-bs-toggle="modal" data-bs-target="#infoModal" style="cursor: pointer;">
+                                                <strong>Senarai Permohonan Penyewaan Saya </strong>
+                                                <div class="text-center"><span class="badge bg-danger badge-counter text-center" >@JumlahRekodPerNoKP</span></div>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                   
                 </div>
             </div>
         </div>
@@ -304,6 +325,12 @@
                         <input type="text" readonly class="form-control fw-bold text-danger" @bind="NOKP" />
                     </div>
                 </div>
+                <div class="row mb-5">
+                    <div class="col-md-12">
+                        <label class="info-label">Tujuan Penyewaan :</label>
+                        <input type="text" placeholder="Nyatakan Tujuan Penyewaan Anda" class="form-control fw-bold text-danger"required @bind="TujuanPenyewaan" />
+                    </div>
+                </div>
                 <div class="row">
                     <!-- Location Information -->
                     <div class="col-md-6 col-lg-4">
@@ -444,6 +471,74 @@
 </div>
 
 
+<div class="modal fade" id="infoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background :linear-gradient(135deg, #50AD36, #42DF16) !important;color:white;">
+                <h5 class="modal-title">Informasi Permohonan Penyewaan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row mt-auto d-flex justify-content-center">
+                   @if (isAdaRekod)
+                    {
+                        <div class="table table-responsive">
+                            <table id="myTableXX" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
+                                <thead class="table-success text-center align-middle">
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Daerah</td>
+                                        <td>Mukim</td>
+                                        <td>No Lot</td>
+                                        <td>No Geran</td>
+                                        <td>Status Sekarang</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var xd in _dataIndividual)
+                                    {
+                                        <tr>
+                                            <td>@xd.Bil</td>
+                                            <td class="fw-bold text-danger">@xd.Daerah</td>
+                                            <td class="fw-bold text-primary">@xd.Mukim</td>
+                                            <td>@xd.NoLot</td>
+                                            <td>@xd.NoGeran</td>
+                                            @{
+                                                var (statusText, badgeClass) = xd.Status switch
+                                                {
+                                                    1 => ("Baru Mohon", "success"),
+                                                    2 => ("Dalam Semakan/Proses", "danger"),
+                                                    3 => ("Semakan Kelulusan", "warning"),
+                                                    4 => ("Lulus", "primary"),
+                                                    5 => ("Ditolak", "secondary"),
+                                                    _ => ("Tidak Diketahui", "dark")
+                                                };
+                                            }
+                                            <td>
+                                                <span class="badge bg-@badgeClass">@statusText</span>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 @code {
 
     public string Mode = string.Empty;
@@ -452,10 +547,12 @@
 
     IEnumerable<tblInfoTanahWakaf> _data = []; IEnumerable<tblInfoUsereTakaf> _userInfo = [];
     public int JumlahRekod = 0;
-
+    public bool isAdaRekod = false;
     public bool isDisable = false;
 
     public tblInfoTanahWakaf _updateData = new tblInfoTanahWakaf();
+    IEnumerable<tblInfoPermohonanPenyewaan> _dataIndividual = [];
+    public int JumlahRekodPerNoKP = 0;
 
     public string TujuanPenyewaan = string.Empty;
     public string AlamatPremis = string.Empty; public string Pewakaf = string.Empty;
@@ -515,8 +612,16 @@
             _data = await _service.GetDetailsTanahWakafKosongForAKForPublic();
             if (_data.Any()) adaRekod = true;
 
+
+            _dataIndividual = await _service.GetRecordPermohonanPenyewaanMelaluiNOKP(NOKP);
+            if (_dataIndividual.Any()) isAdaRekod = true; JumlahRekodPerNoKP = _dataIndividual.Count();
+
             await Task.Delay(300);
             await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTable");
+            await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+
+            await Task.Delay(300);
+            await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTableXX");
             await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
 
             TanahKosongTWA = await _service.CountJumlahTWAKosongBothKategori();
@@ -531,57 +636,79 @@
 
     private async Task HantarSewa()
     {
-        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+
+        try
         {
-            Title = "Adakah Anda Pasti Untuk Menghantar Permohonan Untuk Menyewa Tanah/Bangunan Ini ?",
-            Text = "Info",
-            Icon = SweetAlertIcon.Info,
-            ShowCancelButton = true,
-            ConfirmButtonText = "Ya",
-            CancelButtonText = "Tidak"
-        });
+            if (!string.IsNullOrEmpty(TujuanPenyewaan))
+            {
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Adakah Anda Pasti Untuk Menghantar Permohonan Untuk Menyewa Tanah/Bangunan Ini ?",
+                    Text = "Info",
+                    Icon = SweetAlertIcon.Info,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Ya",
+                    CancelButtonText = "Tidak"
+                });
 
-        if (!string.IsNullOrEmpty(result.Value))
+                if (!string.IsNullOrEmpty(result.Value))
+                {
+
+                    newData = new()
+                    {
+                        CreatedDate = DateTime.Now,
+                        NoKPPemohon = NOKP,
+                        NamaPemohon = NamaPemohon,
+                        Daerah = Daerah,
+                        Mukim = Mukim,
+                        NoLot = NoLot,
+                        NoGeran = NoGeran,
+                        TujuanPenyewaan = TujuanPenyewaan,
+                        Status = 1
+                    };
+
+                    bool isSuccess = await _service.InsertNewPenyewaanRekod(newData);
+                    bool isSuccess1 = await _service.UpdateStatusPenyewaanTanahWakaf(_updateData);
+
+                    // Close the modal first
+                    await JSRuntime.InvokeVoidAsync("closeModal", "QueryModal");
+
+                    // Prepare SweetAlert options
+                    var alertOptions = new SweetAlertOptions
+                    {
+                        Title = isSuccess
+                            ? "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah BERJAYA Dihantar Untuk Diproses."
+                            : "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah TIDAK BERJAYA Dihantar Untuk Diproses.",
+                        Text = isSuccess ? "Info" : "Error",
+                        Icon = isSuccess ? SweetAlertIcon.Info : SweetAlertIcon.Error,
+                        ShowCancelButton = false,
+                        ConfirmButtonText = "Ya"
+                    };
+
+                    // Show SweetAlert
+                    await Swal.FireAsync(alertOptions);
+
+                    // Navigate
+                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
+                    NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+                    StateHasChanged();
+
+                }
+            }
+            else
+            {
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Pastikan Tujuan Penyewaan Dinyatakan",
+                    Text = "Tujuan Penyewaan ??",
+                    Icon = SweetAlertIcon.Error,
+                    ConfirmButtonText = "Ya"
+                });
+            }
+        }
+        catch(System.Exception err)
         {
-
-            newData = new()
-            {
-                CreatedDate = DateTime.Now,
-                NoKPPemohon = NOKP,
-                NamaPemohon = NamaPemohon,
-                Daerah = Daerah,
-                Mukim = Mukim,
-                NoLot = NoLot,
-                NoGeran = NoGeran,
-                Status = 1
-            };
-
-            bool isSuccess = await _service.InsertNewPenyewaanRekod(newData);
-            bool isSuccess1 = await _service.UpdateStatusPenyewaanTanahWakaf(_updateData);
-
-            // Close the modal first
-            await JSRuntime.InvokeVoidAsync("closeModal", "QueryModal");
-
-            // Prepare SweetAlert options
-            var alertOptions = new SweetAlertOptions
-            {
-                Title = isSuccess
-                    ? "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah BERJAYA Dihantar Untuk Diproses."
-                    : "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah TIDAK BERJAYA Dihantar Untuk Diproses.",
-                Text = isSuccess ? "Info" : "Error",
-                Icon = isSuccess ? SweetAlertIcon.Info : SweetAlertIcon.Error,
-                ShowCancelButton = false,
-                ConfirmButtonText = "Ya"
-            };
-
-            // Show SweetAlert
-            await Swal.FireAsync(alertOptions);
-
-            // Navigate
-            string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
-            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
-            StateHasChanged();
-
+            throw new Exception(err.Message);
         }
 
     }
