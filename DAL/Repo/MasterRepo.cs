@@ -49,8 +49,8 @@ namespace DAL.Repo
         Task<bool> UpdateStatusPenyewaanTanahWakaf(tblInfoTanahWakaf data);
         Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon();
         Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan();
-
         Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKP(string nokp);
+        Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKPdanNoLot(string nokp, string nolot);
 
     }
     public class MasterRepo(ServerProd serverProd, ServerEHR serverEhr) : IMasterRepo
@@ -489,6 +489,10 @@ namespace DAL.Repo
             return await _serverProd.Connections.QueryAsync<tblInfoPermohonanPenyewaan>(sql, new {nokppemohon = nokp});
         }
 
-
+        public async Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKPdanNoLot(string nokp, string nolot)
+        {
+            string sql = @"select * from tblInfoPermohonanPenyewaan a where a.NoKPPemohon =  @nokppemohon and a.NoLot = @nolot";
+            return await _serverProd.Connections.QueryAsync<tblInfoPermohonanPenyewaan>(sql, new { nokppemohon = nokp, nolot = nolot });
+        }
     }
 }

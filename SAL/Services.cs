@@ -48,8 +48,9 @@ namespace SAL
         Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data);
         Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanBaruMohon();
         Task<IEnumerable<DashboardInfo>> GetDashboardLaporanPecahanRekodByTanahBangunan();
-
         Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKP(string nokp);
+        Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKPdanNoLot(string nokp, string nolot);
+       Task<tblInfoPermohonanPenyewaan?> GetExtractRekodPermohonanSewaIndividu(string nolot, string nokp);
     }
     public class Services(IMasterRepo masterRepo, SweetAlertService swal) : IServices
     {
@@ -425,6 +426,55 @@ namespace SAL
             }
             return bil ?? Enumerable.Empty<tblInfoPermohonanPenyewaan>();
         }
+
+        public async Task<IEnumerable<tblInfoPermohonanPenyewaan>> GetRecordPermohonanPenyewaanMelaluiNOKPdanNoLot(string nokp, string nolot)
+        {
+            var bil = await _master.GetRecordPermohonanPenyewaanMelaluiNOKPdanNoLot(nokp,nolot);
+            if (bil != null)
+            {
+                for (int i = 0; i < bil.Count(); i++)
+                {
+                    bil.ElementAt(i).Bil = i + 1;
+                }
+            }
+            return bil ?? Enumerable.Empty<tblInfoPermohonanPenyewaan>();
+        }
+
+        public bool adaRekod = false;
+        public async Task<tblInfoPermohonanPenyewaan?> GetExtractRekodPermohonanSewaIndividu(string nolot, string nokp)
+        {
+            try
+            {
+                var data = await GetRecordPermohonanPenyewaanMelaluiNOKPdanNoLot(nolot, nokp);
+
+                var record = data.FirstOrDefault();
+                if (record is not null)
+                {
+                    adaRekod = true;
+
+                    return new tblInfoPermohonanPenyewaan
+                    {
+                        Id = record.Id,
+                        Bil = record.Bil,
+                        CreatedDate = record.CreatedDate,
+                        Daerah = record.Daerah,
+                        Mukim = record.Mukim,
+                        NoLot = record.NoLot,
+                        NamaPemohon = record.NamaPemohon,
+                        NoKPPemohon = record.NoKPPemohon,
+                        TujuanPenyewaan = record.TujuanPenyewaan,
+                        Status = record.Status
+                    };
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null; throw new Exception(ex.Message);
+            }
+        }
+
 
 
 

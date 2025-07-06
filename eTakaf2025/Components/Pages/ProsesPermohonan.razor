@@ -1,0 +1,134 @@
+﻿@page "/ProsesPermohonan/{xnokp}/{xnolot}"
+
+<PageTitle>Proses Permohonan Penyewaan</PageTitle>
+
+@layout MainLayout
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using IdentityAuthentication
+@using Microsoft.AspNetCore.Authorization
+@using SAL
+@using System.Security.Claims
+@using System.Web
+@using eTakaf2025.Components.Layout
+
+@attribute [Authorize]
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+@inject IIdentityAuthenticationLib myIden
+
+<div class="container-fluid">
+    <div class="card shadow-lg px-2">
+        <div class="card-header bg-success text-white text-center">
+            <h5 class="mb-0">MAKLUMAT PERMOHONAN PENYEWAAN</h5>
+        </div>
+        <div class="card-body">
+            <div class="row mt-3 mb-3">
+                <div class="col-md-6 col-lg-6">
+                    <div class="info-card p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="info-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <h5 class="mb-0">Info Pemohon</h5>
+                        </div>
+                        <div class="mb-3">
+                            <div class="info-label">Nama</div>
+                            <div class="info-value">@_showData.NamaPemohon</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="info-label">No. Kad Pengenalan</div>
+                            <div class="info-value">@_showData.NoKPPemohon</div>
+                        </div>                       
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <div class="info-card p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="info-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <h5 class="mb-0">Info Tanah/Bangunan</h5>
+                        </div>
+                        <div class="mb-3">
+                            <div class="info-label">Daerah</div>
+                            <div class="info-value">@_showData.Daerah</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="info-label">Mukim</div>
+                            <div class="info-value">@_showData.Mukim</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="info-label">No. Lot</div>
+                            <div class="info-value">@_showData.NoLot</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="info-label">No. Geran</div>
+                            <div class="info-value">@_showData.NoGeran</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-12 col-md-12">
+                    <label>Tujuan Penyewaan</label>
+                    <h5 class="info-value fw-bold">@_showData.TujuanPenyewaan</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string xnokp { get; set; } = string.Empty;
+
+    [Parameter]
+    public string xnolot { get; set; } = string.Empty;
+
+    IEnumerable<tblInfoPermohonanPenyewaan> _data = [];
+    public bool adaRekod = false;
+
+    public string Mode = string.Empty;
+    public string strnokp = string.Empty;
+    public string strnolot = string.Empty;
+
+    public tblInfoPermohonanPenyewaan _showData = new();
+
+    private async Task LoadFile()
+    {
+        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Mode = _conf["Mode"]?.ToString() ?? string.Empty;
+        var authState = await myIden.GetUserAsync();
+        var user = authState.Identity as ClaimsIdentity;
+
+        if (user == null || !user.IsAuthenticated)
+        {
+            await myIden.SignOutUserAsync();
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+        }
+    }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        strnolot = EncryptionHelper.Decrypt(xnolot);
+        strnokp = EncryptionHelper.Decrypt(xnokp);
+
+        if (!string.IsNullOrEmpty(strnolot) && !string.IsNullOrEmpty(strnokp))
+        {
+            _showData = await _service.GetExtractRekodPermohonanSewaIndividu(strnokp, strnolot) ?? new tblInfoPermohonanPenyewaan();         
+        }
+        StateHasChanged();
+    }
+}

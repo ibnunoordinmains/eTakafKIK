@@ -1024,7 +1024,7 @@
                                                     <td>Mukim</td>
                                                     <td>No Lot</td>
                                                     <td>No Geran</td>
-                                                    <td>Tujuan Sewaan</td>
+                                                 @*    <td>Tujuan Sewaan</td> *@
                                                     <td>Status</td>
                                                     <td></td>
                                                 </tr>
@@ -1040,11 +1040,11 @@
                                                         <td>@xd.Mukim</td>
                                                         <td class="fw-bold text-success">@xd.NoLot</td>
                                                         <td>@xd.NoGeran</td>
-                                                        <td>@xd.TujuanPenyewaan</td>
+                                                      @*   <td>@xd.TujuanPenyewaan</td> *@
                                                         <td>
                                                             @if (xd.Status == 1)
                                                             {
-                                                                <span class="badge bg-success">Baru Mohon</span>
+                                                                <i class="fa-solid fa-star text-danger pe-2"></i><span class="badge bg-success">Baru Mohon</span>
                                                             }
                                                             else if (xd.Status == 2)
                                                             {
@@ -1052,7 +1052,7 @@
                                                             }                                                       
                                                         </td>
                                                         <td>
-                                                            <button class="btn btn-icon btn-warning"><i class="bi bi-gear pe-2"></i>Proses</button>
+                                                            <button class="btn btn-icon btn-warning" @onclick="()=>ProsesRekod(xd)"><i class="bi bi-gear pe-2"></i>Proses</button>
                                                         </td>
                                                     </tr>
                                                 }
@@ -1319,7 +1319,7 @@
                    _dashInfoBukanSewaan.Select(d => d.JumlahTanah).ToArray());
                 }
 
-                  if (_pecahanKategori.Any())
+                if (_pecahanKategori.Any())
                 {
                     await JSRuntime.InvokeVoidAsync("pecahanwakaf",
                    _pecahanKategori.Select(d => d.Keterangan).ToArray(),
@@ -1332,7 +1332,7 @@
                 _dashTampinInfo = await _service.GetDashboardInfoGroupByDaerahDanJenisWakaf("Tampin");
                 if (_dashTampinInfo.Any()) adaTampin = true;
 
-                 _dashRembauInfo = await _service.GetDashboardInfoGroupByDaerahDanJenisWakaf("Rembau");
+                _dashRembauInfo = await _service.GetDashboardInfoGroupByDaerahDanJenisWakaf("Rembau");
                 if (_dashRembauInfo.Any()) adaRembau = true;
 
                 _dashKualaPilahInfo = await _service.GetDashboardInfoGroupByDaerahDanJenisWakaf("Kuala Pilah");
@@ -1370,9 +1370,9 @@
                 TanahBukanSewaanTWA_P = ((double)TanahBukanSewaanTWA / TotalJumlahTanahBukanSewaan) * 100;
                 TanahBukanSewaanTWK_P = ((double)TanahBukanSewaanTWK / TotalJumlahTanahBukanSewaan) * 100;
 
-                 await Task.Delay(300);
-            await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTableX");
-            await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
+                await Task.Delay(300);
+                await JSRuntime.InvokeVoidAsync("initializeDataTable", "myTableX");
+                await JSRuntime.InvokeVoidAsync("initializeDataTablesForAll");
 
 
 
@@ -1449,5 +1449,30 @@
             await _service.ShowSweetAlertAsync("Pastikan No. Lot dan Daerah Dipilih Terlebih Dahulu", "Makluman", SweetAlertIcon.Info, false, "Ok");
         }
     }
+
+    public string xnokp = string.Empty; public string xnolot = string.Empty;
+
+    private void ProsesRekod(tblInfoPermohonanPenyewaan data)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(data.NoKPPemohon) && !string.IsNullOrEmpty(data.NoLot))
+            {
+                xnokp = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(data.NoKPPemohon));
+                xnolot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(data.NoLot));
+
+                  string baseUrl = (Mode == "Dev") ? $"/ProsesPermohonan/{xnokp}/{xnolot}" : $"/e-Takaf/ProsesPermohonan/{xnokp}/{xnolot}";
+                NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+            }
+        }
+        catch(System.Exception err)
+        {
+            throw new Exception(err.Message);
+        }
+    }
+
+
+
+
 
 }

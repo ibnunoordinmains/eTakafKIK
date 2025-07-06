@@ -68,20 +68,20 @@
                                 <div class="stat-card">
                                     <div class="col-sm-12">
                                         <div class="alert alert-success d-flex align-items-center mb-3" role="alert">
-                                           @*  <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i> *@
+                                            @*  <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i> *@
                                             <div class="flex-grow-3" data-bs-toggle="modal" data-bs-target="#infoModal" style="cursor: pointer;">
                                                 <strong>Senarai Permohonan Penyewaan Saya </strong>
-                                                <div class="text-center"><span class="badge bg-danger badge-counter text-center" >@JumlahRekodPerNoKP</span></div>
-                                            </div>                                            
+                                                <div class="text-center"><span class="badge bg-danger badge-counter text-center">@JumlahRekodPerNoKP</span></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     }
 
-                   
+
                 </div>
             </div>
         </div>
@@ -326,9 +326,18 @@
                     </div>
                 </div>
                 <div class="row mb-5">
+                    <p class="fw-bold">Tujuan Penyewaan (boleh memilih lebih dari satu pilihan)</p>
                     <div class="col-md-12">
-                        <label class="info-label">Tujuan Penyewaan :</label>
-                        <input type="text" placeholder="Nyatakan Tujuan Penyewaan Anda" class="form-control fw-bold text-danger"required @bind="TujuanPenyewaan" />
+                        @foreach (var item in items)
+                        {
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="btn-check"
+                                       id="@item.Id"
+                                       value="@item.Value"
+                                       @onchange="(e) => UpdateSelection(e, item.Value)">
+                                <label class="btn btn-outline-success me-2" for="@item.Id">@item.Label</label>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="row">
@@ -481,7 +490,7 @@
 
             <div class="modal-body">
                 <div class="row mt-auto d-flex justify-content-center">
-                   @if (isAdaRekod)
+                    @if (isAdaRekod)
                     {
                         <div class="table table-responsive">
                             <table id="myTableXX" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
@@ -523,7 +532,7 @@
                                     }
                                 </tbody>
                             </table>
-                            
+
                         </div>
                     }
                 </div>
@@ -589,6 +598,65 @@
         return status == 1;
     }
 
+    //----------
+    private List<string> selectedValues = new();
+    private List<CheckboxItem> items = new()
+    {
+        new() { Id = "btncheck1", Value = "Sewa Rumah Wakaf", Label = "Sewaan Rumah" },
+        new() { Id = "btncheck2", Value = "Sewa Bangunan Wakaf", Label = "Sewaan Bangunan" },
+
+        new() { Id = "bc1", Value = "Pertanian Kontan", Label = "Penanaman Kontan" },
+        new() { Id = "bc2", Value = "Pertanian Sayuran", Label = "Penanaman Sayur Sayuran" },
+        new() { Id = "bc3", Value = "Pertanian Nenas", Label = "Penanaman Nenas" },
+        new() { Id = "bc4", Value = "Pertanian Cili", Label = "Penanaman Cili" },
+        new() { Id = "bc5", Value = "Pertanian Ubi Kayu", Label = "Penanaman Ubi Kayu" },
+        new() { Id = "bc6", Value = "Pertanian Keledek", Label = "Penanaman Keledek" },
+        new() { Id = "bc7", Value = "Pertanian Bendi", Label = "Penanaman Bendi" },
+        new() { Id = "bc8", Value = "Pertanian Labu", Label = "Penanaman Labu" },
+        new() { Id = "bc9", Value = "Pertanian Kantan", Label = "Penanaman Kantan" },
+        new() { Id = "bc10", Value = "Pertanian Tebu", Label = "Penanaman Tebu" },
+        new() { Id = "bc11", Value = "Pertanian Terung", Label = "Penanaman Terung" },
+        new() { Id = "bc12", Value = "Pertanian Serai", Label = "Penanaman Serai" },
+        new() { Id = "bc13", Value = "Pertanian Pisang", Label = "Penanaman Pisang" },
+        new() { Id = "bc14", Value = "Pertanian Kelapa", Label = "Penanaman Kelapa" },
+        new() { Id = "bc15", Value = "Pertanian Durian", Label = "Penanaman Durian" },
+        new() { Id = "bc16", Value = "Pertanian Sawit", Label = "Penanaman Sawit" },
+        new() { Id = "bc17", Value = "Pertanian Getah", Label = "Penanaman Getah" },
+
+
+        new() { Id = "btncheck10", Value = "Penternakan Lembu", Label = "Penternakan Lembu" },
+        new() { Id = "btncheck11", Value = "Penternakan Kerbau", Label = "Penternakan Kerbau" },
+        new() { Id = "btncheck12", Value = "Penternakan Kambing", Label = "Penternakan Kambing" },
+        new() { Id = "btncheck13", Value = "Penternakan Rusa", Label = "Penternakan Rusa" },
+        new() { Id = "btncheck16", Value = "Penternakan Landak", Label = "Penternakan Landak" },
+        new() { Id = "btncheck14", Value = "Penternakan Ayam", Label = "Penternakan Ayam" },
+        new() { Id = "btncheck15", Value = "Penternakan Itik", Label = "Penternakan Itik" }
+
+
+
+    };
+
+    private void UpdateSelection(ChangeEventArgs e, string value)
+    {
+        if ((bool)e.Value!)
+            selectedValues.Add(value);
+        else
+            selectedValues.Remove(value);
+    }
+
+    public class CheckboxItem
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
+    }
+    //--------------------------
+
+
+
+
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -639,7 +707,7 @@
 
         try
         {
-            if (!string.IsNullOrEmpty(TujuanPenyewaan))
+            if (selectedValues.Count() >= 1)
             {
                 SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
                 {
@@ -653,6 +721,7 @@
 
                 if (!string.IsNullOrEmpty(result.Value))
                 {
+                    string combined = string.Join(",", selectedValues);
 
                     newData = new()
                     {
@@ -663,7 +732,7 @@
                         Mukim = Mukim,
                         NoLot = NoLot,
                         NoGeran = NoGeran,
-                        TujuanPenyewaan = TujuanPenyewaan,
+                        TujuanPenyewaan = combined,
                         Status = 1
                     };
 
@@ -706,7 +775,7 @@
                 });
             }
         }
-        catch(System.Exception err)
+        catch (System.Exception err)
         {
             throw new Exception(err.Message);
         }
