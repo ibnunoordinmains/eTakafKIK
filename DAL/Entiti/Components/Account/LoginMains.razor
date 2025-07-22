@@ -1,4 +1,4 @@
-﻿@page "/LoginAwam"
+﻿@page "/Login"
 
 <PageTitle>Login e-Takaf</PageTitle>
 
@@ -18,7 +18,7 @@
 @inject NavigationManager NavMan
 
 
-<div class="row justify-content-center align-items-center min-vh-100 login-container">
+<div class="row justify-content-center align-items-center min-vh-100">
     <div class="col-12 col-md-8 col-lg-5">
         <div class="login-card p-4 p-md-5">
             <div class="text-center mb-4">
@@ -32,10 +32,10 @@
                 <ValidationSummary />
 
                 <div class="form-floating mb-3">
-                    <InputText type="text" class="form-control fw-bold" @bind-Value="modelDB.UserId" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,12)" maxlength="14" id="userId" placeholder="No. Kad Pengenalan" required />
+                    <InputText type="text" class="form-control fw-bold" @bind-Value="modelDB.UserId" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,12)" maxlength="14" id="userId" placeholder="Nombor Kakitangan" required />
                     <label for="userId"><i class="bi bi-person me-2"></i></label>
                     <div class="invalid-feedback">
-                        Masukkan No. Kad Pengenalan Anda
+                        Masukkan Nombor Kakitangan Cth : 1354
                     </div>
                 </div>
 
@@ -58,14 +58,14 @@
 
             </EditForm>
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <a href="LupaKatalaluan" class="text-decoration-none fw-bold">Lupa katalaluan?</a>
-                <a href="PendaftaranId" class="text-decoration-none fw-bold">Akaun Baru</a>
+               @*  <a href="LupaPassword" class="text-decoration-none fw-bold">Lupa katalaluan?</a> *@
+              @*   <a href="PendaftaranId" class="text-decoration-none fw-bold">Akaun Baru</a> *@
             </div>
             <div class="d-flex justify-content-center align-items-center">
                 <a href="" class="text-decoration-none fw-bold">Home</a>
             </div>
             <div class="d-flex mt-4 justify-content-center align-items-center">
-                <label><small><b>Version 1.0.0</b></small></label>
+                <label><small><b><i>Version 1.0.0</i></b></small></label>
             </div>
         </div>
     </div>
@@ -73,13 +73,6 @@
 
 
 <style type="text/css">
-
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
     body {
         background-image: url('Images/tanah_kubur.jpg'); /* Replace with your image path */
         background-size: cover; /* Ensures the image covers the whole screen */
@@ -227,10 +220,9 @@
     [SupplyParameterFromForm]
     public LoginModel modelDB { get; set; } = new LoginModel()
     {
-        UserId = "750726075267",
-        Password = "Password@2025"
+        UserId = "1354",
+        Password = "750726075267"
     };
-
 
     public bool isError = false;
     public string NoKP = string.Empty;
@@ -251,29 +243,18 @@
         var cleaned = new string(input.Where(char.IsDigit).ToArray())
                                 .Substring(0, Math.Min(12, input.Length));
         modelDB.UserId = cleaned;
-
-        // Clear error alert
         isError = false;
         alertMessage = string.Empty;
     }
     protected override async Task OnInitializedAsync()
     {
-        Mode = _conf["Mode"] ?? "";
-        await Task.CompletedTask;
+        Mode = _conf["Mode"] ?? string.Empty; await Task.CompletedTask;
     }
 
     private async Task LoadFile()
     {
         await JSRuntime.InvokeVoidAsync("loadSweetAlert");
     }
-
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     if (firstRender)
-    //     {
-    //         await LoadFile();
-    //     }
-    // }
 
     [ValidateAntiForgeryToken]
     private async Task LoginRecord(EditContext context)
@@ -287,16 +268,17 @@
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
 
-            var data = await _service.GetLoginInfo(modelDB.UserId);
+            var data = await _service.GetInfoDataFromEHR(modelDB.UserId);            
             if (data.Any())
             {
                 var _result = data.FirstOrDefault();
-                var currPassword = modelDB.Password;
-                bool isMatch = BCrypt.Net.BCrypt.EnhancedVerify("N$r75**" + currPassword, _result?.Katalaluan ?? "");
+                var passDb = _result?.Ic ?? "";
+                bool isMatch = false;
+                if (modelDB.Password == passDb) isMatch = true;               
                 if (isMatch)
                 {
-                    await myIden.SignInUserAsync(modelDB.UserId, modelDB.UserId, "user", "user");
-                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
+                    await myIden.SignInUserAsync(_result?.Nama ?? "", modelDB.UserId, "user", "user");
+                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/e-Takaf/Dashboard";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
                 }
                 else

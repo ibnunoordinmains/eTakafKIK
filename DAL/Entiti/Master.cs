@@ -11,6 +11,13 @@ namespace DAL.Entiti
     {
         public string UserId { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+      
+    }
+    public class LoginModelA
+    {
+        public string UserId { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+
     }
 
     public class ModelSearch

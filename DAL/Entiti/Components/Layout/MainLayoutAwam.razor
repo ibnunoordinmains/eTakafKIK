@@ -1,0 +1,129 @@
+﻿@using System.Security.Claims
+@using CurrieTechnologies.Razor.SweetAlert2
+@using DAL.Entiti
+@using IdentityAuthentication
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc
+@using SAL
+@inherits LayoutComponentBase
+
+@inject IIdentityAuthenticationLib myIden
+@inject IJSRuntime JSRuntime
+@inject IServices _service
+@inject SweetAlertService Swal
+@inject IConfiguration _conf
+@inject NavigationManager NavMan
+
+
+
+<div class="layout-container">
+    <!-- Top Navigation Bar -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #50AD36 0%, #42DF16 100%) !important;">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand">e-Takaf</a>
+
+            <!-- Toggle Button for Smaller Screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="HomeInfoWakaf">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="navbar-text text-white fw-bold">Selamat Datang  @Nama.ToUpper()</span>
+                    </li>
+                </ul>
+
+                <!-- Right-Aligned Menu Item -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-sharp fa-regular fa-door-open"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item wakalah-link" href="BWLogKeluar">Log Keluar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="content mt-4">
+        @Body
+    </div>
+</div>
+
+
+
+<style type="text/css">
+    .wakalah-link:hover {
+        background-color: red !important;
+        color: white !important;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1030; /* Ensures it stays above other elements */
+    }
+
+    .layout-container {
+        padding-top: 60px; /* Adjust for the fixed navbar height */
+    }
+</style>
+
+
+@code
+{
+    public string Mode = string.Empty;
+    public string Nama = string.Empty;
+
+    public ModelSearch modelDB = new()
+    {
+        NoLotSearch = ""
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Mode = _conf["Mode"]?.ToString() ?? string.Empty;
+        var authState = await myIden.GetUserAsync();
+        var user = authState.Identity as ClaimsIdentity;
+
+        Nama = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
+        var role = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
+        // var given = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? string.Empty;
+
+
+        if (user == null || !user.IsAuthenticated)
+        {
+            await myIden.SignOutUserAsync();
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+        }
+        StateHasChanged();
+    }
+
+    private string _searchText = string.Empty;
+
+    private void GoSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(_searchText))
+        {
+            var aa = _searchText;
+            // NavMan.NavigateTo($"/carian-lot?lot={Uri.EscapeDataString(_searchText)}");
+        }
+    }
+
+}

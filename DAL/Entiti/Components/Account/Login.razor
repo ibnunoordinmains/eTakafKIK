@@ -18,77 +18,72 @@
 @inject NavigationManager NavMan
 
 
-<div class="row justify-content-center align-items-center min-vh-100 login-container">
+<div class="row justify-content-center align-items-center min-vh-100">
     <div class="col-12 col-md-8 col-lg-5">
-        <div class="login-card p-4 p-md-5">
-            <div class="text-center mb-4">
-                <h1 class="login-header mb-4 fw-bold">e-TAKAF</h1>
-                <h6>PORTAL CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN</h6>
-                <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6>
-            </div>
-
-            <EditForm Model="@modelDB" FormName="FirstMasukLog" OnValidSubmit="LoginRecord">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-
-                <div class="form-floating mb-3">
-                    <InputText type="text" class="form-control fw-bold" @bind-Value="modelDB.UserId" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,12)" maxlength="14" id="userId" placeholder="No. Kad Pengenalan" required />
-                    <label for="userId"><i class="bi bi-person me-2"></i></label>
-                    <div class="invalid-feedback">
-                        Masukkan No. Kad Pengenalan Anda
+                <div class="login-card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h1 class="login-header mb-4 fw-bold">e-TAKAF</h1>
+                        <h6>PORTAL CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN</h6>
+                        <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6>
                     </div>
-                </div>
+                              
+                    <EditForm Model="@modelDB" FormName="FirstMasukLog" OnValidSubmit="LoginRecord">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                   
+                            <div class="form-floating mb-3">
+                                 <InputText type="text" class="form-control fw-bold" @bind-Value="modelDB.UserId" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,12)" maxlength="14" id="userId" placeholder="No. Kad Pengenalan" required />
+                                <label for="userId"><i class="bi bi-person me-2"></i></label>
+                                <div class="invalid-feedback">
+                                    Masukkan No. Kad Pengenalan Anda
+                                </div>
+                            </div>
 
-                <div class="form-floating mb-3">
-                    <InputText type="password" class="form-control fw-bold" @bind-Value="modelDB.Password" id="password" placeholder="Katalaluan" required minlength="6" />
-                    <label for="password"><i class="bi bi-lock me-2"></i></label>
-                    <div class="invalid-feedback">
-                        Katalaluan tidak memenuhi spesifikasi
-                    </div>
-                </div>
-                <div class="text-center justify-content-center">
-                    @if (isError)
-                    {
-                        <p class="text-danger fw-bold">@alertMessage</p>
-                    }
-                </div>
-                <button type="submit" class="btn btn-success w-100 mb-3">
-                    <i class="fa-light fa-right-to-bracket pe-2"></i>Login
-                </button>
+                            <div class="form-floating mb-3">
+                            <InputText type="password" class="form-control fw-bold" @bind-Value="modelDB.Password" id="password" placeholder="Katalaluan" required minlength="6"/>
+                                <label for="password"><i class="bi bi-lock me-2"></i></label>
+                                <div class="invalid-feedback">
+                                    Katalaluan tidak memenuhi spesifikasi
+                                </div>
+                            </div>
+                            <div class="text-center justify-content-center">
+                                @if (isError)
+                                {
+                                    <p class="text-danger fw-bold">@alertMessage</p>
+                                }
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 mb-3">
+                                <i class="fa-light fa-right-to-bracket pe-2"></i>Login
+                            </button>
 
-            </EditForm>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <a href="LupaKatalaluan" class="text-decoration-none fw-bold">Lupa katalaluan?</a>
-                <a href="PendaftaranId" class="text-decoration-none fw-bold">Akaun Baru</a>
-            </div>
-            <div class="d-flex justify-content-center align-items-center">
-                <a href="" class="text-decoration-none fw-bold">Home</a>
-            </div>
-            <div class="d-flex mt-4 justify-content-center align-items-center">
-                <label><small><b>Version 1.0.0</b></small></label>
+                    </EditForm>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <a href="LupaKatalaluan" class="text-decoration-none fw-bold">Lupa katalaluan?</a>
+                            <a href="PendaftaranId" class="text-decoration-none fw-bold">Akaun Baru</a>                           
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="" class="text-decoration-none fw-bold">Home</a>
+                        </div>
+                        <div class="d-flex mt-4 justify-content-center align-items-center">
+                           <label><small><b>Version 1.0.0</b></small></label>
+                        </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 
 <style type="text/css">
-
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
     body {
-        background-image: url('Images/tanah_kubur.jpg'); /* Replace with your image path */
-        background-size: cover; /* Ensures the image covers the whole screen */
-        background-position: center; /* Centers the image */
-        background-repeat: no-repeat; /* Prevents repetition */
-        min-height: 100vh; /* Ensures full viewport coverage */
+            
+            background-image: url('Images/tanah_kubur.jpg'); /* Replace with your image path */
+            background-size: cover; /* Ensures the image covers the whole screen */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents repetition */
+            min-height: 100vh; /* Ensures full viewport coverage */
         min-height: 100vh;
         align-items: center;
-        /*  display: flex; */
+       /*  display: flex; */
+       
         /*justify-content: center; */
     }
 
@@ -294,7 +289,7 @@
                 var currPassword = modelDB.Password;
                 bool isMatch = BCrypt.Net.BCrypt.EnhancedVerify("N$r75**" + currPassword, _result?.Katalaluan ?? "");
                 if (isMatch)
-                {
+                {                    
                     await myIden.SignInUserAsync(modelDB.UserId, modelDB.UserId, "user", "user");
                     string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
@@ -310,7 +305,7 @@
             else
             {
                 isError = true;
-                modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
+                modelDB.UserId = string.Empty;modelDB.Password = string.Empty;
                 alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
                 StateHasChanged();
 
