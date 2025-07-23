@@ -264,7 +264,7 @@
             if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
             {
                 await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/e-Takaf/MainPageAdmin";
+                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
 
@@ -278,7 +278,7 @@
                 if (isMatch)
                 {
                     await myIden.SignInUserAsync(_result?.Nama ?? "", modelDB.UserId, "user", "user");
-                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/e-Takaf/Dashboard";
+                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/eTakaf_v1/Dashboard";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
                 }
                 else

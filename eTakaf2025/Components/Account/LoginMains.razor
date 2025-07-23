@@ -1,4 +1,4 @@
-﻿@page "/Login"
+﻿@page "/LoginPekerja"
 
 <PageTitle>Login e-Takaf</PageTitle>
 
@@ -23,8 +23,8 @@
         <div class="login-card p-4 p-md-5">
             <div class="text-center mb-4">
                 <h1 class="login-header mb-4 fw-bold">e-TAKAF</h1>
-                <h6>PORTAL CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN</h6>
-                <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6>
+                <h6>STAFF MAINS</h6>
+            @*     <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6> *@
             </div>
 
             <EditForm Model="@modelDB" FormName="FirstMasukLog" OnValidSubmit="LoginRecord">
@@ -218,11 +218,11 @@
 
 @code {
     [SupplyParameterFromForm]
-    public LoginModel modelDB { get; set; } = new LoginModel()
-    {
-        UserId = "1354",
-        Password = "750726075267"
-    };
+    public LoginModel modelDB { get; set; } = new LoginModel();
+    // {
+    //     UserId = "1354",
+    //     Password = "750726075267"
+    // };
 
     public bool isError = false;
     public string NoKP = string.Empty;
@@ -264,7 +264,7 @@
             if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
             {
                 await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/e-Takaf/MainPageAdmin";
+                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
 
@@ -278,7 +278,7 @@
                 if (isMatch)
                 {
                     await myIden.SignInUserAsync(_result?.Nama ?? "", modelDB.UserId, "user", "user");
-                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/e-Takaf/Dashboard";
+                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/eTakaf_v1/Dashboard";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
                 }
                 else

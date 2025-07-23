@@ -99,17 +99,19 @@
 
         Mode = _conf["Mode"]?.ToString() ?? string.Empty;
         var authState = await myIden.GetUserAsync();
-        var user = authState.Identity as ClaimsIdentity;
+        ClaimsIdentity? user = null;
+        user = authState.Identity as ClaimsIdentity;
+       
 
-          Nama = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
-                var role = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
+       Nama = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
+       var role = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
                // var given = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? string.Empty;
 
 
         if (user == null || !user.IsAuthenticated)
         {
             await myIden.SignOutUserAsync();
-            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/eTakaf_v1/SessiTamat";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         StateHasChanged();

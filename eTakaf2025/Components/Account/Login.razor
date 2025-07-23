@@ -23,8 +23,8 @@
         <div class="login-card p-4 p-md-5">
             <div class="text-center mb-4">
                 <h1 class="login-header mb-4 fw-bold">e-TAKAF</h1>
-                <h6>PORTAL CARIAN MAKLUMAT TANAH WAKAF NEGERI SEMBILAN</h6>
-                <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6>
+                <h6>ORANG AWAM</h6>
+               @*  <h6>MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</h6> *@
             </div>
 
             <EditForm Model="@modelDB" FormName="FirstMasukLog" OnValidSubmit="LoginRecord">
@@ -225,11 +225,11 @@
 
 @code {
     [SupplyParameterFromForm]
-    public LoginModel modelDB { get; set; } = new LoginModel()
-    {
-        UserId = "750726075267",
-        Password = "Password@2025"
-    };
+    public LoginModel modelDB { get; set; } = new LoginModel();
+    // {
+    //     UserId = "750726075267",
+    //     Password = "Password@2025"
+    // };
 
 
     public bool isError = false;
@@ -280,23 +280,27 @@
     {
         if (context.Validate())
         {
+            Console.WriteLine("Validate");
+
             if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
             {
                 await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/e-Takaf/MainPageAdmin";
+                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
 
             var data = await _service.GetLoginInfo(modelDB.UserId);
+            Console.WriteLine("data -->" +  data.Count());
             if (data.Any())
             {
                 var _result = data.FirstOrDefault();
+                var _nama = _result.NamaPemohon ?? string.Empty;
                 var currPassword = modelDB.Password;
                 bool isMatch = BCrypt.Net.BCrypt.EnhancedVerify("N$r75**" + currPassword, _result?.Katalaluan ?? "");
                 if (isMatch)
                 {
-                    await myIden.SignInUserAsync(modelDB.UserId, modelDB.UserId, "user", "user");
-                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
+                    await myIden.SignInUserAsync(_nama, modelDB.UserId, "user", "user");
+                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/eTakaf_v1/HomeInfoWakaf";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
                 }
                 else

@@ -11,6 +11,7 @@
 @using System.Security.Claims
 @using System.Web
 @using eTakaf2025.Components.Layout
+@using eTakaf2025.Components.Misc
 
 @attribute [Authorize]
 @inject IJSRuntime JSRuntime
@@ -20,6 +21,10 @@
 @inject IConfiguration _conf
 @inject NavigationManager NavMan
 @inject IIdentityAuthenticationLib myIden
+
+<LoadingTool IsVisible="@isLoading" Message="Sila tunggu ... Proses Pengambilan Data"></LoadingTool>
+
+
 
 <div class="container-fluid">
     <div class="card">
@@ -137,7 +142,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge bg-success">Masih Kosong</span>
+                                                    <span class="badge bg-success">Kosong</span>
                                                 }
                                             </td>
                                             <td>
@@ -371,60 +376,7 @@
                             </div>
                         </div>
                     </div>
-
-                    @*   <!-- Basic Information -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="info-section">
-                            <div class="section-header">
-                                <div class="section-icon">
-                                    <i class="bi bi-house-door"></i>
-                                </div>
-                                <h6 class="section-title">Maklumat Wakaf</h6>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="info-label">Pewakaf</div>
-                                <div class="info-value">@Pewakaf</div>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="info-label">Hartanah</div>
-                                <div class="info-value">@NamaHartanah</div>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="info-label">Jenis Hartanah</div>
-                                <div class="info-value">@JenisHartanah</div>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="info-label">Kategori</div>
-                                <div class="info-value">@Kategori</div>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="info-label">Jenis Wakaf</div>
-                                <div class="info-value">@KategoriSumberAmWakaf</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Land Area -->
-                    <div class="col-md-6 col-lg-4">
-                        <div class="info-section">
-                            <div class="section-header">
-                                <div class="section-icon">
-                                    <i class="bi bi-rulers"></i>
-                                </div>
-                                <h6 class="section-title">Keluasan Tanah/Bangunan</h6>
-                            </div>
-
-                            <div class="info-item">
-                                <div class="info-label">Keluasan DiWakafkan (Ha)</div>
-                                <div class="info-value">@LuasTanahDiwakafkanHa.ToString("N2")</div>
-                            </div>
-                        </div>
-                    </div> *@
+                                      
 
                     <!-- Property Details -->
                     <div class="col-md-12 col-lg-8">
@@ -552,7 +504,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="/Promosi/JomBerwakaf.png" class="img-fluid" alt="Wakaf"  />
+                <img src="Promosi/JomBerwakaf.png" class="img-fluid" alt="Wakaf"  />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -566,7 +518,7 @@
     public string Mode = string.Empty;
     public bool adaRekod = false;
     public int TanahKosongTWA = 0; public int TanahKosongTWK = 0;
-
+    public bool isLoading = false;
     IEnumerable<tblInfoTanahWakaf> _data = []; IEnumerable<tblInfoUsereTakaf> _userInfo = [];
     public int JumlahRekod = 0;
     public bool isAdaRekod = false;
@@ -666,11 +618,6 @@
     //--------------------------
 
 
-
-
-
-
-
     protected override async Task OnInitializedAsync()
     {
         Mode = _conf["Mode"]?.ToString() ?? string.Empty;
@@ -680,7 +627,7 @@
         if (user == null || !user.IsAuthenticated)
         {
             await myIden.SignOutUserAsync();
-            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/eTakaf_v1/SessiTamat";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
     }
@@ -689,6 +636,8 @@
     {
         if (firstRender)
         {
+            isLoading = true; StateHasChanged();
+         
             await LoadFile();
             _data = await _service.GetDetailsTanahWakafKosongForAKForPublic();
             if (_data.Any()) adaRekod = true;
@@ -709,8 +658,10 @@
             TanahKosongTWK = await _service.CountJumlahTWKKosongBothKategori();
 
             JumlahRekod = _data.Count();
-
+          
+            isLoading = false;
             await JSRuntime.InvokeVoidAsync("openModal", "InfoWakaf");
+           
             StateHasChanged();
         }
     }
@@ -748,6 +699,7 @@
                         NoLot = NoLot,
                         NoGeran = NoGeran,
                         TujuanPenyewaan = combined,
+                        NoStaff = "",
                         Status = 1
                     };
 
@@ -773,7 +725,7 @@
                     await Swal.FireAsync(alertOptions);
 
                     // Navigate
-                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
+                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/eTakaf_v1/HomeInfoWakaf";
                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
                     StateHasChanged();
 

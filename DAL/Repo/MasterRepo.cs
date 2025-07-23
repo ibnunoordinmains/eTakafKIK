@@ -462,8 +462,8 @@ namespace DAL.Repo
         public async Task<bool> InsertNewPenyewaanRekod(tblInfoPermohonanPenyewaan data)
         {
             string sql = @"INSERT INTO tblInfoPermohonanPenyewaan
-                        (CreatedDate, NoKPPemohon, NamaPemohon, Daerah, Mukim, NoLot, NoGeran, Status, TujuanPenyewaan)
-                        VALUES (@CreatedDate, @NoKPPemohon, @NamaPemohon, @Daerah, @Mukim, @NoLot, @NoGeran, @Status, @TujuanPenyewaan)";           
+                        (CreatedDate, NoKPPemohon, NamaPemohon, Daerah, Mukim, NoLot, NoGeran, Status, TujuanPenyewaan, NoStaff)
+                        VALUES (@CreatedDate, @NoKPPemohon, @NamaPemohon, @Daerah, @Mukim, @NoLot, @NoGeran, @Status, @TujuanPenyewaan, @NoStaff)";           
             var res = await _serverProd.Connections.ExecuteAsync(sql, data);
             return res > 0;
           

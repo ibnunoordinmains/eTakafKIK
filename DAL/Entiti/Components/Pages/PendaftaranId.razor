@@ -131,7 +131,7 @@
 
     private void GoHome()
     {
-        string baseUrl = (Mode == "Dev") ? "/" : "/e-takaf/";
+        string baseUrl = (Mode == "Dev") ? "/" : "/eTakaf_v1/";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
 
@@ -162,7 +162,7 @@
             {
                 ClearData();
                 StateHasChanged();
-                string baseUrl = (Mode == "Dev") ? "/" : "/e-takaf/";
+                string baseUrl = (Mode == "Dev") ? "/" : "/eTakaf_v1/";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
             else

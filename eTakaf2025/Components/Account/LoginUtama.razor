@@ -21,13 +21,16 @@
         <div class="login-card">
             <!-- Header Section -->
             <div class="header-section">
-                <div class="logo-icon">
+                @* <div class="logo-icon">
                     <i class="bi bi-building"></i>
-                </div>
+                </div> *@
+            <div class="text-center mt-4 mb-3">
+                <img src="images/mainslogo.png" class="img-fluid" alt="Logo Mains" style="width:100px;height:auto;" />
+            </div>
                 <h2 class="fw-bold mb-2">e-TAKAF</h2>
-                <p class="mb-1 small">PORTAL CARIAN MAKLUMAT TANAH WAKAF</p>
-                <p class="mb-0 small">NEGERI SEMBILAN</p>
-                <small class="opacity-75">MAJLIS AGAMA ISLAM NEGERI SEMBILAN (MAINS)</small>
+            <p class="mb-1 small">PORTAL CARIAN TANAH/BANGUNAN WAKAF NEGERI SEMBILAN</p>
+                <p class="mb-0 small"></p>
+                <small class="opacity-90 text-warning fw-bold">MAJLIS AGAMA ISLAM NEGERI SEMBILAN</small>
             </div>
 
             <!-- Login Options -->
@@ -36,38 +39,39 @@
                 
                 <!-- IC Number Login Option -->
             <div class="login-method" id="ic-method">
-                <div class="d-flex align-items-center" onclick="window.location.href='Login'">
-                        <div class="method-icon me-3">
-                            <i class="bi bi-person-badge"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1 fw-bold">Staff MAINS</h6>
-                            <small class="text-muted">Untuk kegunaan staff MAINS sahaja</small>
-                        </div>
-                        <div class="ms-auto">
-                            <i class="bi bi-chevron-right"></i>
-                        </div>
+                <NavLink href="LoginPekerja" class="d-flex align-items-center" style="text-decoration: none;">
+                    <div class="method-icon me-3">
+                        <i class="bi bi-person-badge"></i>
                     </div>
-                </div>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Staff MAINS</h6>
+                        <small class="text-muted">Untuk kegunaan staff MAINS sahaja</small>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </NavLink>
+            </div>
 
                 <!-- Email Login Option -->
             <div class="login-method" id="email-method">
-                <div class="d-flex align-items-center" onclick="window.location.href='LoginAwam'">
-                        <div class="method-icon me-3">
-                            <i class="bi bi-envelope"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1 fw-bold">Orang AWAM</h6>
-                            <small class="text-muted">Untuk kegunaan orang awam sahaja</small>
-                        </div>
-                        <div class="ms-auto">
-                            <i class="bi bi-chevron-right"></i>
-                        </div>
+                <NavLink href="LoginAwam" class="d-flex align-items-center" style="text-decoration: none;">
+                    <div class="method-icon me-3">
+                        <i class="bi bi-person-badge"></i>
                     </div>
-                </div>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Orang Awam / Organisasi</h6>
+                        <small class="text-muted">Untuk kegunaan orang awam / organisasi sahaja</small>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </NavLink>
+            
             </div>
 
         </div>
+    </div>
     </div>
 
 <style type="text/css">
@@ -312,137 +316,137 @@
 
 
 @code {
-    [SupplyParameterFromForm]
-    public LoginModel modelDB { get; set; } = new ();
+    // [SupplyParameterFromForm]
+    // public LoginModel modelDB { get; set; } = new ();
 
-    [SupplyParameterFromForm]
-    public LoginModelA modelDBA { get; set; } = new ();
-
-
-    public bool isError = false;
-    public string NoKP = string.Empty;
-    public string NamaPemohon = string.Empty;
-    public string Emel = string.Empty;
-    public string NoHP = string.Empty;
-    public string KataLaluan = string.Empty;
-    public string KataLaluan1 = string.Empty;
-    public string NoKaP = string.Empty;
-    public string alertMessage = string.Empty;
-    public string Mode = string.Empty;
-
-    public bool MAINS = false; public bool AWAM = false;
+    // [SupplyParameterFromForm]
+    // public LoginModelA modelDBA { get; set; } = new ();
 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("resetSelection");
-            await JSRuntime.InvokeVoidAsync("selectLoginMethod", "");
-        }
-    }
+    // public bool isError = false;
+    // public string NoKP = string.Empty;
+    // public string NamaPemohon = string.Empty;
+    // public string Emel = string.Empty;
+    // public string NoHP = string.Empty;
+    // public string KataLaluan = string.Empty;
+    // public string KataLaluan1 = string.Empty;
+    // public string NoKaP = string.Empty;
+    // public string alertMessage = string.Empty;
+    // public string Mode = string.Empty;
 
-    protected override async Task OnInitializedAsync()
-    {
-        Mode = _conf["Mode"] ?? string.Empty; await Task.CompletedTask;
-    }
-
-    private async Task LoadFile()
-    {
-        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
-    }
+    // public bool MAINS = false; public bool AWAM = false;
 
 
-    [ValidateAntiForgeryToken]
-    private async Task LoginRecord(EditContext context)
-    {
-        if (context.Validate())
-        {
-            if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
-            {
-                await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/e-Takaf/MainPageAdmin";
-                NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
-            }
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         await JSRuntime.InvokeVoidAsync("resetSelection");
+    //         await JSRuntime.InvokeVoidAsync("selectLoginMethod", "");
+    //     }
+    // }
 
-             var data = await _service.GetInfoDataFromEHR(modelDB.UserId);
-                if (data.Any())
-                {
-                    var _result = data.FirstOrDefault();
-                    var passDb = _result?.Ic ?? "";
-                    bool isMatch = false;
-                    if (modelDB.Password == passDb) isMatch = true;
-                    if (isMatch)
-                    {
-                        await myIden.SignInUserAsync(_result?.Nama ?? "", modelDB.UserId, "user", "user");
-                        string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/e-Takaf/Dashboard";
-                        NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
-                        modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     Mode = _conf["Mode"] ?? string.Empty; await Task.CompletedTask;
+    // }
+
+    // private async Task LoadFile()
+    // {
+    //     await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    // }
+
+
+    // [ValidateAntiForgeryToken]
+    // private async Task LoginRecord(EditContext context)
+    // {
+    //     if (context.Validate())
+    //     {
+    //         if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
+    //         {
+    //             await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
+    //             string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
+    //             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    //         }
+
+    //          var data = await _service.GetInfoDataFromEHR(modelDB.UserId);
+    //             if (data.Any())
+    //             {
+    //                 var _result = data.FirstOrDefault();
+    //                 var passDb = _result?.Ic ?? "";
+    //                 bool isMatch = false;
+    //                 if (modelDB.Password == passDb) isMatch = true;
+    //                 if (isMatch)
+    //                 {
+    //                     await myIden.SignInUserAsync(_result?.Nama ?? "", modelDB.UserId, "user", "user");
+    //                     string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/eTakaf_v1/Dashboard";
+    //                     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    //                     modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
                        
-                        StateHasChanged();
-                    }
-                    else
-                    {
-                        isError = true; StateHasChanged();
-                        modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
-                        alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
-                        StateHasChanged();
-                    }
-                }
-                else
-                {
-                    isError = true;
-                    modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
-                    alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
-                    StateHasChanged();
+    //                     StateHasChanged();
+    //                 }
+    //                 else
+    //                 {
+    //                     isError = true; StateHasChanged();
+    //                     modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
+    //                     alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
+    //                     StateHasChanged();
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 isError = true;
+    //                 modelDB.UserId = string.Empty; modelDB.Password = string.Empty;
+    //                 alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
+    //                 StateHasChanged();
 
-                }
+    //             }
             
-        }
-    }
+    //     }
+    // }
 
-    [ValidateAntiForgeryToken]
-    private async Task LoginRecordA()
-    {
-        // if (context.Validate())
-        // {
-            if (modelDBA.UserId == "sysadmin1" && modelDBA.Password == "@Pwd@2025e")
-            {
-                await myIden.SignInUserAsync("Admin", "Admin", modelDBA.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/e-Takaf/MainPageAdmin";
-                NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
-            }
+    // [ValidateAntiForgeryToken]
+    // private async Task LoginRecordA()
+    // {
+    //     // if (context.Validate())
+    //     // {
+    //         if (modelDBA.UserId == "sysadmin1" && modelDBA.Password == "@Pwd@2025e")
+    //         {
+    //             await myIden.SignInUserAsync("Admin", "Admin", modelDBA.UserId, "Admin");
+    //             string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
+    //             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+    //         }
 
-            var data = await _service.GetLoginInfo(modelDBA.UserId);
-            if (data.Any())
-            {
-                var _result = data.FirstOrDefault();
-                var currPassword = modelDBA.Password;
-                bool isMatch = BCrypt.Net.BCrypt.EnhancedVerify("N$r75**" + currPassword, _result?.Katalaluan ?? "");
-                if (isMatch)
-                {                    
-                    await myIden.SignInUserAsync(modelDBA.UserId, modelDBA.UserId, "user", "user");
-                    string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/e-Takaf/HomeInfoWakaf";
-                    NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
-                }
-                else
-                {
-                    isError = true; StateHasChanged();
-                    modelDBA.UserId = string.Empty; modelDBA.Password = string.Empty;
-                    alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
-                    StateHasChanged();
-                }
-            }
-            else
-            {
-                isError = true;
-                modelDBA.UserId = string.Empty;modelDBA.Password = string.Empty;
-                alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
-                StateHasChanged();
+    //         var data = await _service.GetLoginInfo(modelDBA.UserId);
+    //         if (data.Any())
+    //         {
+    //             var _result = data.FirstOrDefault();
+    //             var currPassword = modelDBA.Password;
+    //             bool isMatch = BCrypt.Net.BCrypt.EnhancedVerify("N$r75**" + currPassword, _result?.Katalaluan ?? "");
+    //             if (isMatch)
+    //             {                    
+    //                 await myIden.SignInUserAsync(modelDBA.UserId, modelDBA.UserId, "user", "user");
+    //                 string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/eTakaf_v1/HomeInfoWakaf";
+    //                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true); StateHasChanged();
+    //             }
+    //             else
+    //             {
+    //                 isError = true; StateHasChanged();
+    //                 modelDBA.UserId = string.Empty; modelDBA.Password = string.Empty;
+    //                 alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
+    //                 StateHasChanged();
+    //             }
+    //         }
+    //         else
+    //         {
+    //             isError = true;
+    //             modelDBA.UserId = string.Empty;modelDBA.Password = string.Empty;
+    //             alertMessage = "Tiada id pengguna dan katalaluan yang sah atau tiada rekod dijumpai";
+    //             StateHasChanged();
 
-            }
-        //}
-    }
+    //         }
+    //     //}
+    // }
 
 
 }

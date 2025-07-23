@@ -1,0 +1,60 @@
+﻿@page "/mytest"
+
+@using Microsoft.AspNetCore.Components.Forms
+@using eTakaf2025.Components.Layout
+@layout EmptyLayout
+
+<h3>User Information</h3>
+<EditForm Model="@userModel" FormName="1" OnValidSubmit="HandleUserSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="userModel.Name" />
+    </div>
+
+    <button type="submit">Save User</button>
+</EditForm>
+
+<hr />
+
+<h3>Address Information</h3>
+<EditForm Model="@addressModel" FormName="2" OnValidSubmit="HandleAddressSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Street:</label>
+        <InputText @bind-Value="addressModel.Street" />
+    </div>
+
+    <button type="submit">Save Address</button>
+</EditForm>
+
+@code {
+    public UserModel userModel { get; set; } = new();
+    public AddressModel addressModel{ get; set; } = new();
+
+    private void HandleUserSubmit()
+    {
+        var aa = userModel.Name;
+        Console.WriteLine($"User: {userModel.Name}");StateHasChanged();
+    }
+
+    private void HandleAddressSubmit()
+    {
+        // Handle address form submission
+        Console.WriteLine($"Address: {addressModel.Street}"); StateHasChanged();
+    }
+
+    public class UserModel
+    {
+        public string Name { get; set; } = string.Empty;
+    }
+
+    public class AddressModel
+    {
+        public string Street { get; set; } = string.Empty;
+    }
+}

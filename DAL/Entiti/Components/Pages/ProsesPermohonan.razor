@@ -141,7 +141,7 @@
         if (user == null || !user.IsAuthenticated)
         {
             await myIden.SignOutUserAsync();
-            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/eTakaf_v1/SessiTamat";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
     }

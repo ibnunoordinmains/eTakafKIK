@@ -46,7 +46,7 @@
             <div class="tab-pane fade show active" id="dashboard1" role="tabpanel" aria-labelledby="products-tab">
                 @if (adaRekod)
                 {
-                    <div class="container mt-3 mb-5">
+                   <div class="container mt-3 mb-5">
                         <div class="card stat-card total-card mb-4">
                             <div class="row align-items-center px-3 mt-3 mb-3">
                                 <div class="input-group flex-wrap gap-2">
@@ -526,7 +526,7 @@
             </div>
             <!--DashboardInfo Utk Daerah2-->
             <div class="tab-pane fade" id="dashboard2" role="tabpanel" aria-labelledby="products-tab">
-                    <div class="container mt-3 mb-5">
+                <div class="container mt-3 mb-5">
                          <div class="card stat-card mt-3 pe-3 px-3">
                             <div class="card-header mt-2 bg-success text-white text-center">
                                 <h5 class="mb-0">MAKLUMAT TANAH/BANGUNAN WAKAF MENGIKUT DAERAH</h5>
@@ -1001,7 +1001,7 @@
                         </div>
                         </div>
                     </div>               
-                </div>
+            </div>
 
             <div class="tab-pane fade" id="dashboard3" role="tabpanel" aria-labelledby="products-tab">
                 <div class="container-fluid mt-3 mb-3">
@@ -1018,13 +1018,14 @@
                                              <thead class="table-success text-center align-middle">
                                                 <tr>
                                                     <td>#</td>
+                                                    <td>Tarikh Mohon</td>
                                                     <td>Pemohon</td>
                                                     <td>No. KP Pemohon</td>
                                                     <td>Daerah</td>
                                                     <td>Mukim</td>
                                                     <td>No Lot</td>
                                                     <td>No Geran</td>
-                                                 @*    <td>Tujuan Sewaan</td> *@
+                                                    <td>Sumber</td>
                                                     <td>Status</td>
                                                     <td></td>
                                                 </tr>
@@ -1034,14 +1035,24 @@
                                                 {
                                                     <tr>
                                                         <td>@xd.Bil</td>
+                                                         <td>@xd.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
                                                         <td class="fw-bold">@xd.NamaPemohon</td>
                                                         <td class="fw-bold">@xd.NoKPPemohon</td>
                                                         <td class="fw-bold text-danger">@xd.Daerah</td>
                                                         <td>@xd.Mukim</td>
                                                         <td class="fw-bold text-success">@xd.NoLot</td>
-                                                        <td>@xd.NoGeran</td>
-                                                      @*   <td>@xd.TujuanPenyewaan</td> *@
-                                                        <td>
+                                                          <td class="text-center">@xd.NoGeran</td>
+                                                        <td class="text-center">
+                                                            @if (!string.IsNullOrEmpty(xd.NoStaff))
+                                                            {
+                                                                  <span class="badge bg-success">MAINS</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                  <span class="badge bg-warning">AWAM</span>
+                                                            }
+                                                        </td>
+                                                         <td class="text-center">
                                                             @if (xd.Status == 1)
                                                             {
                                                                 <i class="fa-solid fa-star text-danger pe-2"></i><span class="badge bg-success">Baru Mohon</span>
@@ -1126,13 +1137,13 @@
 
     private void ShowTWASewa()
     {
-        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWAS"}" : $"/e-Takaf/MaklumatRekodWakaf/{"TWAS"}";
+        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWAS"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"TWAS"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
 
     private void ShowTWKSewa()
     {
-        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWKS"}" : $"/e-Takaf/MaklumatRekodWakaf/{"TWKS"}";
+        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWKS"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"TWKS"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
 
@@ -1140,7 +1151,7 @@
     {
         string baseUrl = (Mode == "Dev")
         ? $"/MaklumatRekodWakaf/{"TWA"}"
-        : $"/e-Takaf/MaklumatRekodWakaf/{"TWA"}";
+        : $"/eTakaf_v1/MaklumatRekodWakaf/{"TWA"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
 
@@ -1148,18 +1159,18 @@
     {
         string baseUrl = (Mode == "Dev")
         ? $"/MaklumatRekodWakaf/{"TWK"}"
-        : $"/e-Takaf/MaklumatRekodWakaf/{"TWK"}";
+        : $"/eTakaf_v1/MaklumatRekodWakaf/{"TWK"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
 
     private void ShowTWABukanSewaan()
     {
-        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWABS"}" : $"/e-Takaf/MaklumatRekodWakaf/{"TWABS"}";
+        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWABS"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"TWABS"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
     private void ShowTWKBukanSewaan()
     {
-        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWKBS"}" : $"/e-Takaf/MaklumatRekodWakaf/{"TWKBS"}";
+        string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"TWKBS"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"TWKBS"}";
         NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
     }
 
@@ -1170,37 +1181,37 @@
     {
         if (data == "Seremban")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Seremban"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Seremban"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Seremban"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Seremban"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         else if (data == "Kuala Pilah")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Kuala Pilah"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Kuala Pilah"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Kuala Pilah"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Kuala Pilah"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         else if (data == "Rembau")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Rembau"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Rembau"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Rembau"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Rembau"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         else if (data == "Jelebu")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Jelebu"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Jelebu"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Jelebu"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Jelebu"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         else if (data == "Jempol")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Jempol"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Jempol"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Jempol"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Jempol"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         else if (data == "Tampin")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Tampin"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Tampin"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Tampin"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Tampin"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
         else if (data == "Port Dickson")
         {
-            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Port Dickson"}" : $"/e-Takaf/MaklumatRekodWakaf/{"Port Dickson"}";
+            string baseUrl = (Mode == "Dev") ? $"/MaklumatRekodWakaf/{"Port Dickson"}" : $"/eTakaf_v1/MaklumatRekodWakaf/{"Port Dickson"}";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
     }
@@ -1392,7 +1403,7 @@
         if (user == null || !user.IsAuthenticated)
         {
             await myIden.SignOutUserAsync();
-            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/eTakaf_v1/SessiTamat";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
     }
@@ -1435,7 +1446,7 @@
                 SearchNoLot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchNoLot));
                 SearchDaerah = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchDaerah));
 
-                string baseUrl = (Mode == "Dev") ? $"/MaklumatCarian/{SearchNoLot}/{SearchDaerah}" : $"/e-Takaf/MaklumatCarian/{SearchDaerah}/{SearchNoLot}";
+                string baseUrl = (Mode == "Dev") ? $"/MaklumatCarian/{SearchNoLot}/{SearchDaerah}" : $"/eTakaf_v1/MaklumatCarian/{SearchDaerah}/{SearchNoLot}";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
 
             }
@@ -1461,7 +1472,7 @@
                 xnokp = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(data.NoKPPemohon));
                 xnolot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(data.NoLot));
 
-                  string baseUrl = (Mode == "Dev") ? $"/ProsesPermohonan/{xnokp}/{xnolot}" : $"/e-Takaf/ProsesPermohonan/{xnokp}/{xnolot}";
+                  string baseUrl = (Mode == "Dev") ? $"/ProsesPermohonan/{xnokp}/{xnolot}" : $"/eTakaf_v1/ProsesPermohonan/{xnokp}/{xnolot}";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
         }

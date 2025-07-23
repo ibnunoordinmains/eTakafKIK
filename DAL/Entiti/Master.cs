@@ -313,14 +313,14 @@ namespace DAL.Entiti
     {
         public int Id { get; set; }
         public int Bil { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string NoStaff { get; set; } = string.Empty;
         public string NoKPPemohon { get; set; } = string.Empty;
         public string NamaPemohon { get; set; } = string.Empty;
         public string Daerah { get; set; } = string.Empty;
         public string Mukim { get; set; } = string.Empty;
         public string NoLot { get; set; } = string.Empty;
         public string NoGeran { get; set; } = string.Empty;
-
         public string TujuanPenyewaan { get; set; } = string.Empty;
         public int? Status { get; set; }
     }

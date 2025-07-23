@@ -26,7 +26,6 @@
         <div class="card-header bg-primary text-white rounded-top-4">
             <h5 class="mb-0 fw-semibold"><i class="bi bi-table me-2"></i>@Message</h5>
         </div>
-
         <div class="card-body bg-light rounded-bottom-4">
             @if (adaRekod)
             {
@@ -42,6 +41,8 @@
                                 <th>Kategori</th>
                                 <th>Catatan</th>
                                 <th>Keluasan Tanah Diwakaf (Ha)</th>
+                                <th>Status</th>
+                                <th>Info</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -58,9 +59,24 @@
                                     <td>@xx.CATATAN</td>
                                     <td class="text-center fw-bold text-danger">@(xx.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("F2") ?? "0.00")</td>
                                     <td>
+                                        @if (xx.Status == 2)
+                                        {
+                                            <span class="badge bg-warning"><i class="fa-regular fa-stars text-primary pe-2"></i>Di tempah</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Kosong</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
                                         <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
                                             <i class="fa-regular fa-circle-info"></i>
                                          </button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button disabled="@(!IsButtonEnabled(xx.Status))" title="Tempahan Penyewaan" data-bs-toggle="modal" data-bs-target="#QueryModal" class="btn btn-icon btn-warning rounded-pill btn-wave" @onclick="() => getInfoDetails(xx)">
+                                            <i class="fa-regular fa-circle-info"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             }
@@ -81,6 +97,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
+                <div class="row mt-1 mb-1">
+                   
+                </div>
                 <div class="scrollable-content">
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
@@ -262,6 +281,129 @@
         </div>
     </div>
 
+    <div class="modal fade" id="QueryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background :linear-gradient(135deg, #50AD36, #42DF16) !important;color:white;">
+                <h5 class="modal-title">PERMOHONAN PENYEWAAN TANAH/BANGUNAN WAKAF DIBAWAH MAINS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="info-label">Nama Pemohon :</label>
+                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NamaPemohon" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="info-label">No. Kad Pengenalan :</label>
+                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NOKP" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="info-label">No. Staff :</label>
+                        <input type="text" readonly class="form-control fw-bold text-danger" @bind="NoStaff" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <p class="fw-bold">Tujuan Penyewaan (boleh memilih lebih dari satu pilihan)</p>
+                    <div class="col-md-12">
+                        @foreach (var item in items)
+                        {
+                            <div class="form-check form-check-inline">
+                                <input type="checkbox" class="btn-check"
+                                       id="@item.Id"
+                                       value="@item.Value"
+                                       @onchange="(e) => UpdateSelection(e, item.Value)">
+                                <label class="btn btn-outline-success me-2" for="@item.Id">@item.Label</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Location Information -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Lokasi</h6>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Alamat</div>
+                                <div class="info-value">@AlamatPremis</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Daerah</div>
+                                <div class="info-value">@Daerah</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Mukim</div>
+                                <div class="info-value">@Mukim</div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-label">Keluasan DiWakafkan (Ha)</div>
+                                <div class="info-value">@LuasTanahDiwakafkanHa.ToString("N2")</div>
+                            </div>
+                        </div>
+                    </div>
+                                      
+
+                    <!-- Property Details -->
+                    <div class="col-md-12 col-lg-8">
+                        <div class="info-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <h6 class="section-title">Maklumat Harta</h6>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">No. Lot</div>
+                                        <div class="info-value">@NoLot</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Nombor Geran</div>
+                                        <div class="info-value">@NoGeran</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Pegangan Hartanah</div>
+                                        <div class="info-value">@PeganganTanah</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">Pajakan</div>
+                                        <div class="info-value">@TempohPajakan</div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-label">Syarat Nyata Tanah</div>
+                                        <div class="info-value">@SyaratNyataTanah</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" @onclick="HantarSewa" class="btn btn-success btn-lg"><i class="fa-light fa-floppy-disk pe-2"></i>Hantar Permohonan Penyewaan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
     [Parameter]
@@ -296,11 +438,75 @@
     public DateTime TarikhTamat;
     public decimal SewaBulanan;
     public decimal SewaTahunan;
-
+    public string NOKP = string.Empty;
+    public string NamaPemohon = string.Empty;
+    public string NoStaff = string.Empty;
 
 
     IEnumerable<tblLegasiWakafMAINS> _data = [];
     IEnumerable<tblInfoTanahWakaf> _dataB = [];
+
+      private bool IsButtonEnabled(int? status)
+    {
+        return status == 1;
+    }
+
+    private List<string> selectedValues = new();
+    private List<CheckboxItem> items = new()
+    {
+        new() { Id = "btncheck1", Value = "Sewa Rumah Wakaf", Label = "Sewaan Rumah" },
+        new() { Id = "btncheck2", Value = "Sewa Bangunan Wakaf", Label = "Sewaan Bangunan" },
+
+        new() { Id = "bc1", Value = "Pertanian Kontan", Label = "Penanaman Kontan" },
+        new() { Id = "bc2", Value = "Pertanian Sayuran", Label = "Penanaman Sayur Sayuran" },
+        new() { Id = "bc3", Value = "Pertanian Nenas", Label = "Penanaman Nenas" },
+        new() { Id = "bc4", Value = "Pertanian Cili", Label = "Penanaman Cili" },
+        new() { Id = "bc5", Value = "Pertanian Ubi Kayu", Label = "Penanaman Ubi Kayu" },
+        new() { Id = "bc6", Value = "Pertanian Keledek", Label = "Penanaman Keledek" },
+        new() { Id = "bc7", Value = "Pertanian Bendi", Label = "Penanaman Bendi" },
+        new() { Id = "bc8", Value = "Pertanian Labu", Label = "Penanaman Labu" },
+        new() { Id = "bc9", Value = "Pertanian Kantan", Label = "Penanaman Kantan" },
+        new() { Id = "bc10", Value = "Pertanian Tebu", Label = "Penanaman Tebu" },
+        new() { Id = "bc11", Value = "Pertanian Terung", Label = "Penanaman Terung" },
+        new() { Id = "bc12", Value = "Pertanian Serai", Label = "Penanaman Serai" },
+        new() { Id = "bc13", Value = "Pertanian Pisang", Label = "Penanaman Pisang" },
+        new() { Id = "bc14", Value = "Pertanian Kelapa", Label = "Penanaman Kelapa" },
+        new() { Id = "bc15", Value = "Pertanian Durian", Label = "Penanaman Durian" },
+        new() { Id = "bc16", Value = "Pertanian Sawit", Label = "Penanaman Sawit" },
+        new() { Id = "bc17", Value = "Pertanian Getah", Label = "Penanaman Getah" },
+
+
+        new() { Id = "btncheck10", Value = "Penternakan Lembu", Label = "Penternakan Lembu" },
+        new() { Id = "btncheck11", Value = "Penternakan Kerbau", Label = "Penternakan Kerbau" },
+        new() { Id = "btncheck12", Value = "Penternakan Kambing", Label = "Penternakan Kambing" },
+        new() { Id = "btncheck13", Value = "Penternakan Rusa", Label = "Penternakan Rusa" },
+        new() { Id = "btncheck16", Value = "Penternakan Landak", Label = "Penternakan Landak" },
+        new() { Id = "btncheck14", Value = "Penternakan Ayam", Label = "Penternakan Ayam" },
+        new() { Id = "btncheck15", Value = "Penternakan Itik", Label = "Penternakan Itik" }
+
+
+
+    };
+
+    private async Task LoadFile()
+    {
+        await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    private void UpdateSelection(ChangeEventArgs e, string value)
+    {
+        if ((bool)e.Value!)
+            selectedValues.Add(value);
+        else
+            selectedValues.Remove(value);
+    }
+    public class CheckboxItem
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
+    }
+    //-------------------
 
     private string GetColorKategori(string kategori)
     {
@@ -340,10 +546,16 @@
         var authState = await myIden.GetUserAsync();
         var user = authState.Identity as ClaimsIdentity;
 
+        var nostaf = user?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "";
+        var newData = await _service.GetInfoDataFromEHR(nostaf);
+        NOKP = newData.FirstOrDefault()?.Ic ?? string.Empty;
+        NamaPemohon = newData.FirstOrDefault()?.Nama ?? string.Empty;
+        NoStaff = nostaf;
+
         if (user == null || !user.IsAuthenticated)
         {
             await myIden.SignOutUserAsync();
-            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/e-Takaf/SessiTamat";
+            string baseUrl = (Mode == "Dev") ? "/SessiTamat" : "/eTakaf_v1/SessiTamat";
             NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
         }
     }
@@ -352,6 +564,8 @@
     {
         if (firstRender)
         {
+            await LoadFile();
+
             if (Jeniss == "TWA")
             {
                 _dataB = await _service.GetRekodTWA_Kosong(); 
@@ -470,6 +684,15 @@
 
             var asknolot = xdata.NO_LOT; var askdaerah = xdata.DAERAH;
 
+
+            _updateData = new()
+            {
+                NO_LOT = xdata.NO_LOT,
+                JENIS_NO_HAKMILIK = xdata.JENIS_NO_HAKMILIK,
+                DAERAH = xdata.DAERAH,
+                MUKIM_PEKAN_BANDAR = xdata.MUKIM_PEKAN_BANDAR
+            };
+
             IEnumerable<OutputCarian> infoDat = await _service.GetInfoDetailsBothTables(asknolot, askdaerah);
             if (infoDat.Any())
             {
@@ -534,6 +757,86 @@
         }
     }
 
+    public tblInfoPermohonanPenyewaan newData = new(); public tblInfoTanahWakaf _updateData = new tblInfoTanahWakaf();
 
+    private async Task HantarSewa()
+    {
+        try
+        {
+            if (selectedValues.Count() >= 1)
+            {
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Adakah Anda Pasti Untuk Menghantar Permohonan Untuk Menyewa Tanah/Bangunan Ini ?",
+                    Text = "Info",
+                    Icon = SweetAlertIcon.Info,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Ya",
+                    CancelButtonText = "Tidak"
+                });
+
+                if (!string.IsNullOrEmpty(result.Value))
+                {
+                    string combined = string.Join(",", selectedValues);
+
+                    newData = new()
+                    {
+                        CreatedDate = DateTime.Now,
+                        NoKPPemohon = NOKP,
+                        NamaPemohon = NamaPemohon,
+                        Daerah = Daerah,
+                        Mukim = Mukim,
+                        NoLot = NoLot,
+                        NoGeran = NoGeran,
+                        TujuanPenyewaan = combined,
+                        NoStaff = NoStaff,
+                        Status = 1
+                    };
+
+                    bool isSuccess = await _service.InsertNewPenyewaanRekod(newData);
+                    bool isSuccess1 = await _service.UpdateStatusPenyewaanTanahWakaf(_updateData);
+
+                    // Close the modal first
+                    await JSRuntime.InvokeVoidAsync("closeModal", "QueryModal");
+
+                    // Prepare SweetAlert options
+                    var alertOptions = new SweetAlertOptions
+                    {
+                        Title = isSuccess
+                            ? "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah BERJAYA Dihantar Untuk Diproses."
+                            : "Permohonan Untuk Penyewaan Tanah/Bangunan Wakaf Telah TIDAK BERJAYA Dihantar Untuk Diproses.",
+                        Text = isSuccess ? "Info" : "Error",
+                        Icon = isSuccess ? SweetAlertIcon.Info : SweetAlertIcon.Error,
+                        ShowCancelButton = false,
+                        ConfirmButtonText = "Ya"
+                    };
+
+                    // Show SweetAlert
+                    await Swal.FireAsync(alertOptions);
+
+                    // Navigate
+                    string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/eTakaf_v1/Dashboard";
+                    NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+                    StateHasChanged();
+
+                }
+            }
+            else
+            {
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Pastikan Tujuan Penyewaan Dinyatakan",
+                    Text = "Tujuan Penyewaan ??",
+                    Icon = SweetAlertIcon.Error,
+                    ConfirmButtonText = "Ya"
+                });
+            }
+        }
+        catch (System.Exception err)
+        {
+            throw new Exception(err.Message);
+        }
+
+    }
 
 }

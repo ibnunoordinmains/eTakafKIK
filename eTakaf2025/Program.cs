@@ -49,7 +49,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
-app.UsePathBase("/e-takaf/");
+app.UsePathBase("/eTakaf_v1/");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
