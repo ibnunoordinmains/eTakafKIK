@@ -325,7 +325,9 @@ namespace DAL.Repo
 
         public async Task<IEnumerable<tblInfoTanahWakaf>> CariRekodHartaTanahWakafByDaerahSahaja(string daerah)
         {
-            string sql = @"SELECT * FROM tblinfotanahwakaf where Daerah = @Daerah";
+            // string sql = @"SELECT * FROM tblinfotanahwakaf where Daerah = @Daerah";
+            string sql = @" select b.*,a.NamaPenyewaPenghuni from tblLegasiWakafMAINS a inner join TblInfoTanahWakaf b
+                                on a.NoLot =  b.NO_LOT and a.Daerah = b.DAERAH and b.Daerah = @daerah ";
             return await _serverProd.Connections.QueryAsync<tblInfoTanahWakaf>(sql, new { daerah = daerah });
         }
 

@@ -28,11 +28,11 @@ builder.Services.AddSweetAlert2(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opt =>
     {
-        opt.Cookie.Name = "e-takaf";
-        opt.LoginPath = "/SessiTamat";
+        opt.Cookie.Name = "etakaf_v1";
+        opt.LoginPath = "/Main";
         opt.LogoutPath = "/logout";
         opt.AccessDeniedPath = "/AccessDenied";
-        opt.Cookie.MaxAge = TimeSpan.FromMinutes(15);
+        opt.Cookie.MaxAge = TimeSpan.FromMinutes(25);
     });
 
 builder.Services.AddAuthorization();

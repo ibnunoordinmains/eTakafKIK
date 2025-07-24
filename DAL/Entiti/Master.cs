@@ -192,6 +192,7 @@ namespace DAL.Entiti
         public string KOD { get; set; } = string.Empty;
         public string CATATAN { get; set; } = string.Empty;
         public int Status { get; set; } = 0;
+        public string NAMAPENYEWAPENGHUNI { get; set; } = string.Empty;
     }
 
     public class ViewButiranStaf

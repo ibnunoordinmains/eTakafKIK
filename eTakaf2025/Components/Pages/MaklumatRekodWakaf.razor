@@ -27,7 +27,7 @@
             <h5 class="mb-0 fw-semibold"><i class="bi bi-table me-2"></i>@Message</h5>
         </div>
         <div class="card-body bg-light rounded-bottom-4">
-            @if (adaRekod)
+            @if (adaRekod && (Jenis == "TWA" || Jenis == "TWK"))
             {
                 <div class="table-responsive">
                     <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
@@ -69,12 +69,105 @@
                                         }
                                     </td>
                                     <td class="text-center">
-                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-success rounded-pill btn-wave" @onclick="()=>getInfoDetails(xx)">
+                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-info rounded-pill btn-wave text-white" @onclick="() => getInfoDetails(xx)">
                                             <i class="fa-regular fa-circle-info"></i>
                                          </button>
                                     </td>
                                     <td class="text-center">
                                         <button disabled="@(!IsButtonEnabled(xx.Status))" title="Tempahan Penyewaan" data-bs-toggle="modal" data-bs-target="#QueryModal" class="btn btn-icon btn-warning rounded-pill btn-wave" @onclick="() => getInfoDetails(xx)">
+                                            <i class="fa-thin fa-note text-white"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else if (adaRekod && (Jenis == "TWAS" || Jenis == "TWKS"))
+            {
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
+                        <thead class="table-success text-center align-middle">
+                            <tr>
+                                <th>#</th>
+                                <th>No Fail</th>
+                                <th>No Lot</th>
+                                <th>Daerah</th>
+                                <th>Mukim/Bandar</th>
+                                <th>Kategori</th>
+                                <th>Catatan</th>
+                                <th>Keluasan Tanah Diwakaf (Ha)</th>
+                                <th>Status</th>
+                                <th>Info</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var xx in _dataB)
+                            {
+                                <tr>
+                                    <td class="text-center">@xx.Id</td>
+                                    <td class="text-center text-primary">@xx.NO_DAFTAR</td>
+                                    <td class="text-center fw-bold">@xx.NO_LOT</td>
+                                    <td class="fw-bold text-primary">@xx.DAERAH</td>
+                                    <td class="fw-bold text-danger">@xx.MUKIM_PEKAN_BANDAR.ToString().ToUpper()</td>
+                                    <td class="fw-bold @GetColorKategori(xx.KEGUNAAN_KATEGORI)">@xx.KEGUNAAN_KATEGORI</td>
+                                    <td>@xx.CATATAN</td>
+                                    <td class="text-center fw-bold text-danger">@(xx.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("F2") ?? "0.00")</td>
+                                    <td>                                 
+                                        <span class="badge bg-danger">Berpenghuni</span>                                        
+                                    </td>
+                                    <td class="text-center">
+                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-info rounded-pill btn-wave text-white" @onclick="() => getInfoDetails(xx)">
+                                            <i class="fa-regular fa-circle-info"></i>
+                                         </button>
+                                    </td>                                   
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else if (adaRekod && (namaDaerah.Contains(Jenis)))
+            {
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
+                        <thead class="table-success text-center align-middle">
+                            <tr>
+                                <th>#</th>
+                                <th>No Fail</th>
+                                <th>No Lot</th>
+                                <th>Daerah</th>
+                                <th>Mukim/Bandar</th>
+                                <th>Kategori</th>
+                                <th>Catatan</th>
+                                <th>Keluasan Tanah Diwakaf (Ha)</th>
+                                <th>Status</th>
+                                <th>Info</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var xx in _dataB)
+                            {
+                                <tr>
+                                    <td class="text-center">@xx.Id</td>
+                                    <td class="text-center text-primary">@xx.NO_DAFTAR</td>
+                                    <td class="text-center fw-bold">@xx.NO_LOT</td>
+                                    <td class="fw-bold text-primary">@xx.DAERAH</td>
+                                    <td class="fw-bold text-danger">@xx.MUKIM_PEKAN_BANDAR.ToString().ToUpper()</td>
+                                    <td class="fw-bold @GetColorKategori(xx.KEGUNAAN_KATEGORI)">@xx.KEGUNAAN_KATEGORI</td>
+                                    <td>@xx.CATATAN</td>
+                                    <td class="text-center fw-bold text-danger">@(xx.KELUASAN_YANG_DIWAKAFKAN_ha.ToString("F2") ?? "0.00")</td>
+                                    <td class="text-center">
+                                        <span class="badge @(string.IsNullOrWhiteSpace(xx.NAMAPENYEWAPENGHUNI) ? "bg-success" : "bg-warning")">
+                                            @(string.IsNullOrWhiteSpace(xx.NAMAPENYEWAPENGHUNI) ? "Kosong" : "Berpenghuni")
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-info rounded-pill btn-wave text-white" @onclick="() => getInfoDetails(xx)">
                                             <i class="fa-regular fa-circle-info"></i>
                                         </button>
                                     </td>
@@ -83,7 +176,7 @@
                         </tbody>
                     </table>
                 </div>
-            }           
+            }
         </div>
     </div>
 </div>
@@ -441,6 +534,8 @@
     public string NOKP = string.Empty;
     public string NamaPemohon = string.Empty;
     public string NoStaff = string.Empty;
+
+    string[] namaDaerah = ["Seremban","Kuala Pilah","Rembau","Tampin","Jelebu","Jempol","Port Dickson"];
 
 
     IEnumerable<tblLegasiWakafMAINS> _data = [];
