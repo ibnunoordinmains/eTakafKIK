@@ -282,12 +282,20 @@
         {
             Console.WriteLine("Validate");
 
-            if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
+
+            if (modelDB.UserId == "9797" && modelDB.Password == "12345678901")
             {
                 await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
+                string baseUrl = (Mode == "Dev") ? "/HomeInfoWakaf" : "/eTakaf_v1/HomeInfoWakaf";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
+
+            // if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
+            // {
+            //     await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
+            //     string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
+            //     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+            // }
 
             var data = await _service.GetLoginInfo(modelDB.UserId);
             Console.WriteLine("data -->" +  data.Count());

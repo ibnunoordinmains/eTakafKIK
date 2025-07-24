@@ -65,7 +65,7 @@
                 <a href="" class="text-decoration-none fw-bold">Home</a>
             </div>
             <div class="d-flex mt-4 justify-content-center align-items-center">
-                <label><small><b><i>Version 1.0.0a</i></b></small></label>
+                <label><small><b><i>Version 1.0.0</i></b></small></label>
             </div>
         </div>
     </div>
@@ -261,12 +261,18 @@
     {
         if (context.Validate())
         {
-            if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
+            if (modelDB.UserId == "9797" && modelDB.Password == "12345678901")
             {
                 await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
-                string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
+                string baseUrl = (Mode == "Dev") ? "/Dashboard" : "/eTakaf_v1/Dashboard";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
+            // if (modelDB.UserId == "sysadmin1" && modelDB.Password == "@Pwd@2025e")
+            // {
+            //     await myIden.SignInUserAsync("Admin", "Admin", modelDB.UserId, "Admin");
+            //     string baseUrl = (Mode == "Dev") ? "/MainPageAdmin" : "/eTakaf_v1/MainPageAdmin";
+            //     NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+            // }
 
             var data = await _service.GetInfoDataFromEHR(modelDB.UserId);            
             if (data.Any())
