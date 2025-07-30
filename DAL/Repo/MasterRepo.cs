@@ -339,7 +339,10 @@ namespace DAL.Repo
 
         public async Task<IEnumerable<tblLegasiWakafMAINS>> CarianRekodBasedOnLotdanDaerahSahaja(string nolot, string daerah)
         {
-            string sql = @"select * from tblinfoTanahWakaf where no_lot = @nolot and daerah = @daerah";
+            //string sql = @"select * from tblinfoTanahWakaf where no_lot = @nolot and daerah = @daerah";
+            string sql = @"select A.*,B.* from TblInfoTanahWakaf a inner join tblLegasiWakafMAINS b
+                            on a.NO_LOT = b.NoLot and a.DAERAH = b.Daerah
+                            and a.NO_LOT=@nolot and a.DAERAH = @daerah";
             return await _serverProd.Connections.QueryAsync<tblLegasiWakafMAINS>(sql, new { nolot = nolot, daerah = daerah });
         }
 

@@ -26,17 +26,17 @@
             <ul class="nav nav-tabs" id="primaryTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#dashboard1" type="button" role="tab" aria-controls="products" aria-selected="true">
-                        <i class="bi bi-grid me-2"></i>DASHBOARD 1
+                        <i class="bi bi-grid me-2"></i>DASH-UTAMA
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#dashboard2" type="button" role="tab" aria-controls="services" aria-selected="false">
-                        <i class="bi bi-gear me-2"></i>DASHBOARD 2
+                        <i class="bi bi-gear me-2"></i>DASH-DAERAH
                     </button>
                 </li>
                  <li class="nav-item" role="presentation">
                     <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#dashboard3" type="button" role="tab" aria-controls="services" aria-selected="false">
-                        <span class="badge rounded-pill text-bg-danger" style="color:white;">@JumlahPermohonanSewa</span> DASHBOARD 3
+                        <span class="badge rounded-pill text-bg-danger" style="color:white;">@JumlahPermohonanSewa</span> PERMOHONAN
                     </button>
                 </li>
             </ul>
@@ -47,7 +47,8 @@
                 @if (adaRekod)
                 {
                    <div class="container mt-3 mb-5">
-                        <div class="card stat-card total-card mb-4">
+                       <!--CARIAN LOT NO-->
+                        <div class="card stat-card total-card mb-4"> 
                             <div class="row align-items-center px-3 mt-3 mb-3">
                                 <div class="input-group flex-wrap gap-2">
                                     <div class="flex-grow-1">
@@ -72,10 +73,81 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div>                                  
                         </div>
 
-                        <div class="row mb-5 g-4 justify-content-center">
+                    @if (adaCarian && _dataCARIAN.Any() == true)
+                    {
+                        <p class="fw-bold text-dark">Output Carian :</p>
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-hover align-middle text-nowrap table-bordered border-light-subtle rounded-3 overflow-hidden">
+                                <thead class="table-primary text-center align-middle">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>No Fail</th>
+                                        <th>No Lot</th>
+                                        <th>Daerah</th>
+                                        <th>Status Penghunian</th>
+                                        <th>Kategori Tanah</th>
+                                        <th>Senarai Nyata Tanah</th>
+                                        <th>Keluasan Tanah Diwakaf (Ekar)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var xx in _dataCARIAN)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@xx.Bil</td>
+                                            <td class="text-center text-primary">@xx.NoDaftar</td>
+                                            <td>@xx.NoLot</td>
+                                            <td class="fw-bold text-primary">@xx.Daerah</td>
+                                            <td class="fw-bold text-danger">@xx.StatusPenghunian</td>
+                                            <td>@xx.Kategori</td>
+                                            <td>@xx.SyaratNyataTanah</td>
+                                            <td class="text-center fw-bold text-danger">@(xx.Luastanahdiwakafkanekar?.ToString("F2") ?? "0.00")</td>
+                                            <td>
+                                                <button title="Info Lanjut" data-bs-toggle="modal" data-bs-target="#staticCenteredModal" class="btn btn-icon btn-outline-success rounded-pill btn-wave" @onclick="() => getInfoDetails(xx)">
+                                                    <i class="fa-regular fa-circle-info"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="mt-2 mb-2 justify-content-center d-flex text-center">
+                                    <button class="btn btn-success pe-2" @onclick="CloseMesej"><i class="fa-light fa-circle-xmark"></i> Tutup Mesej</button>
+                                </div>
+                        </div>
+                    }
+                    else if (adaCarian ==false && adaError == true)
+                    {
+                        <div class="d-flex justify-content-center">                    
+                            <div class="no-records-container">
+                                <h2 class="main-title"><i class="bi bi-inbox pe-2"></i> Tiada Rekod Dijumpai</h2>
+                                <p class="description">
+                                    Maaf, kami tidak dapat menemui sebarang rekod yang sepadan dengan carian atau kriteria yang anda tetapkan.
+                                </p>
+                                <div class="justify-content-center d-flex text-center">
+                                    <button class="btn btn-success pe-2" @onclick="CloseMesej"><i class="fa-light fa-circle-xmark"></i> Tutup Mesej</button>
+                                </div>
+                            </div>
+                            
+                        </div>                
+                    }
+
+
+
+                    <div class="accordion mt-2" id="accordionExample">
+                        <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Nilai Keseluruhan Tanah/Bangunan Wakaf
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                        <div class="row mb-5 g-4 justify-content-center">
                         <!-- Stat Card 1 -->
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="stat-card position-relative">
@@ -129,53 +201,58 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-        
-
-                        <div class="row mb-5 justify-content-center d-flex">
-                            <div class="col-lg-3 col-md-4 col-12">
-                                <div class="card stat-card total-card">
-                                    <div class="card-body d-flex align-items-center justify-content-between">
-                                        <div>
-                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN WAKAF</h5>
-                                            <div class="stat-value mt-2">@TotalJumlahTW</div>
-                                            <div class="stat-label">Keseluruhan</div>
-                                        </div>
-                                        <div class="stat-icon">
-                                            <i class="bi bi-map"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-12">
-                                <div class="card stat-card total-card">
-                                    <div class="card-body d-flex align-items-center justify-content-between">
-                                        <div>
-                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN KOSONG</h5>
-                                            <div class="stat-value mt-2"><span style="color:yellow;">@TotalJumlahTanahKosong</SPAN></div>
-                                            <div class="stat-label">Keseluruhan</div>
-                                        </div>
-                                        <div class="stat-icon">
-                                            <i class="bi bi-map"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-4 col-12">
-                                <div class="card stat-card total-card">
-                                    <div class="card-body d-flex align-items-center justify-content-between">
-                                        <div>
-                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN DIGUNA</h5>
-                                            <div class="stat-value mt-2">@TotalJumlahTanahSewa</div>
-                                            <div class="stat-label">Keseluruhan</div>
-                                        </div>
-                                        <div class="stat-icon">
-                                            <i class="bi bi-map"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>   
                             </div>
                         </div>
+                        </div>
+                    </div>
+                       
+                       
+                         <div class="row mb-5 justify-content-center d-flex">
+                                            <div class="col-lg-3 col-md-4 col-12">
+                                                <div class="card stat-card total-card">
+                                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN WAKAF</h5>
+                                                            <div class="stat-value mt-2">@TotalJumlahTW</div>
+                                                            <div class="stat-label">Keseluruhan</div>
+                                                        </div>
+                                                        <div class="stat-icon">
+                                                            <i class="bi bi-map"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-12">
+                                                <div class="card stat-card total-card">
+                                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN KOSONG</h5>
+                                                            <div class="stat-value mt-2"><span style="color:yellow;">@TotalJumlahTanahKosong</SPAN></div>
+                                                            <div class="stat-label">Keseluruhan</div>
+                                                        </div>
+                                                        <div class="stat-icon">
+                                                            <i class="bi bi-map"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-12">
+                                                <div class="card stat-card total-card">
+                                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title mb-0">JUMLAH TANAH/BANGUNAN DIGUNA</h5>
+                                                            <div class="stat-value mt-2">@TotalJumlahTanahSewa</div>
+                                                            <div class="stat-label">Keseluruhan</div>
+                                                        </div>
+                                                        <div class="stat-icon">
+                                                            <i class="bi bi-map"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                         <div class="row justify-content-center d-flex">
                             <div class="col-xxl-3 col-xl-6 mb-3">
@@ -1085,6 +1162,222 @@
 </div>
  
 
+<div class="modal fade" id="staticCenteredModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background :linear-gradient(135deg, #3a0ca3, #4361ee) !important;color:white;">
+                <h5 class="modal-title">MAKLUMAT LANJUT TANAH WAKAF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="scrollable-content">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </div>
+                                    <h5 class="mb-0">Lokasi Tanah</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Alamat</div>
+                                    <div class="info-value">@AlamatPremis</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Daerah</div>
+                                    <div class="info-value">@Daerah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Mukim</div>
+                                    <div class="info-value">@Mukim</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-house-door"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Asas</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Hartanah</div>
+                                    <div class="info-value" id="namaHartanah">@NamaHartanah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Jenis Hartanah</div>
+                                    <div class="info-value" id="jenisHartanah">@JenisHartanah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Kategori</div>
+                                    <div class="info-value" id="kategori">@Kategori</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Jenis Wakaf</div>
+                                    <div class="info-value" id="kategoriSumberAmWakaf">@KategoriSumberAmWakaf</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-rulers"></i>
+                                    </div>
+                                    <h5 class="mb-0">Keluasan Tanah Wakaf</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas Tanah (m²)</div>
+                                    <div class="info-value" id="luasTanahM2">@LuasTanahM2.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas Tanah (Acres)</div>
+                                    <div class="info-value" id="luasTanahEkar">@LuasTanahEkar.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas Dalam Geran (Ha)</div>
+                                    <div class="info-value" id="luasTanahDalamGeran">@LuasTanahDalamGeran.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas DiWakaf (Acres)</div>
+                                    <div class="info-value" id="luasTanahDiwakafkanEkar">@LuasTanahDiwakafkanEkar.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Luas DiWakaf (Ha)</div>
+                                    <div class="info-value" id="luasTanahDiwakafkanHa">@LuasTanahDiwakafkanHa.ToString("N2")</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Harta</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">No. Lot</div>
+                                    <div class="info-value" id="noLot">@NoLot</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">No. Geran</div>
+                                    <div class="info-value" id="noGeran">@NoGeran</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Pegangan Tanah</div>
+                                    <div class="info-value" id="peganganTanah">@PeganganTanah</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tempoh Pajakan</div>
+                                    <div class="info-value" id="tempohPajakan">@TempohPajakan</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Syarat Nyata Tanah</div>
+                                    <div class="info-value" id="syaratNyataTanah">@SyaratNyataTanah</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Penyewaan/Pendudukan</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Nama Penyewa/Penghuni</div>
+                                    <div class="info-value" id="namaPenyewaPenghuni">@NamaPenyewaPenghuni</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Status Penghunian</div>
+                                    <div class="info-value" id="statusPenghunian">@StatusPenghunian</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="info-card p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="info-icon">
+                                        <i class="bi bi-calendar-check"></i>
+                                    </div>
+                                    <h5 class="mb-0">Maklumat Penyewaan</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tempoh Sewa</div>
+                                    <div class="info-value" id="tempoh">@Tempoh</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tarikh Mula</div>
+                                    <div class="info-value" id="tarikhMula">@TarikhMula.ToString("dd/MM/yyyy")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Tarikh Akhir</div>
+                                    <div class="info-value" id="tarikhTamat">@TarikhTamat.ToString("dd/MM/yyyy")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Sewaan Bulanan</div>
+                                    <div class="info-value" id="sewaBulanan">@SewaBulanan.ToString("N2")</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="info-label">Sewaan Tahunan</div>
+                                    <div class="info-value" id="sewaTahunan">@SewaTahunan.ToString("N2")</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .description {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+    .main-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+    .no-records-container {
+        background: white;
+        border-radius: 24px;
+        padding: 3rem 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-color);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        margin: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .empty-icon {
+        width: 100px;
+        height: 100px;
+    }
+        .empty-icon i {
+            font-size: 2.5rem;
+        }
+</style>
 
 
 
@@ -1105,6 +1398,7 @@
     public bool adaRekodDetailsXlehSewa = false;
     public bool adaRekodPermohonanSewa = false;
     public bool adaPecahanRekod = false;
+    public bool adaCarian = false;public bool adaError = false;
 
     public int JumlahPermohonanSewa = 0;
     public bool adaSeremban = false; public bool adaKualaPilah = false; public bool adaTampin = false;
@@ -1129,6 +1423,32 @@
     public decimal KualaPilahPercent; public decimal TampinPercent; public decimal PortDicksonPercent;
 
     public string JumlahRMTotalTW = string.Empty ; public string JumlahRMTanahKosongTW = string.Empty; public string JumlahRMTanahBukanKosongTW= string.Empty;
+
+    public string AlamatPremis = string.Empty;
+    public string NamaPenyewaPenghuni = string.Empty;
+    public string NamaHartanah = string.Empty;
+    public double LuasTanahM2;
+    public double LuasTanahDalamGeran;
+    public double LuasTanahEkar;
+    public double LuasTanahDiwakafkanHa;
+    public double LuasTanahDiwakafkanEkar;
+    public string JenisHartanah = string.Empty;
+    public string NoLot = string.Empty;
+    public string NoGeran = string.Empty;
+    public string Mukim = string.Empty;
+    public string Daerah = string.Empty;
+    public string PeganganTanah = string.Empty;
+    public string TempohPajakan = string.Empty;
+    public string SyaratNyataTanah = string.Empty;
+    public string KategoriSumberAmWakaf = string.Empty;
+    public string StatusPenghunian = string.Empty;
+    public string Kategori = string.Empty;
+    public string Tempoh = string.Empty;
+    public DateTime TarikhMula;
+    public DateTime TarikhTamat;
+    public decimal SewaBulanan;
+    public decimal SewaTahunan;
+
 
     private async Task LoadFile()
     {
@@ -1436,6 +1756,8 @@
         JelebuPercent = Convert.ToDecimal(daerahMap["Jelebu"]);
     }
 
+    IEnumerable<tblLegasiWakafMAINS> _dataCARIAN = [];
+
     private async Task CarianMaklumatBYLotDaerah()
     {
 
@@ -1443,11 +1765,26 @@
         {
             try
             {
-                SearchNoLot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchNoLot));
-                SearchDaerah = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchDaerah));
+                // SearchNoLot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchNoLot));
+                // SearchDaerah = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(SearchDaerah));
 
-                string baseUrl = (Mode == "Dev") ? $"/MaklumatCarian/{SearchNoLot}/{SearchDaerah}" : $"/eTakaf_v1/MaklumatCarian/{SearchDaerah}/{SearchNoLot}";
-                NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+                // string baseUrl = (Mode == "Dev") ? $"/MaklumatCarian/{SearchNoLot}/{SearchDaerah}" : $"/eTakaf_v1/MaklumatCarian/{SearchDaerah}/{SearchNoLot}";
+                // NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
+
+
+                if (!string.IsNullOrEmpty(SearchDaerah) && !string.IsNullOrEmpty(SearchNoLot))
+                {
+                    _dataCARIAN = await _service.CarianRekodBasedOnLotdanDaerahSahaja(SearchNoLot,SearchDaerah);
+                    if (_dataCARIAN.Any())
+                    {
+                        adaCarian = true;
+                    }
+                    else
+                    {
+                        adaCarian = false;adaError = true;
+                    }
+                }
+                StateHasChanged();
 
             }
             catch(System.Exception err)
@@ -1472,7 +1809,7 @@
                 xnokp = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(data.NoKPPemohon));
                 xnolot = HttpUtility.UrlEncode(EncryptionHelper.Encrypt(data.NoLot));
 
-                  string baseUrl = (Mode == "Dev") ? $"/ProsesPermohonan/{xnokp}/{xnolot}" : $"/eTakaf_v1/ProsesPermohonan/{xnokp}/{xnolot}";
+                string baseUrl = (Mode == "Dev") ? $"/ProsesPermohonan/{xnokp}/{xnolot}" : $"/eTakaf_v1/ProsesPermohonan/{xnokp}/{xnolot}";
                 NavMan.NavigateTo(NavMan.ToAbsoluteUri(baseUrl).ToString(), true);
             }
         }
@@ -1482,8 +1819,39 @@
         }
     }
 
+    private void getInfoDetails(tblLegasiWakafMAINS xdata)
+    {
+
+        AlamatPremis = xdata.AlamatPremis;
+        NamaPenyewaPenghuni = xdata.NamaPenyewaPenghuni;
+        NamaHartanah = xdata.NamaHartanah;
+        LuasTanahM2 = xdata.LuasTanahm2 ?? 0;
+        LuasTanahEkar = xdata.LuasTanahekar ?? 0;
+        LuasTanahDalamGeran = xdata.LuasTanahHaDalamGeran ?? 0;
+        LuasTanahDiwakafkanEkar = xdata.Luastanahdiwakafkanekar ?? 0;
+        LuasTanahDiwakafkanHa = xdata.LuastanahdiwakafkanHa ?? 0;
+        JenisHartanah = xdata.JenisHartanah;
+        NoLot = xdata.NoLot;
+        NoGeran = xdata.NoGeran;
+        Mukim = xdata.Mukim;
+        Daerah = xdata.Daerah;
+        PeganganTanah = xdata.PeganganTanah;
+        TempohPajakan = xdata.TempohPajakan;
+        SyaratNyataTanah = xdata.SyaratNyataTanah;
+        KategoriSumberAmWakaf = xdata.KategoriSumberAmWakaf;
+        StatusPenghunian = xdata.StatusPenghunian;
+        Kategori = xdata.Kategori;
+        Tempoh = xdata.Tempoh;
+        TarikhMula = xdata.TarikhMula ?? DateTime.MinValue;
+        TarikhTamat = xdata.TarikhTamat ?? DateTime.MinValue;
+        SewaBulanan = xdata.SewaBulanan ?? 0M;
+        SewaTahunan = xdata.SewaTahunan ?? 0M;
+    }
 
 
-
+    private void CloseMesej()
+    {
+         adaCarian = false;adaError = false;StateHasChanged();
+    }
 
 }

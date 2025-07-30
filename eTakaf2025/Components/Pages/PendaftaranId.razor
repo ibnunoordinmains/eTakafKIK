@@ -5,6 +5,7 @@
 @using CurrieTechnologies.Razor.SweetAlert2
 @using DAL.Entiti
 @using SAL
+@using System.Text.RegularExpressions
 @using eTakaf2025.Components.Layout
 
 
@@ -16,80 +17,95 @@
 @inject IConfiguration _conf
 @inject NavigationManager NavMan
 
-<div class="container">   
-    <div class="d-flex justify-content-center align-items-center mt-5">
-        <div class="card p-4 shadow-lg" style="width: 65rem; max-width: 70%;">
-           <div class="text-center">
-                <img class="img-fluid" src="images/mains_panjang.png" alt="Logo" style="max-width: 100%; height: auto;" />
-                <div class="text-center">
-                    <button type="button" class="btn btn-outline-warning" @onclick="GoHome"><i class="fa-light fa-floppy-disk pe-2"></i>Home</button>
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card p-4 shadow-lg rounded-4">
+                <div class="text-center mb-4">
+                    <img src="images/mains_panjang.png" class="img-fluid" alt="Logo" style="max-width: 100%; height: auto;" />
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-outline-warning" @onclick="GoHome">
+                            <i class="fa-light fa-floppy-disk pe-2"></i>Home
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <hr />
-            <h6 class="card-title text-center mb-3 fw-bold">DAFTAR PENGGUNA BARU</h6>
-            <EditForm Model="@info" OnValidSubmit="HandleValidSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-              <div class="card px-3">
-                  <div class="row mt-2 mb-2">
-                      <div class="col-sm-12 col-md-6">
-                            <label class="form-label">Nama Pemohon <span style="color: red;">*</span></label>
+
+                <hr />
+                <h6 class="card-title text-center mb-4 fw-bold">DAFTAR PENGGUNA BARU</h6>
+
+                <EditForm Model="@info" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-4">
+                            <label class="form-label">Nama Pemohon <span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
                                 <input type="text" class="form-control" required @bind="info.NamaPemohon" />
                             </div>
 
-                            <label class="form-label">No Kad Pengenalan <span style="color: red;">*</span></label>
+                            <label class="form-label">No Kad Pengenalan <span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="fa-regular fa-id-card-clip"></i></span>
-                                <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,14)" maxlength="14" required @bind="info.NoKP" />
+                                <input type="text" class="form-control" placeholder="No KP Tanpa Tanda '-' "
+                                       maxlength="14"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,12)"
+                                       required @bind="info.NoKP" />
                             </div>
 
-                            <label class="form-label">No Tel Bimbit <span style="color: red;">*</span></label>
+                            <label class="form-label">No Tel Bimbit <span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="fa-solid fa-mobile-notch"></i></span>
-                                <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,20)" maxlength="15" required @bind="info.NoHP" />
+                                <input type="text" class="form-control"
+                                       maxlength="15"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,15)"
+                                       required @bind="info.NoHP" />
                             </div>
 
-                            <label class="form-label">Emel <span style="color: red;">*</span></label>
+                            <label class="form-label">Emel <span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="fa-light fa-envelope"></i></span>
                                 <input type="email" class="form-control" required @bind="info.Email" />
                             </div>
+                        </div>
 
-                      </div>
-                        <div class="col-sm-12 col-md-6">
-                            <label class="form-label">Katalaluan 1<span style="color: red;">*</span></label>
+                        <div class="col-12 col-md-6 mb-4">
+                            <label class="form-label">Katalaluan 1 <span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="fa-solid fa-key-skeleton"></i></span>
-                                <input type="password" class="form-control" required @bind="info.Katalaluan" />
+                                <input type="password" class="form-control" required @bind="info.Katalaluan" @onblur="ValidatePWD" />                                
                             </div>
 
-
-                            <label class="form-label">Katalaluan 2 <span style="color: red;">*</span></label>
+                            <label class="form-label">Katalaluan 2 <span class="text-danger">*</span></label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="fa-solid fa-key-skeleton"></i></span>
                                 <input type="password" class="form-control" required @bind="info.Katalaluan1" @onblur="CheckPassword" />
                             </div>
 
+                            <div>
+                                <i><small>Katalaluan minimum 8 char, gabungan alphanumeric , huruf besar dan kecil serta spesial char</small></i>
+                            </div>
                         </div>
-                  </div>
-              </div>
+                       
+                    </div>
 
-                <div class="text-center mt-2">
-                    <button type="submit" class="btn btn-success"><i class="fa-light fa-floppy-disk pe-2"></i>Daftar Pengguna</button>
-                </div>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-light fa-floppy-disk pe-2"></i>Daftar Pengguna
+                        </button>
+                    </div>
 
-                @if (message is not null)
-                {
-                    <div class="alert alert-info mt-3 text-center">@message</div>
-                }
-            </EditForm>
-
-          
+                    @if (message is not null)
+                    {
+                        <div class="alert alert-info mt-3 text-center">@message</div>
+                    }
+                </EditForm>
+            </div>
         </div>
     </div>
 </div>
+
 
 <style type="text/css">
     body {
@@ -112,6 +128,24 @@
     private async Task LoadFile()
     {
         await JSRuntime.InvokeVoidAsync("loadSweetAlert");
+    }
+
+    private async Task ValidatePWD()
+    {
+        var password = info.Katalaluan;
+        var pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$";
+        var isValid = Regex.IsMatch(password, pattern);
+
+        if (!isValid)
+        {
+            SweetAlertResult sswal = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Katalaluan Tidak Sah",
+                Text = "Katalaluan Tidak Mengikut Spesifikasi Ditetapkan",
+                Icon = SweetAlertIcon.Error,
+                ConfirmButtonText = "Ok"
+            });
+        }
     }
 
     protected override Task OnInitializedAsync()
@@ -142,12 +176,14 @@
         IsActive = true
     };
 
-   
+
 
     private async Task HandleValidSubmit()
     {
         try
         {
+
+
             string resultMessage = await _service.HandleUserRegistration(info);
 
             SweetAlertResult sswal = await Swal.FireAsync(new SweetAlertOptions
@@ -179,22 +215,40 @@
 
     private async Task CheckPassword()
     {
-        if (info.Katalaluan != info.Katalaluan1)
+        var password = info.Katalaluan1;
+        var pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$";
+        var isValid = Regex.IsMatch(password, pattern);
+
+        if (isValid)
         {
-            SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            if (info.Katalaluan != info.Katalaluan1)
             {
-                Title = "Pastikan katalaluan Memenuhi Spesifikasi Ditetapkan",
-                Text = "Info",
+                SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Pastikan katalaluan Memenuhi Spesifikasi Ditetapkan",
+                    Text = "Info",
+                    Icon = SweetAlertIcon.Error,
+                    ConfirmButtonText = "Ok"
+                });
+            }
+            else
+            {
+                string newP = BCrypt.Net.BCrypt.EnhancedHashPassword("N$r75**" + info.Katalaluan1);
+                info.Katalaluan = newP; info.Katalaluan1 = newP;
+                StateHasChanged();
+            }
+        }
+        else
+        {
+            SweetAlertResult sswal = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Katalaluan Tidak Sah",
+                Text = "Katalaluan Tidak Mengikut Spesifikasi Ditetapkan",
                 Icon = SweetAlertIcon.Error,
                 ConfirmButtonText = "Ok"
             });
         }
-        else
-        {
-            string newP = BCrypt.Net.BCrypt.EnhancedHashPassword("N$r75**" + info.Katalaluan1);
-            info.Katalaluan = newP;info.Katalaluan1 = newP;
-            StateHasChanged();
-        }
+
     }
 
     void ClearData()
